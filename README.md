@@ -2,7 +2,8 @@
 Developed with python 3.11.1
 
 ## Requirements
-Python 3.11.1
+Python 3.11.1.
+Should also work on older versions of python3 but is not tested.
 Install all libraries in the "requirements.txt" file
 
 ### Use of virtual environment
