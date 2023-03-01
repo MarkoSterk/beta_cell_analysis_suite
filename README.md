@@ -26,7 +26,7 @@ Linux:
 source venv/bin/activate
 ```
 
-Install all dependancies:
+Install all dependancies in the virtual environment with:
 ```
 pip install -r requirements.txt
 ```
