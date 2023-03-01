@@ -5,34 +5,23 @@ Analysis of all cellular parameters
 - average oscillation duration
 - interoscillation interval variability
 """
+# pylint: disable=W0611
 
 import numpy as np
 import matplotlib.pyplot as plt
 from helper_functions.cell_parameters import find_clusters
-from configurations import (PANEL_HEIGHT, MEDIAN_PROPS, BOX_PROPS,
-                            SMALL_TEXT_SIZE, MEDIUM_TEXT_SIZE, BIGGER_TEXT_SIZE)
+from configurations import INTERVAL_START_TIME_SECONDS, INTERVAL_END_TIME_SECONDS, SAMPLING
+import plot_configurations
+from plot_configurations import PANEL_HEIGHT, MEDIAN_PROPS, BOX_PROPS
 
-################Matplotlib configurations#######################
-plt.rc('font', size=SMALL_TEXT_SIZE)          # controls default text sizes
-plt.rc('axes', titlesize=SMALL_TEXT_SIZE)     # fontsize of the axes title
-plt.rc('axes', labelsize=MEDIUM_TEXT_SIZE)    # fontsize of the x and y labels
-plt.rc('xtick', labelsize=SMALL_TEXT_SIZE)    # fontsize of the tick labels
-plt.rc('ytick', labelsize=SMALL_TEXT_SIZE)    # fontsize of the tick labels
-plt.rc('legend', fontsize=SMALL_TEXT_SIZE)    # legend fontsize
-plt.rc('figure', titlesize=BIGGER_TEXT_SIZE)  # fontsize of the figure title
-########################################################################
-
-# SETTINGS
-INTERVAL_START_TIME = 800.0
-INTERVAL_END_TIME = 1800.0
 
 # Loads all data
 binarized_time_series = np.loadtxt(
     'preprocessing/results/final_binarized_data.txt')
-sampling = np.loadtxt('raw_data/sampling.txt')
+sampling = SAMPLING
 
-interval_start_time_frames = int(INTERVAL_START_TIME*sampling)
-interval_end_time_frames = int(INTERVAL_END_TIME*sampling)
+interval_start_time_frames = int(INTERVAL_START_TIME_SECONDS*sampling)
+interval_end_time_frames = int(INTERVAL_END_TIME_SECONDS*sampling)
 
 binarized_time_series = binarized_time_series[interval_start_time_frames:interval_end_time_frames,:]
 
@@ -53,7 +42,7 @@ for i in range(cell_num):
     activity_clusters = find_clusters(binarized_time_series[:, i])
 
     frequency = len(activity_clusters[0]) / \
-        (INTERVAL_END_TIME-INTERVAL_START_TIME)
+        (INTERVAL_END_TIME_SECONDS-INTERVAL_START_TIME_SECONDS)
     cell_data['oscillation_frequencies'].append(frequency)
 
     cell_data['avg_oscillation_durations'].append(np.average(activity_clusters[1])/sampling)
