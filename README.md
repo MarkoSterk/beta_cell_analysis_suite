@@ -6,6 +6,9 @@ Python 3.11.1.
 Should also work on older versions of python3 but is not tested.
 Install all libraries in the "requirements.txt" file
 
+All steps and instructions assume that you have python installed on your 
+computer and that the command "python" points to this installation.
+
 ### Use of virtual environment
 I suggest the use of a virtual environment.
 Use 
@@ -51,7 +54,7 @@ You may change any of the configuration parameters as you see fit.
 Have a look at the steps below for further information and options.
 
 ### Output folder structure
-Any output folders and files are created on-the-go if not already present. No action in required on your part.
+Any output folders and files are created on-the-go if not already present. No action is required on your part.
 
 ### General experiment information
 * SAMPLING - the data sampling rate in Hz (float or integer number)
@@ -59,7 +62,7 @@ Example:
 SAMPLING = 10.0
 
 ### General analysis configurations
-* INTERVAL_START_TIME_SECONDS - the start time (in seconds) of the intervals for visualization and analysis. This parameter is required for the filtration, smoothing, binarization and network analysis steps. You can change the parameter from one analysis to the other
+* INTERVAL_START_TIME_SECONDS - the start time (in seconds) of the intervals for visualization and analysis. This parameter is required for the filtration, smoothing, binarization and network analysis steps. You can change this parameter from one analysis step to the other
 * INTERVAL_END_TIME_SECONDS - the same as INTERVAL_START_TIME_SECONDS but for the end of the interval
 Examples:
 INTERVAL_START_TIME_SECONDS = 800.0
