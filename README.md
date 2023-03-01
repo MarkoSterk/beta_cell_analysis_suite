@@ -31,10 +31,11 @@ Install all dependancies in the virtual environment with:
 pip install -r requirements.txt
 ```
 
+This step requires the file "requirements.txt" in the current working directory.
+
 ### Provided sample data
 We provide sample data in the folder "raw_data/" 
 
-Requires the file "requirements.txt" in the current working directory.
 ### Raw data input
 The scripts require a folder called "raw_data" in the root folder
 of your analysis project. 
