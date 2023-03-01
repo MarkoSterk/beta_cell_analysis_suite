@@ -5,6 +5,32 @@ Developed with python 3.11.1
 Python 3.11.1
 Install all libraries in the "requirements.txt" file
 
+### Use of virtual environment
+I suggest the use of a virtual environment.
+Use 
+```
+python -m venv venv
+```
+
+to create a virtual environment in your project folder.
+
+Activate the virtual environment with:
+Windows:
+```
+venv/Scripts/activate
+```
+
+Linux:
+```
+source venv/bin/activate
+```
+
+Install all dependancies:
+```
+pip install -r requirements.txt
+```
+
+Requires the file "requirements.txt" in the current working directory.
 ### Raw data input
 The scripts require a folder called "raw_data" in the root folder
 of your analysis project. 
