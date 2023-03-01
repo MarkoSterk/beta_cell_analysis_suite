@@ -22,7 +22,7 @@ from helper_functions.coactivity import coactivity
 from plot_configurations import PANEL_WIDTH
 from configurations import (SAMPLING, INTERVAL_START_TIME_SECONDS,
                             INTERVAL_END_TIME_SECONDS, ANALYSIS_TYPE,
-                            NETWORK_METHOD, CONNECTIVITY_LEVEL)
+                            NETWORK_METHOD, CONNECTIVITY_LEVEL, FIXED_KAVG_TOLERANCE)
 import plot_configurations
 
 ############################################
@@ -74,7 +74,7 @@ conn_mat = None
 if network_method == 'fixed_rth':
     conn_mat = fixed_rth_conn_mat(corr_matrix, threshold_level)
 elif network_method == 'fixed_kavg':
-    conn_mat = fixed_kavg_conn_mat(corr_matrix, threshold_level)
+    conn_mat = fixed_kavg_conn_mat(corr_matrix, threshold_level, tolerance=FIXED_KAVG_TOLERANCE)
 else:
     raise BaseException('Please select a valid network construction method (network_method).')
 

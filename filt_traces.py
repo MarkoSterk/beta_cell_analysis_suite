@@ -54,7 +54,7 @@ for ts_num in range(number_of_cells):
         signal_filter.bandpass_filt(low_frequency, high_frequency)
         cut_signal = signal_filter.get_filtered_signal()
 
-    print(f'Obdelujem celico {ts_num}')
+    print(f'Filtering time series {ts_num}')
 
     fig, (ax1, ax2, ax3) = plt.subplots(3, 1)
     ax1.set_title('Raw signal')

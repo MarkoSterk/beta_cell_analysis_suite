@@ -43,7 +43,7 @@ if not os.path.exists('preprocessing/binarized_traces'):
     os.makedirs('preprocessing/binarized_traces')
 
 for i in range(number_of_cells):
-    print(f'Obdelujem celico {i}')
+    print(f'Binarization of time series {i}')
     # peaks: indexes of detected peaks
     peaks, properties = find_peaks(data[:, i],
                                    height=amp_fact*np.average(data[:, i]),

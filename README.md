@@ -134,17 +134,54 @@ The output if this script is used for further cell/network analysis.
 ### Correlation and coactivity network step configurations
 * ANALYSIS_TYPE - "correlation" or "coactivity". Select either one as the time series similarity measure
 * NETWORK_METHOD - "fixed_kavg" or "fixed_rth". Select either one as the network construction method. fixed_kavg == constructs a network with a fixed average node degree.  fixed_rth == constructs a network with simple correlation/coactivity lever thresholding.
-* CONNECTIVITY_LEVEL - Set this value to something larger then 0 if you selected the "fixed_kavg" method. The constructed network will have this average node degree. - Set this value to between 0 and 1 if you selected the "fixed_rth" method. 
+* CONNECTIVITY_LEVEL - Set this value to something larger then 0 if you selected the "fixed_kavg" method. The constructed network will have this average node degree. - Set this value to between 0 and 1 if you selected the "fixed_rth" method.
+* FIXED_KAVG_TOLERANCE - relative tolerance when establishing connection in the "fixed_kavg" method graph. 
 
 Examples "fixed_kavg":
 ANALYSIS_TYPE = 'coactivity'
 NETWORK_METHOD = 'fixed_kavg'
 CONNECTIVITY_LEVEL = 8.0
+FIXED_KAVG_TOLERANCE = 0.1
+
+With the above CONNECTIVITY_LEVEL and FIXED_KAVG_TOLERANCE the highest expected average node degree of the network
+will be 8.8
 
 Examples "fixed_rth":
 ANALYSIS_TYPE = 'coactivity'
 NETWORK_METHOD = 'fixed_rth'
 CONNECTIVITY_LEVEL = 0.75
+FIXED_KAVG_TOLERANCE = not needed
+
+Run this step with:
+```
+python corr_ca_analysis.py
+```
+
+Output of this analysis is saved in the folder "results/" and subfolder "correlation_analysis/" or "coactivity_analysis/"
+and further subfolder "fixed_rth/" or "fixed_kavg/" based on the type of parameters you choose.
+
+
+### Cell parameter analysis step
+The cell analysis parameter step takes the binarized time series data and calculated islet average and
+single cell activity parameters.
+
+The cell specific parameters are:
+* Relative active time (the time a cells spends in the ON-phase ie 1)
+* Average oscillation duration (the average length of oscillations)
+* Average oscillation frequency (the frequency of oscillation)
+* Interoscillation interval variability (the variability of the intervals between oscillations)
+
+Islet average parameters are:
+* Average of all of the above cell specific parameters
+* The standard deviations of the above parameters
+
+Run this step with:
+```
+python cell_parameter_analysis.py
+```
+
+Output of this analysis is saved in the "results/" folder in files:
+"average_islet_activity_parameters.txt", "cellular_activity_parameters.txt" and "cell_parameters_box_plots.png".
 
 
 ## References

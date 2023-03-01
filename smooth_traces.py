@@ -36,7 +36,7 @@ if not os.path.exists('preprocessing/smoothed_traces'):
     os.makedirs('preprocessing/smoothed_traces')
 
 for i in range(len(data[0])):
-    print(f'Obdelujem celico {i}')
+    print(f'Smoothing time series {i}')
 
     fig, (ax1, ax2) = plt.subplots(2, 1)
 

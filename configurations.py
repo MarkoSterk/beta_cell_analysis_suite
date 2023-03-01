@@ -1,5 +1,5 @@
 """
-General configurations the analysis procedure
+General configurations for the analysis procedure
 Please refer to the README.md file or the GitHub repository 
 https://github.com/MarkoSterk/beta_cell_analysis_suite
 for further information about specific parameters
@@ -45,3 +45,4 @@ EXCLUDE_CELLS = []
 ANALYSIS_TYPE = 'coactivity'
 NETWORK_METHOD = 'fixed_kavg'
 CONNECTIVITY_LEVEL = 8.0
+FIXED_KAVG_TOLERANCE = 0.1
