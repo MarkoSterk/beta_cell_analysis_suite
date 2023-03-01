@@ -4,6 +4,8 @@ authors:
   - family-names: Šterk
     given-names: Marko
     orcid: https://orcid.org/0000-0003-2627-6446
+  - family-names: Gosak
+    given-names: Marko
 title: "Beta cell activity analysis suite"
 version: 1.0.1
 doi: https://github.com/MarkoSterk/beta_cell_analysis_suite
