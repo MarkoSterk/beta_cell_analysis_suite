@@ -1,7 +1,8 @@
 """
 General configurations the analysis procedure
-Please refer to the README.md file for further
-information about specific parameters
+Please refer to the README.md file or the GitHub repository 
+https://github.com/MarkoSterk/beta_cell_analysis_suite
+for further information about specific parameters
 """
 
 ##Experiment parameters

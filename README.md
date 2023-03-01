@@ -30,6 +30,9 @@ Install all dependancies:
 pip install -r requirements.txt
 ```
 
+### Provided sample data
+We provide sample data in the folder "raw_data/" 
+
 Requires the file "requirements.txt" in the current working directory.
 ### Raw data input
 The scripts require a folder called "raw_data" in the root folder
@@ -40,9 +43,13 @@ Required files are:
 
 * koordinate.txt <-- array of shape (Nx2); where N is the number of cells. Columns represent the (x,y) coordinates of cells
 
-## Configurations
+## Analysis and configurations
 All analysis configurations reside in the "configurations.py" file.
 You may change any of the configuration parameters as you see fit.
+Have a look at the steps below for further information and options.
+
+### Output folder structure
+Any output folders and files are created on-the-go if not already present. No action in required on your part.
 
 ### General experiment information
 * SAMPLING - the data sampling rate in Hz (float or integer number)
@@ -65,12 +72,24 @@ Examples:
 LOW_FREQUENCY_CUTOFF = 0.03
 HIGH_FREQUENCY_CUTOFF = 1.2
 
+Run this step with:
+```
+python filt_traces.py
+```
+Output of this analysis is saved in the folder "preprocessing" and subfolder "filt_traces"
+
 ### Smoothing step configurations
 * SMOOTHING_POINTS - the number of points to average over when smoothing (integer number)
 * SMOOTHING_REPEATS - number of times the smoothing is repeated (integer number)
 Examples:
 SMOOTHING_POINTS = 5
 SMOOTHING_REPEATS = 2
+
+Run this step with:
+```
+python smooth_traces.py
+```
+Output of this analysis is saved in the folder "preprocessing" and subfolder "smoothed_traces"
 
 ### Binarization step configurations
 The binarization procedure uses the SciPy library. Specifically it uses the
@@ -87,12 +106,25 @@ PEAK_WIDTH = 10
 PROMINENCE = 0.35
 REL_HEIGHT = 0.30
 
+Run this step with:
+```
+python binarization.py
+```
+Output of this analysis is saved in the folder "preprocessing" and subfolder "binarized_traces"
+
 ### Exclude cells step configurations
 Add numbers (integers) into the "EXCLUDE_CELLS" list.
 Beware that you don't repeat the same number!
 Example:
 EXCLUDE_CELLS = [0,8,92,17,94]
 
+Run this step with:
+```
+python exclude_cells.py
+```
+Output of this analysis is saved in the folder "preprocessing" and subfolder "results"
+
+The output if this script is used for further cell/network analysis.
 
 ### Correlation and coactivity network step configurations
 * ANALYSIS_TYPE - "correlation" or "coactivity". Select either one as the time series similarity measure
