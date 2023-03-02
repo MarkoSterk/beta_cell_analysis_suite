@@ -8,7 +8,7 @@ from typing import List
 from matplotlib import colors
 import numpy as np
 import matplotlib.pyplot as plt
-import plot_configurations
+import methods.plot_configurations as plot_configurations
 
 def binarized_plot(time: np.ndarray, binarized_signal: np.ndarray,
                    x_label: str = 'time (s)', y_label: str = 'cell i',

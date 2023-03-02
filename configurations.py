@@ -6,6 +6,7 @@ for further information about specific parameters
 """
 
 ##Experiment parameters
+EXPERIMENT_NAME = 'SOME_EXP_NAME_GLC_DATE'
 SAMPLING = 10.0 #in Hz
 
 ##Select interval for analysis and visualizations

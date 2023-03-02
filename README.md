@@ -53,13 +53,33 @@ All analysis configurations reside in the "configurations.py" file.
 You may change any of the configuration parameters as you see fit.
 Have a look at the steps below for further information and options.
 
+### Running analysis steps
+Any analysis step can be run with the command:
+```
+python run.py    or    python -m run
+```
+
+After running the command you will be prompted to select the specific step.
+
+Available analysis steps are:
+1: Time series filtration
+2: Time series smoothing
+3: Time series binarization
+4: Excluding of cells and time series
+5: Correlation/coactivity analysis
+6: Cell activity parameter analysis
+
 ### Output folder structure
 Any output folders and files are created on-the-go if not already present. No action is required on your part.
 
 ### General experiment information
+* EXPERIMENT_NAME - name of the experiment. Can be any string without whitespaces or special charecters
 * SAMPLING - the data sampling rate in Hz (float or integer number)
 Example:
+EXPERIMENT_NAME = '2023_01_03_GLC9_MS_SER_1'
 SAMPLING = 10.0
+
+Output data is generated in the "preprocessing/" and "results" folders in subfolders with the provided experiment name.
 
 ### General analysis configurations
 * INTERVAL_START_TIME_SECONDS - the start time (in seconds) of the intervals for visualization and analysis. This parameter is required for the filtration, smoothing, binarization and network analysis steps. You can change this parameter from one analysis step to the other
@@ -77,11 +97,7 @@ Examples:
 LOW_FREQUENCY_CUTOFF = 0.03
 HIGH_FREQUENCY_CUTOFF = 1.2
 
-Run this step with:
-```
-python filt_traces.py
-```
-Output of this analysis is saved in the folder "preprocessing" and subfolder "filt_traces"
+Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "filt_traces/"
 
 ### Smoothing step configurations
 * SMOOTHING_POINTS - the number of points to average over when smoothing (integer number)
@@ -90,11 +106,7 @@ Examples:
 SMOOTHING_POINTS = 5
 SMOOTHING_REPEATS = 2
 
-Run this step with:
-```
-python smooth_traces.py
-```
-Output of this analysis is saved in the folder "preprocessing" and subfolder "smoothed_traces"
+Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "smoothed_traces"
 
 ### Binarization step configurations
 The binarization procedure uses the SciPy library. Specifically it uses the
@@ -111,11 +123,7 @@ PEAK_WIDTH = 10
 PROMINENCE = 0.35
 REL_HEIGHT = 0.30
 
-Run this step with:
-```
-python binarization.py
-```
-Output of this analysis is saved in the folder "preprocessing" and subfolder "binarized_traces"
+Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "binarized_traces"
 
 ### Exclude cells step configurations
 Add numbers (integers) into the "EXCLUDE_CELLS" list.
@@ -123,11 +131,7 @@ Beware that you don't repeat the same number!
 Example:
 EXCLUDE_CELLS = [0,8,92,17,94]
 
-Run this step with:
-```
-python exclude_cells.py
-```
-Output of this analysis is saved in the folder "preprocessing" and subfolder "results"
+Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "results"
 
 The output if this script is used for further cell/network analysis.
 
@@ -152,13 +156,7 @@ NETWORK_METHOD = 'fixed_rth'
 CONNECTIVITY_LEVEL = 0.75
 FIXED_KAVG_TOLERANCE = not needed
 
-Run this step with:
-```
-python corr_ca_analysis.py
-```
-
-Output of this analysis is saved in the folder "results/" and subfolder "correlation_analysis/" or "coactivity_analysis/"
-and further subfolder "fixed_rth/" or "fixed_kavg/" based on the type of parameters you choose.
+Output of this analysis is saved in the folder "results/{EXPERIMENT_NAME}/" and subfolder "correlation_analysis/" or "coactivity_analysis/" and further subfolder "fixed_rth/" or "fixed_kavg/" based on the type of parameters you choose.
 
 
 ### Cell parameter analysis step
@@ -175,12 +173,8 @@ Islet average parameters are:
 * Average of all of the above cell specific parameters
 * The standard deviations of the above parameters
 
-Run this step with:
-```
-python cell_parameter_analysis.py
-```
 
-Output of this analysis is saved in the "results/" folder in files:
+Output of this analysis is saved in the "results/{EXPERIMENT_NAME}/" folder in files:
 "average_islet_activity_parameters.txt", "cellular_activity_parameters.txt" and "cell_parameters_box_plots.png".
 
 
