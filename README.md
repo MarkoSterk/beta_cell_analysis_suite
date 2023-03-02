@@ -22,10 +22,10 @@ Have a look at the steps below for further information and options.
 You can create a sample configuration file using the specified step in the program.
 
 ## Running analysis steps
-**Non-python users can use the "BetaCellAnalysis.exe" executable file in the "dist/" folder for all analysis.**\
+**Non-python users can use the "BetaCellAnalysis.exe" executable file in the "dist/" folder for all analysis.**
 
-**Python users:**
 ### Requirements
+**Python users only!**
 Python 3.11.1.
 Should also work on older versions of python3 but is not tested.
 Install all libraries in the "requirements.txt" file
