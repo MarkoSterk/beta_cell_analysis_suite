@@ -51,13 +51,14 @@ except:
 
 ##Loads config data from file
 CONFIG_DATA = None
-try:
-    with open('configurations.txt', encoding='utf-8') as f:
-        CONFIG_DATA = f.read()
-    CONFIG_DATA = json.loads(CONFIG_DATA)
-except:
-    # pylint: disable-next=W0719, W0707
-    raise BaseException('Configurations file not found. Use method 100 to create sample file.')
+if analysis_step != 100:
+    try:
+        with open('configurations.txt', encoding='utf-8') as f:
+            CONFIG_DATA = f.read()
+        CONFIG_DATA = json.loads(CONFIG_DATA)
+    except:
+        # pylint: disable-next=W0719, W0707
+        raise BaseException('Configurations file not found. Use method 100 to create sample file.')
 
 methods = {
     0: run_all_steps,
@@ -76,6 +77,7 @@ if analysis_step in methods:
         methods[analysis_step]()
     else:
         methods[analysis_step](CONFIG_DATA)
+    input('Press any key to finish the program.')
 elif analysis_step == 'exit':
     pass
 else:
