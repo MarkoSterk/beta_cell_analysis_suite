@@ -74,7 +74,7 @@ Available analysis steps are:
 * 99: Save configuration data
 * 100: Create sample config data
 * 0: Run all of the above
-* exit: exists the program
+* exit: exits the program
 
 Just input the correct number or exit.
 

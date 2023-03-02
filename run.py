@@ -72,7 +72,10 @@ methods = {
 }
 
 if analysis_step in methods:
-    methods[analysis_step](CONFIG_DATA)
+    if analysis_step == 100:
+        methods[analysis_step]()
+    else:
+        methods[analysis_step](CONFIG_DATA)
 elif analysis_step == 'exit':
     pass
 else:
