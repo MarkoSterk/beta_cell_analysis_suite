@@ -1,7 +1,31 @@
 # Beta cell activity analysis suite
 Developed with python 3.11.1
 
-## Requirements
+
+## Provided sample data
+We provide sample data in the folder "raw_data/" 
+
+## Raw data input
+The scripts require a folder called "raw_data" in the root folder
+of your analysis project. 
+Required files are:
+
+* data.txt <-- array of shape (MxN); M == number of data points, N == number of cells
+
+* koordinate.txt <-- array of shape (Nx2); where N is the number of cells. Columns represent the (x,y) coordinates of cells
+
+## Analysis and configurations
+All analysis configurations reside in the "configurations.txt" file.
+You may change any of the configuration parameters as you see fit.
+Have a look at the steps below for further information and options.
+
+You can create a sample configuration file using the specified step in the program.
+
+## Running analysis steps
+**Non-python users can use the "BetaCellAnalysis.exe" executable file in the "dist/" folder for all analysis.**\
+
+**Python users:**
+### Requirements
 Python 3.11.1.
 Should also work on older versions of python3 but is not tested.
 Install all libraries in the "requirements.txt" file
@@ -9,7 +33,7 @@ Install all libraries in the "requirements.txt" file
 All steps and instructions assume that you have python installed on your 
 computer and that the command "python" points to this installation.
 
-### Use of virtual environment
+#### Use of virtual environment
 I suggest the use of a virtual environment.
 Use 
 ```
@@ -35,27 +59,6 @@ pip install -r requirements.txt
 ```
 
 This step requires the file "requirements.txt" in the current working directory.
-
-### Provided sample data
-We provide sample data in the folder "raw_data/" 
-
-### Raw data input
-The scripts require a folder called "raw_data" in the root folder
-of your analysis project. 
-Required files are:
-
-* data.txt <-- array of shape (MxN); M == number of data points, N == number of cells
-
-* koordinate.txt <-- array of shape (Nx2); where N is the number of cells. Columns represent the (x,y) coordinates of cells
-
-## Analysis and configurations
-All analysis configurations reside in the "configurations.txt" file.
-You may change any of the configuration parameters as you see fit.
-Have a look at the steps below for further information and options.
-
-You can create a sample configuration file using the specified step in the program.
-
-### Running analysis steps
 Any analysis step can be run with the command:
 ```
 python run.py    or    python -m run
@@ -78,10 +81,10 @@ Available analysis steps are:
 
 Just input the correct number or exit.
 
-### Output folder structure
+## Output folder structure
 Any output folders and files are created on-the-go if not already present. No action is required on your part.
 
-### General experiment information
+## General experiment information
 * EXPERIMENT_NAME - name of the experiment. Can be any string without whitespaces or special charecters
 * SAMPLING - the data sampling rate in Hz (float or integer number)\
 \
@@ -91,7 +94,7 @@ SAMPLING = 10.0\
 
 Output data is generated in the "preprocessing/" and "results" folders in subfolders with the provided experiment name.
 
-### General analysis configurations
+## General analysis configurations
 * INTERVAL_START_TIME_SECONDS - the start time (in seconds) of the intervals for visualization and analysis. This parameter is required for the filtration, smoothing, binarization and network analysis steps. You can change this parameter from one analysis step to the other
 * INTERVAL_END_TIME_SECONDS - the same as INTERVAL_START_TIME_SECONDS but for the end of the interval\
 \
@@ -99,7 +102,7 @@ Examples:\
 INTERVAL_START_TIME_SECONDS = 800.0\
 INTERVAL_END_TIME_SECONDS = 1300\
 
-### Filtration step configurations
+## Filtration step configurations
 * FILTER_SELECTION - "fft" or "analog". Usually "fft" is the better option.
 * FIRST_COLUMN_TIME - True or False. If the first column in you raw "data.txt" file represents time
 * LOW_FREQUENCY_CUTOFF - a number larger then 0. Represents the low frequency threshold for the band-pass filter
@@ -111,7 +114,7 @@ HIGH_FREQUENCY_CUTOFF = 1.2\
 
 Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "filt_traces/"
 
-### Smoothing step configurations
+## Smoothing step configurations
 * SMOOTHING_POINTS - the number of points to average over when smoothing (integer number)
 * SMOOTHING_REPEATS - number of times the smoothing is repeated (integer number)\
 \
@@ -121,7 +124,7 @@ SMOOTHING_REPEATS = 2\
 
 Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "smoothed_traces"
 
-### Binarization step configurations
+## Binarization step configurations
 The binarization procedure uses the SciPy library. Specifically it uses the
 find_peaks method (https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.find_peaks.html) and peak_widths method (https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.peak_widths.html). For a more detailed 
 * AMP_FACT - the relative rise above the average signal to be considered as a peak
@@ -139,7 +142,7 @@ REL_HEIGHT = 0.30\
 
 Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "binarized_traces"
 
-### Exclude cells step configurations
+## Exclude cells step configurations
 Add numbers (integers) into the "EXCLUDE_CELLS" list.
 Beware that you don't repeat the same number!\
 \
@@ -150,7 +153,7 @@ Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/
 
 The output if this script is used for further cell/network analysis.
 
-### Correlation and coactivity network step configurations
+## Correlation and coactivity network step configurations
 * ANALYSIS_TYPE - "correlation" or "coactivity". Select either one as the time series similarity measure
 * NETWORK_METHOD - "fixed_kavg" or "fixed_rth". Select either one as the network construction method. fixed_kavg == constructs a network with a fixed average node degree.  fixed_rth == constructs a network with simple correlation/coactivity lever thresholding.
 * CONNECTIVITY_LEVEL - Set this value to something larger then 0 if you selected the "fixed_kavg" method. The constructed network will have this average node degree. - Set this value to between 0 and 1 if you selected the "fixed_rth" method.
@@ -174,7 +177,7 @@ FIXED_KAVG_TOLERANCE = not needed\
 Output of this analysis is saved in the folder "results/{EXPERIMENT_NAME}/" and subfolder "correlation_analysis/" or "coactivity_analysis/" and further subfolder "fixed_rth/" or "fixed_kavg/" based on the type of parameters you choose.
 
 
-### Cell parameter analysis step
+## Cell parameter analysis step
 The cell analysis parameter step takes the binarized time series data and calculated islet average and
 single cell activity parameters.
 
@@ -203,5 +206,5 @@ The procedures in this suite were previously used in the following research arti
 
 4. Marko Šterk, Jurij Dolenšek, Lidija Križančić Bombek, Rene Markovič, Darko Zakelšek, Matjaž Perc, Viljem Pohorec, Andraž Stožer, Marko Gosak, 2021. *Assessing the origin and velocity of Ca2+ waves in three-dimensional tissue: Insights from a mathematical model and confocal imaging in mouse pancreas tissue slices*. Communications in Nonlinear Science and Numerical Simulation 93, 105498. DOI: https://doi.org/10.1016/j.cnsns.2020.105495
 
-## Citation
+### Citation
 If you use this analysis suite for any publication please cite this work
