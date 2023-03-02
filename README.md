@@ -24,6 +24,10 @@ You can create a sample configuration file using the specified step in the progr
 ## Running analysis steps
 **Non-python users can use the "BetaCellAnalysis.exe" executable file in the "dist/" folder for all analysis.**
 
+The program will run in an endless loop until exited with the proper command.
+You will be asked for the next step everytime an analysis step finishes. The configurations are updated
+on-the-go (in case you make changes) so you don't have to exit and re-run the program for every step.
+
 ### Requirements
 **Python users only!**
 Developed and tested with Python 3.11.1.\
@@ -80,6 +84,10 @@ Available analysis steps are:
 * exit: Exit the program
 
 Just input the correct number or exit.
+
+The program will run in an endless loop until exited with the proper command.
+You will be asked for the next step everytime an analysis step finishes. The configurations are updated
+on-the-go (in case you make changes) so you don't have to exit and re-run the program for every step.
 
 ## Output folder structure
 Any output folders and files are created on-the-go if not already present. No action is required on your part.

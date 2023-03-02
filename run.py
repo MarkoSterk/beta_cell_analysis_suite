@@ -12,6 +12,15 @@ from methods.cell_parameter_analysis import cell_activity_data
 from methods.first_responders import first_responder_data
 from helper_functions.utility_functions import save_config_data, create_sample_config
 
+def load_configs() -> dict:
+    """
+    Loads/reloads config data
+    """
+    with open('configurations.txt', encoding='utf-8') as f:
+        config_data = f.read()
+    config_data = json.loads(config_data)
+    return config_data
+
 def run_all_steps(configurations):
     """
     Runs all available analysis methods in sequence except those
@@ -26,7 +35,7 @@ def run_all_steps(configurations):
         if key not in EXCLUDE_METHODS: ##doesn't run the run_all_steps method again!
             method(configurations)
 
-print("""
+analysis_options = """
 Available analysis steps are:
 1: First responder analysis
 2: Time series filtration
@@ -39,7 +48,9 @@ Available analysis steps are:
 99: Save current configuration data to experiment folder
 100: Create sample configuration data
 exit: Exit the program
-""")
+"""
+
+print(analysis_options)
 analysis_step = input('Select analysis step [number]: ')
 
 try:
@@ -55,9 +66,7 @@ except:
 CONFIG_DATA = None
 if analysis_step != 100:
     try:
-        with open('configurations.txt', encoding='utf-8') as f:
-            CONFIG_DATA = f.read()
-        CONFIG_DATA = json.loads(CONFIG_DATA)
+        CONFIG_DATA = load_configs()
     except:
         # pylint: disable-next=W0719, W0707
         raise BaseException('Configurations file not found. Use method 100 to create sample file.')
@@ -74,14 +83,25 @@ methods = {
     99: save_config_data,
     100: create_sample_config
 }
-
-if analysis_step in methods:
-    if analysis_step == 100:
-        methods[analysis_step]()
+RUN_ANALYSIS = True
+if analysis_step == 'exit':
+    RUN_ANALYSIS = False
+while RUN_ANALYSIS:
+    if analysis_step in methods:
+        if analysis_step == 100:
+            methods[analysis_step]()
+        else:
+            methods[analysis_step](CONFIG_DATA)
     else:
-        methods[analysis_step](CONFIG_DATA)
-    input('Press any key to finish the program.')
-elif analysis_step == 'exit':
-    pass
-else:
-    print('Please select a valid analysis method.')
+        if analysis_step != 'exit':
+            print('Please select a valid analysis method.')
+    if analysis_step != 'exit':
+        analysis_step = input('Select the next step, please: ')
+        if analysis_step != 'exit':
+            try:
+                analysis_step = int(analysis_step)
+            except:
+                pass
+        CONFIG_DATA = load_configs()
+    else:
+        RUN_ANALYSIS = False
