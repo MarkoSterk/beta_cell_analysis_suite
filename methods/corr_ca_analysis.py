@@ -111,7 +111,7 @@ def corr_ca_analysis_data(CONFIG_DATA: dict):
     with open(f'results/{EXPERIMENT_NAME}/{analysis_type}_analysis/{network_method}/average_{analysis_type}_network_parameters.txt',
             'w', encoding='utf-8') as file:
         print('AvgEff AvgK AvgC Smax CommNum Q', file=file)
-        print(f'{avg_eff:.2f} {avg_k:.2f} {avg_c:.2f} {int(s_max)} {num_comm/cell_num:.2f} {Q:.2f}',
+        print(f'{avg_eff:.2f} {avg_k:.2f} {avg_c:.2f} {s_max:.2f} {num_comm/cell_num:.2f} {Q:.2f}',
             file=file)
 
     clustering_i = clustering(G)
