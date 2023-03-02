@@ -74,7 +74,7 @@ Available analysis steps are:
 * 5: Excluding of cells and time series
 * 6: Correlation/coactivity analysis
 * 7: Cell activity parameter analysis
-* 0: Run all of the above steps
+* 0: Run all of the above steps - except [1, 100]
 * 99: Save current configuration data to experiment folder
 * 100: Create sample configuration data
 * exit: Exit the program
