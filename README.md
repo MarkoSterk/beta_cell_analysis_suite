@@ -67,17 +67,17 @@ python run.py    or    python -m run
 After running the command you will be prompted to select the specific step.
 
 Available analysis steps are:
-Available analysis steps are:
-* 1: Time series filtration
-* 2: Time series smoothing
-* 3: Time series binarization
-* 4: Excluding of cells and time series
-* 5: Correlation/coactivity analysis
-* 6: Cell activity parameter analysis
-* 99: Save configuration data
-* 100: Create sample config data
-* 0: Run all of the above
-* exit: exits the program
+* 1: First responder analysis
+* 2: Time series filtration
+* 3: Time series smoothing
+* 4: Time series binarization
+* 5: Excluding of cells and time series
+* 6: Correlation/coactivity analysis
+* 7: Cell activity parameter analysis
+* 0: Run all of the above steps
+* 99: Save current configuration data to experiment folder
+* 100: Create sample configuration data
+* exit: Exit the program
 
 Just input the correct number or exit.
 
@@ -101,6 +101,18 @@ Output data is generated in the "preprocessing/" and "results" folders in subfol
 Examples:\
 INTERVAL_START_TIME_SECONDS = 800.0\
 INTERVAL_END_TIME_SECONDS = 1300\
+
+## First responder step configurations
+No configurations are required aside from general experiment information.\
+Time series of each cell is plotted and displayed on the screen. The user has to click on the
+plot in the place where the cell has first responded to stimulation.\
+
+Accepted clicks/commands are:\
+* Left click - skips current shown cell. Response time for this cell will be 0.
+* Right click - gets the time of response from the x coordinate of the click event. Saves that as the response time for the current cell.
+* esc - escape key exits the analysis
+
+Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/first_responders".
 
 ## Filtration step configurations
 * FILTER_SELECTION - "fft" or "analog". Usually "fft" is the better option.
@@ -150,6 +162,10 @@ Example:\
 EXCLUDE_CELLS = [0,8,92,17,94]\
 
 Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "results"
+
+**ATTENTION**
+**This step is required (EVEN OF NO CELLS ARE EXCLUDED) and requires that all previous steps were completed.**
+**Exception to this requirement is the first responder analysis which is not required.**
 
 The output if this script is used for further cell/network analysis.
 
