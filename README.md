@@ -62,14 +62,19 @@ python run.py    or    python -m run
 After running the command you will be prompted to select the specific step.
 
 Available analysis steps are:
+Available analysis steps are:
 * 1: Time series filtration
 * 2: Time series smoothing
 * 3: Time series binarization
 * 4: Excluding of cells and time series
 * 5: Correlation/coactivity analysis
 * 6: Cell activity parameter analysis
+* 99: Save configuration data
+* 100: Create sample config data
+* 0: Run all of the above
+* exit: exists the program
 
-Just input the correct number.
+Just input the correct number or exit.
 
 ### Output folder structure
 Any output folders and files are created on-the-go if not already present. No action is required on your part.
