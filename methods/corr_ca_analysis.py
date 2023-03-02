@@ -115,13 +115,26 @@ def corr_ca_analysis_data(CONFIG_DATA: dict):
             file=file)
 
     clustering_i = clustering(G)
+    closeness_centrality_i = nx.closeness_centrality(G)
+    degree_centrality_i = nx.degree_centrality(G)
+    betweeness_centrality_i = nx.betweenness_centrality(G)
     # pylint: disable-next=C0301
     with open(f'results/{EXPERIMENT_NAME}/{analysis_type}_analysis/{network_method}/{analysis_type}_network_cell_parameters.txt',
             'w', encoding='utf-8') as file:
-        print('k rel_k C Hindex', file=file)
+        print('k rel_k C Hindex CloseCent DegCent BetwCent Comm', file=file)
         for i in range(cell_num):
+            k_i = G.degree(i)
+            rel_k_i = k_i/cell_num
+            clust_i = clustering_i[i]
+            hindex_i = calculate_hindex(G,i)
+            cls_cent_i = closeness_centrality_i[i]
+            k_cent_i = degree_centrality_i[i]
+            btw_cent_i = betweeness_centrality_i[i]
+            comm_i = communities[i]
             # pylint: disable-next=C0301
-            print(f'{G.degree(i)} {G.degree(i)/cell_num:.2f} {clustering_i[i]:.2f} {calculate_hindex(G, i)}',
+            print(f'{k_i} {rel_k_i:.2f} {clust_i:.2f} {hindex_i} {cls_cent_i:.2f} {k_cent_i:.2f} {btw_cent_i:.2f} {comm_i}',
                 file=file)
 
+    np.savetxt(f'results/{EXPERIMENT_NAME}/{analysis_type}_analysis/{network_method}/{analysis_type}_conn_mat.txt',
+               conn_mat, fmt='%d')
     print(f'{analysis_type} analysis finished successfully.')
