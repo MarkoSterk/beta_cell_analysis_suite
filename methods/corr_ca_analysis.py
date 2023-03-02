@@ -18,6 +18,7 @@ from helper_functions.network_funcs import (fixed_kavg_conn_mat,
                                             avg_deg,
                                             avg_cluss,
                                             max_struc,
+                                            small_world_coefficient,
                                             commstructure, calculate_hindex)
 from helper_functions.coactivity import coactivity
 from methods.plot_configurations import PANEL_WIDTH
@@ -95,6 +96,7 @@ def corr_ca_analysis_data(CONFIG_DATA: dict):
     avg_k = avg_deg(G)
     avg_c = avg_cluss(G)
     s_max = max_struc(G)/cell_num
+    sw_coef = small_world_coefficient(G)
     num_comm, Q, communities = commstructure(G)
     node_sizes = [np.sqrt(G.degree(i))+3.0 for i in range(cell_num)]
 
@@ -110,8 +112,8 @@ def corr_ca_analysis_data(CONFIG_DATA: dict):
     # pylint: disable-next=C0301
     with open(f'results/{EXPERIMENT_NAME}/{analysis_type}_analysis/{network_method}/average_{analysis_type}_network_parameters.txt',
             'w', encoding='utf-8') as file:
-        print('AvgEff AvgK AvgC Smax CommNum Q', file=file)
-        print(f'{avg_eff:.2f} {avg_k:.2f} {avg_c:.2f} {s_max:.2f} {num_comm/cell_num:.2f} {Q:.2f}',
+        print('AvgEff AvgK AvgC Smax SwCoef CommNum Q', file=file)
+        print(f'{avg_eff:.2f} {avg_k:.2f} {avg_c:.2f} {s_max:.2f} {sw_coef:.2f} {num_comm/cell_num:.2f} {Q:.2f}',
             file=file)
 
     clustering_i = clustering(G)

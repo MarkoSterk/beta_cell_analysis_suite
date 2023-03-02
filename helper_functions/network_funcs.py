@@ -160,7 +160,7 @@ def get_graph_connections(graph: nx.Graph, undirected=True) -> list:
     return edges
 
 
-def small_world_coefficient(G: nx.Graph()) -> float:
+def small_world_coefficient(G: nx.Graph) -> float:
     avg_k = avg_deg(G)
 
     p=(len(G)*avg_k)/(len(G)*(len(G)-1))
