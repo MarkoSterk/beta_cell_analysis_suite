@@ -26,7 +26,7 @@ You can create a sample configuration file using the specified step in the progr
 
 ### Requirements
 **Python users only!**
-Python 3.11.1.
+Developed and tested with Python 3.11.1.\
 Should also work on older versions of python3 but is not tested.
 Install all libraries in the "requirements.txt" file
 
