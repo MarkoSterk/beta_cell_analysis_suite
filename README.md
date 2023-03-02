@@ -15,11 +15,9 @@ Required files are:
 * koordinate.txt <-- array of shape (Nx2); where N is the number of cells. Columns represent the (x,y) coordinates of cells
 
 ## Analysis and configurations
-All analysis configurations reside in the "configurations.txt" file.
+All analysis configurations reside in the "configurations.txt" file. **This file is created when you run the program, and the file is not already present.**\
 You may change any of the configuration parameters as you see fit.
 Have a look at the steps below for further information and options.
-
-You can create a sample configuration file using the specified step in the program.
 
 ## Running analysis steps
 **Non-python users can use the "BetaCellAnalysis.exe" executable file in the "dist/" folder for all analysis.**
@@ -78,10 +76,10 @@ Available analysis steps are:
 * 5: Excluding of cells and time series
 * 6: Correlation/coactivity analysis
 * 7: Cell activity parameter analysis
-* 0: Run all of the above steps - except [1, 100]
+* 0: Run all of the above steps
 * 99: Save current configuration data to experiment folder
-* 100: Create sample configuration data
 * exit: Exit the program
+* options: Prints available options
 
 Just input the correct number or exit.
 
@@ -219,6 +217,14 @@ Islet average parameters are:
 Output of this analysis is saved in the "results/{EXPERIMENT_NAME}/" folder in files:
 "average_islet_activity_parameters.txt", "cellular_activity_parameters.txt" and "cell_parameters_box_plots.png".
 
+## 99: Save current configuration data to experiment folder
+This step saves the current data to the results folder of the analysis. This can be useful to compare or share configurations.
+
+## exit: Exit the program
+This options exits the program.
+
+## options: Prints available options
+This option prints all available options to the screen (again)
 
 ## References
 The procedures in this suite were previously used in the following research articles:
