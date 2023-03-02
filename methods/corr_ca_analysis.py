@@ -97,6 +97,7 @@ def corr_ca_analysis_data(CONFIG_DATA: dict):
     avg_c = avg_cluss(G)
     s_max = max_struc(G)/cell_num
     sw_coef = small_world_coefficient(G)
+    assortativity = nx.algorithms.degree_assortativity_coefficient(G)
     num_comm, Q, communities = commstructure(G)
     node_sizes = [np.sqrt(G.degree(i))+3.0 for i in range(cell_num)]
 
@@ -104,6 +105,7 @@ def corr_ca_analysis_data(CONFIG_DATA: dict):
     ax = fig.add_subplot(1,1,1)
     nx.draw(G, pos=pos, node_size=node_sizes, node_color=communities,
             edge_color='dimgray', width=0.75, cmap=plt.get_cmap('jet'), ax=ax)
+    # pylint: disable-next=C0301
     fig.savefig(f'results/{EXPERIMENT_NAME}/{analysis_type}_analysis/{network_method}/{analysis_type}_graph.png', 
                 dpi=600, bbox_inches='tight', pad_inches=0.01)
     plt.close(fig)
@@ -112,18 +114,20 @@ def corr_ca_analysis_data(CONFIG_DATA: dict):
     # pylint: disable-next=C0301
     with open(f'results/{EXPERIMENT_NAME}/{analysis_type}_analysis/{network_method}/average_{analysis_type}_network_parameters.txt',
             'w', encoding='utf-8') as file:
-        print('AvgEff AvgK AvgC Smax SwCoef CommNum Q', file=file)
-        print(f'{avg_eff:.2f} {avg_k:.2f} {avg_c:.2f} {s_max:.2f} {sw_coef:.2f} {num_comm/cell_num:.2f} {Q:.2f}',
+        print('AvgEff AvgK AvgC Smax SwCoef Assort CommNum Q', file=file)
+        # pylint: disable-next=C0301
+        print(f'{avg_eff:.2f} {avg_k:.2f} {avg_c:.2f} {s_max:.2f} {sw_coef:.2f} {assortativity:.2f} {num_comm/cell_num:.2f} {Q:.2f}',
             file=file)
 
     clustering_i = clustering(G)
     closeness_centrality_i = nx.closeness_centrality(G)
     degree_centrality_i = nx.degree_centrality(G)
     betweeness_centrality_i = nx.betweenness_centrality(G)
+    avg_nn_degree_i = nx.average_neighbor_degree(G)
     # pylint: disable-next=C0301
     with open(f'results/{EXPERIMENT_NAME}/{analysis_type}_analysis/{network_method}/{analysis_type}_network_cell_parameters.txt',
             'w', encoding='utf-8') as file:
-        print('k rel_k C Hindex CloseCent DegCent BetwCent Comm', file=file)
+        print('k rel_k C Hindex CloseCent DegCent BetwCent AvgNNDeg Comm', file=file)
         for i in range(cell_num):
             k_i = G.degree(i)
             rel_k_i = k_i/cell_num
@@ -132,11 +136,13 @@ def corr_ca_analysis_data(CONFIG_DATA: dict):
             cls_cent_i = closeness_centrality_i[i]
             k_cent_i = degree_centrality_i[i]
             btw_cent_i = betweeness_centrality_i[i]
+            nn_deg_i = avg_nn_degree_i[i]
             comm_i = communities[i]
             # pylint: disable-next=C0301
-            print(f'{k_i} {rel_k_i:.2f} {clust_i:.2f} {hindex_i} {cls_cent_i:.2f} {k_cent_i:.2f} {btw_cent_i:.2f} {comm_i}',
+            print(f'{k_i} {rel_k_i:.2f} {clust_i:.2f} {hindex_i} {cls_cent_i:.2f} {k_cent_i:.2f} {btw_cent_i:.2f} {nn_deg_i:.2f} {comm_i}',
                 file=file)
 
+    # pylint: disable-next=C0301
     np.savetxt(f'results/{EXPERIMENT_NAME}/{analysis_type}_analysis/{network_method}/{analysis_type}_conn_mat.txt',
                conn_mat, fmt='%d')
     print(f'{analysis_type} analysis finished successfully.')
