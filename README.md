@@ -49,9 +49,11 @@ Required files are:
 * koordinate.txt <-- array of shape (Nx2); where N is the number of cells. Columns represent the (x,y) coordinates of cells
 
 ## Analysis and configurations
-All analysis configurations reside in the "configurations.py" file.
+All analysis configurations reside in the "configurations.txt" file.
 You may change any of the configuration parameters as you see fit.
 Have a look at the steps below for further information and options.
+
+You can create a sample configuration file using the specified step in the program.
 
 ### Running analysis steps
 Any analysis step can be run with the command:
