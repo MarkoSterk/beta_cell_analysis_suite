@@ -3,20 +3,25 @@ Time series smoothing
 """
 # pylint: disable=C0103
 # pylint: disable=W0611
+# pylint: disable=R0914
 
 import os
 import numpy as np
 import matplotlib.pyplot as plt
 from helper_functions.smoothing import smooth_ts
 from helper_functions.utility_functions import print_progress_bar
-from configurations import (SAMPLING, INTERVAL_START_TIME_SECONDS, INTERVAL_END_TIME_SECONDS,
-                            SMOOTHING_POINTS, SMOOTHING_REPEATS, EXPERIMENT_NAME)
-import methods.plot_configurations as plot_configurations
+from methods import plot_configurations
 
-def smooth_data():
+def smooth_data(CONFIG_DATA: dict):
     """
     Smooths time series data
     """
+    SAMPLING = CONFIG_DATA['SAMPLING']
+    INTERVAL_START_TIME_SECONDS = CONFIG_DATA['INTERVAL_START_TIME_SECONDS']
+    INTERVAL_END_TIME_SECONDS = CONFIG_DATA['INTERVAL_END_TIME_SECONDS']
+    SMOOTHING_POINTS = CONFIG_DATA['SMOOTHING_POINTS']
+    SMOOTHING_REPEATS = CONFIG_DATA['SMOOTHING_REPEATS']
+    EXPERIMENT_NAME = CONFIG_DATA['EXPERIMENT_NAME']
     # Smoothing settings
     number_of_points = SMOOTHING_POINTS  # integer number > 0. Number of points to average over
     number_of_smoothings = SMOOTHING_REPEATS  # integer number. Number of repeats
@@ -31,8 +36,6 @@ def smooth_data():
     # loads all data except first column (time column)
     data = np.loadtxt(f'preprocessing/{EXPERIMENT_NAME}/filtered_data.txt')
     cell_num = len(data[0]) #number of cells
-    start_time_frames = int(start_time_seconds*SAMPLING)
-    end_time_frames = int(end_time_seconds*SAMPLING)
 
     time = [i/SAMPLING for i in range(len(data))]
     smoothed_data = np.zeros((len(data), len(data[0])), float)
@@ -68,6 +71,3 @@ def smooth_data():
         plt.close(fig)
 
     np.savetxt(f'preprocessing/{EXPERIMENT_NAME}/smoothed_traces.txt', smoothed_data, fmt='%.3lf')
-
-if __name__ == '__main__':
-    smooth_data()

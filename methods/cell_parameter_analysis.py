@@ -6,21 +6,23 @@ Analysis of all cellular parameters
 - interoscillation interval variability
 """
 # pylint: disable=W0611
+# pylint: disable=C0103
+# pylint: disable=R0914
 
 import numpy as np
 import matplotlib.pyplot as plt
 from helper_functions.cell_parameters import find_clusters
-from configurations import (INTERVAL_START_TIME_SECONDS,
-                            INTERVAL_END_TIME_SECONDS, SAMPLING,
-                            EXPERIMENT_NAME)
-import methods.plot_configurations as plot_configurations
+from methods import plot_configurations
 from methods.plot_configurations import PANEL_HEIGHT, MEDIAN_PROPS, BOX_PROPS
 
-
-def cell_activity_data():
+def cell_activity_data(CONFIG_DATA: dict):
     """
     Performs cell activity parameter analysis
     """
+    INTERVAL_START_TIME_SECONDS = CONFIG_DATA["INTERVAL_START_TIME_SECONDS"]
+    INTERVAL_END_TIME_SECONDS = CONFIG_DATA["INTERVAL_END_TIME_SECONDS"]
+    SAMPLING = CONFIG_DATA["SAMPLING"]
+    EXPERIMENT_NAME = CONFIG_DATA["EXPERIMENT_NAME"]
     # Loads all data
     binarized_time_series = np.loadtxt(
         f'preprocessing/{EXPERIMENT_NAME}/results/final_binarized_data.txt')
@@ -100,7 +102,4 @@ def cell_activity_data():
                 dpi=300, bbox_inches='tight', pad_inches=0.01)
     plt.close(fig)
 
-    print('Analysis finished successfully.')
-
-if __name__ == '__main__':
-    cell_activity_data()
+    print('Cell parameter analysis finished successfully.')

@@ -3,21 +3,28 @@ Time series binarization
 """
 # pylint: disable=C0103
 # pylint: disable=W0611
+# pylint: disable=R1702
 import os
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import find_peaks, peak_widths
 from helper_functions.ploting_funcs import binarized_plot
 from helper_functions.utility_functions import print_progress_bar
-from configurations import (AMP_FACT, INTERPEAK_DISTANCE, PEAK_WIDTH,
-                            PROMINENCE, REL_HEIGHT, INTERVAL_START_TIME_SECONDS,
-                            INTERVAL_END_TIME_SECONDS, SAMPLING, EXPERIMENT_NAME)
-import methods.plot_configurations as plot_configurations
+from methods import plot_configurations
 
-def binarize_data():
+def binarize_data(CONFIG_DATA: dict):
     """
     Binarizes time series data
     """
+    AMP_FACT = CONFIG_DATA['AMP_FACT']
+    INTERPEAK_DISTANCE = CONFIG_DATA['INTERPEAK_DISTANCE']
+    PEAK_WIDTH = CONFIG_DATA['PEAK_WIDTH']
+    PROMINENCE = CONFIG_DATA['PROMINENCE']
+    REL_HEIGHT = CONFIG_DATA['REL_HEIGHT']
+    INTERVAL_START_TIME_SECONDS = CONFIG_DATA['INTERVAL_START_TIME_SECONDS']
+    INTERVAL_END_TIME_SECONDS = CONFIG_DATA['INTERVAL_END_TIME_SECONDS']
+    SAMPLING = CONFIG_DATA['SAMPLING']
+    EXPERIMENT_NAME = CONFIG_DATA['EXPERIMENT_NAME']
     ############################################
     ###### Settings#################
     # For signal visualization
@@ -42,22 +49,19 @@ def binarize_data():
     time = [i/SAMPLING for i in range(len(data))]
     bin_signal = np.zeros((len(data), number_of_cells), int)
 
-    start_time_frames = int(start_time_seconds*SAMPLING)
-    end_time_frames = int(end_time_seconds*SAMPLING)
-
     if not os.path.exists(f'preprocessing/{EXPERIMENT_NAME}/binarized_traces'):
         os.makedirs(f'preprocessing/{EXPERIMENT_NAME}/binarized_traces')
 
     for i in range(number_of_cells):
         print_progress_bar(i+1, number_of_cells, f'Binarizing time series {i} ')
         # peaks: indexes of detected peaks
-        peaks, properties = find_peaks(data[:, i],
+        peaks, _ = find_peaks(data[:, i],
                                     height=amp_fact*np.average(data[:, i]),
                                     distance=distance,
                                     width=width,
                                     prominence=prominence)
 
-        widths, width_heights, left_ips, right_ips = peak_widths(data[:, i],
+        _, _, left_ips, right_ips = peak_widths(data[:, i],
                                                                 peaks,
                                                                 rel_height=rel_height)
 
@@ -102,6 +106,3 @@ def binarize_data():
     fig = binarized_plot(time, bin_signal)
     fig.savefig(f'preprocessing/{EXPERIMENT_NAME}/raster_plot.png', dpi=200, bbox_inches='tight')
     plt.close(fig)
-
-if __name__ == '__main__':
-    binarize_data()

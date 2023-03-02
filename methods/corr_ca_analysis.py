@@ -4,6 +4,7 @@ Correlation analysis of islet
 # pylint: disable=C0103
 # pylint: disable=W0719
 # pylint: disable=W0611
+# pylint: disable=R0915, R0914
 
 import os
 import numpy as np
@@ -20,16 +21,20 @@ from helper_functions.network_funcs import (fixed_kavg_conn_mat,
                                             commstructure, calculate_hindex)
 from helper_functions.coactivity import coactivity
 from methods.plot_configurations import PANEL_WIDTH
-from configurations import (SAMPLING, INTERVAL_START_TIME_SECONDS,
-                            INTERVAL_END_TIME_SECONDS, ANALYSIS_TYPE,
-                            NETWORK_METHOD, CONNECTIVITY_LEVEL, FIXED_KAVG_TOLERANCE,
-                            EXPERIMENT_NAME)
-import methods.plot_configurations as plot_configurations
+from methods import plot_configurations
 
-def corr_ca_analysis_data():
+def corr_ca_analysis_data(CONFIG_DATA: dict):
     """
     Performs the correlation/coactivity network analysis
     """
+    SAMPLING = CONFIG_DATA["SAMPLING"]
+    INTERVAL_START_TIME_SECONDS = CONFIG_DATA["INTERVAL_START_TIME_SECONDS"]
+    INTERVAL_END_TIME_SECONDS = CONFIG_DATA["INTERVAL_END_TIME_SECONDS"]
+    ANALYSIS_TYPE = CONFIG_DATA["ANALYSIS_TYPE"]
+    NETWORK_METHOD = CONFIG_DATA["NETWORK_METHOD"]
+    CONNECTIVITY_LEVEL = CONFIG_DATA["CONNECTIVITY_LEVEL"]
+    FIXED_KAVG_TOLERANCE = CONFIG_DATA["FIXED_KAVG_TOLERANCE"]
+    EXPERIMENT_NAME = CONFIG_DATA["EXPERIMENT_NAME"]
     ############################################
     ###### Settings#################
     analysis_type = ANALYSIS_TYPE
@@ -50,7 +55,8 @@ def corr_ca_analysis_data():
     if analysis_type == 'correlation':
         time_series = np.loadtxt(f'preprocessing/{EXPERIMENT_NAME}/results/final_smoothed_data.txt')
     elif analysis_type == 'coactivity':
-        time_series = np.loadtxt(f'preprocessing/{EXPERIMENT_NAME}/results/final_binarized_data.txt')
+        time_series = np.loadtxt(f'preprocessing/{EXPERIMENT_NAME}/results/final_binarized_data.txt'
+                                 )
     else:
         raise BaseException('Please select a valid analysis type (analysis_type).')
 
@@ -96,8 +102,8 @@ def corr_ca_analysis_data():
     ax = fig.add_subplot(1,1,1)
     nx.draw(G, pos=pos, node_size=node_sizes, node_color=communities,
             edge_color='dimgray', width=0.75, cmap=plt.get_cmap('jet'), ax=ax)
-    fig.savefig(f'results/{EXPERIMENT_NAME}/{analysis_type}_analysis/{network_method}/{analysis_type}_graph.png', dpi=600,
-                bbox_inches='tight', pad_inches=0.01)
+    fig.savefig(f'results/{EXPERIMENT_NAME}/{analysis_type}_analysis/{network_method}/{analysis_type}_graph.png', 
+                dpi=600, bbox_inches='tight', pad_inches=0.01)
     plt.close(fig)
 
     ###Saves average correlation network data
@@ -118,7 +124,4 @@ def corr_ca_analysis_data():
             print(f'{G.degree(i)} {G.degree(i)/cell_num:.2f} {clustering_i[i]:.2f} {calculate_hindex(G, i)}',
                 file=file)
 
-    print('Analysis finished successfully.')
-
-if __name__ == '__main__':
-    corr_ca_analysis_data()
+    print(f'{analysis_type} analysis finished successfully.')

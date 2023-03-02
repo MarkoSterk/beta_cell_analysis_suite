@@ -3,23 +3,27 @@ Time series filtration
 """
 # pylint: disable=C0103
 # pylint: disable=W0611
+# pylint: disable=R0915, R0914
 import os
 import numpy as np
 import matplotlib.pyplot as plt
 from helper_functions.utility_functions import print_progress_bar
 from helper_functions.filters import FFTFilter, Filter
-from configurations import (INTERVAL_START_TIME_SECONDS, INTERVAL_END_TIME_SECONDS,
-                            SAMPLING, FILTER_SELECTION, FIRST_COLUMN_TIME,
-                            LOW_FREQUENCY_CUTOFF, HIGH_FREQUENCY_CUTOFF, EXPERIMENT_NAME)
-import methods.plot_configurations as plot_configurations
+from methods import plot_configurations
 
-###Loads raw time series array (NxM) and sampling data
-### N - number of time points
-### M - number of cells
-def filter_data():
+def filter_data(CONFIG_DATA: dict):
     """
     Filter time series data
     """
+    INTERVAL_START_TIME_SECONDS = CONFIG_DATA['INTERVAL_START_TIME_SECONDS']
+    INTERVAL_END_TIME_SECONDS = CONFIG_DATA['INTERVAL_END_TIME_SECONDS']
+    SAMPLING = CONFIG_DATA['SAMPLING']
+    FILTER_SELECTION = CONFIG_DATA['FILTER_SELECTION']
+    FIRST_COLUMN_TIME = CONFIG_DATA['FIRST_COLUMN_TIME']
+    LOW_FREQUENCY_CUTOFF = CONFIG_DATA['LOW_FREQUENCY_CUTOFF']
+    HIGH_FREQUENCY_CUTOFF = CONFIG_DATA['HIGH_FREQUENCY_CUTOFF']
+    EXPERIMENT_NAME = CONFIG_DATA['EXPERIMENT_NAME']
+
     data = np.loadtxt('raw_data/data.txt')
     pos = np.loadtxt('raw_data/koordinate.txt')
     if FIRST_COLUMN_TIME:
@@ -38,9 +42,6 @@ def filter_data():
 
     ######################END OF SETTINGS#####################
     ###########################################################
-
-    start_time_frames = int(INTERVAL_START_TIME_SECONDS*SAMPLING)
-    end_time_frames = int(INTERVAL_END_TIME_SECONDS*SAMPLING)
     number_of_cells = len(data[0])
 
     time = [i/SAMPLING for i in range(len(data))]
@@ -50,7 +51,6 @@ def filter_data():
         os.makedirs(f'preprocessing/{EXPERIMENT_NAME}/filt_traces')
 
     filtered_series = np.zeros((len(data), number_of_cells), float)
-    smoothed_series = np.zeros((len(data), number_of_cells), float)
 
     for ts_num in range(number_of_cells):
         cut_signal = None
@@ -83,7 +83,8 @@ def filter_data():
         ax3.set_xlabel('time (s)')
         plt.subplots_adjust(hspace=0.6)
         fig.savefig(
-            f"preprocessing/{EXPERIMENT_NAME}/filt_traces/cell_{ts_num}.jpg", dpi=200, bbox_inches='tight')
+            f"preprocessing/{EXPERIMENT_NAME}/filt_traces/cell_{ts_num}.jpg",
+            dpi=200, bbox_inches='tight')
         plt.close(fig)
 
         cut_signal[:] = (cut_signal[:] - np.min(cut_signal[:])) / \
@@ -91,7 +92,5 @@ def filter_data():
 
         filtered_series[:,ts_num] = cut_signal
 
-    np.savetxt(f'preprocessing/{EXPERIMENT_NAME}/filtered_data.txt', filtered_series, fmt='%.3lf')
-
-if __name__ == '__main__':
-    filter_data()
+    np.savetxt(f'preprocessing/{EXPERIMENT_NAME}/filtered_data.txt',
+               filtered_series, fmt='%.3lf')

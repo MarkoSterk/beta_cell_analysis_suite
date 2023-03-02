@@ -2,16 +2,19 @@
 Excludes all selected traces from the data set
 """
 # pylint: disable=C0103
+# pylint: disable=R0914
 import os
 import numpy as np
 import matplotlib.pyplot as plt
 from helper_functions.ploting_funcs import binarized_plot
-from configurations import SAMPLING, EXCLUDE_CELLS, EXPERIMENT_NAME
 
-def exclude_data():
+def exclude_data(CONFIG_DATA: dict):
     """
     Excludes bad data
     """
+    SAMPLING = CONFIG_DATA["SAMPLING"]
+    EXCLUDE_CELLS = CONFIG_DATA["EXCLUDE_CELLS"]
+    EXPERIMENT_NAME = CONFIG_DATA["EXPERIMENT_NAME"]
     ##Loads all necessary data
     smoothed_data = np.loadtxt(f'preprocessing/{EXPERIMENT_NAME}/smoothed_traces.txt')
     binarized_data = np.loadtxt(f'preprocessing/{EXPERIMENT_NAME}/binarized_traces.txt', dtype=int)
@@ -55,6 +58,3 @@ def exclude_data():
 
     # pylint: disable-next=C0301
     print(f'Finished. {len(excluded_cells)} cells were excluded and {len(final_pos)} cells are remaining.')
-
-if __name__ == '__main__':
-    exclude_data()
