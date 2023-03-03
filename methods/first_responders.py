@@ -69,7 +69,6 @@ def first_responder_data(CONFIG_DATA: dict):
         fig = plt.figure()
         fig.canvas.mpl_connect('button_press_event', on_click)
         fig.canvas.mpl_connect('key_press_event', on_press)
-        fig.canvas.manager.window.wm_geometry("+200+30")
         ax = fig.add_subplot(1,1,1)
         fig.suptitle(f'Cell {i}')
         ax.plot(time, data[:,i], linewidth=0.4, c='gray')
