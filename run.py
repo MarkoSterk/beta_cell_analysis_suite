@@ -4,17 +4,8 @@ Entry point for the analysis
 # pylint: disable=W0702
 from typing import Union
 import sys
-import json
 import numpy as np
 from methods.islet import Islet
-# from methods.filt_traces import filter_data
-# from methods.smooth_traces import smooth_data
-# from methods.binarization import binarize_data
-# from methods.exclude_cells import exclude_data
-# from methods.corr_ca_analysis import corr_ca_analysis_data
-# from methods.cell_parameter_analysis import cell_activity_data
-# from methods.first_responders import first_responder_data
-from helper_functions.utility_functions import save_config_data, create_sample_config
 
 def parse_input(input_text: str) -> Union[str, int]:
     """
@@ -27,7 +18,7 @@ def parse_input(input_text: str) -> Union[str, int]:
         pass
     return input_text
 
-def run_all_steps(configurations):
+def run_all_steps():
     """
     Runs all available analysis methods in sequence except those
     in the EXCLUDE_METHODS list
@@ -41,13 +32,27 @@ def run_all_steps(configurations):
     EXCLUDE_METHODS = [0, 1, 'exit', 'options']
     for key, method in methods.items():
         if key not in EXCLUDE_METHODS: ##doesn't run the run_all_steps method again!
-            method(configurations)
+            method()
 
 def print_options():
     """
     Print available options to screen
     """
-    print(ANALYSIS_OPTIONS)
+    analysis_options = """
+        Available analysis steps are:
+        1: First responder analysis
+        2: Time series filtration
+        3: Time series smoothing
+        4: Time series binarization
+        5: Excluding of cells and time series
+        6: Correlation/coactivity analysis
+        7: Cell activity parameter analysis
+        0: Run all of the above steps
+        99: Save current configuration data to experiment folder
+        exit: Exit the program
+        options: Prints available options
+        """
+    print(analysis_options)
 
 RAW_DATA = None
 POSITIONS = None
@@ -77,26 +82,9 @@ methods = {
     'exit': sys.exit
 }
 
-ANALYSIS_OPTIONS = """
-Available analysis steps are:
-1: First responder analysis
-2: Time series filtration
-3: Time series smoothing
-4: Time series binarization
-5: Excluding of cells and time series
-6: Correlation/coactivity analysis
-7: Cell activity parameter analysis
-0: Run all of the above steps
-99: Save current configuration data to experiment folder
-exit: Exit the program
-options: Prints available options
-"""
-
 print_options()
 
-
-RUN_ANALYSIS = True
-while RUN_ANALYSIS:
+while True:
     analysis_step = parse_input(input('Select analysis step [number/string]: '))
     islet.load_configs()
     if analysis_step in methods:
