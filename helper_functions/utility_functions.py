@@ -5,7 +5,7 @@ Utility function for the scripts
 import os
 import json
 
-def create_sample_config():
+def create_sample_config() -> dict:
     """
     Creates a sample config file for the analysis
     """
@@ -34,6 +34,8 @@ def create_sample_config():
 
     with open('configurations.txt', 'w', encoding='utf-8') as file:
         json.dump(sample_config_data, file, indent=4)
+
+    return sample_config_data
 
 
 def save_config_data(CONFIG_DATA: dict):

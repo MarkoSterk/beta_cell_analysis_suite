@@ -12,7 +12,7 @@ from helper_functions.ploting_funcs import binarized_plot
 from helper_functions.utility_functions import print_progress_bar
 from methods import plot_configurations
 
-def binarize_data(CONFIG_DATA: dict):
+def binarize_data(CONFIG_DATA: dict, data: np.array) -> np.array:
     """
     Binarizes time series data
     """
@@ -42,7 +42,7 @@ def binarize_data(CONFIG_DATA: dict):
 
 
     # Loads all data
-    data = np.loadtxt(f'preprocessing/{EXPERIMENT_NAME}/smoothed_traces.txt')
+    #data = np.loadtxt(f'preprocessing/{EXPERIMENT_NAME}/smoothed_traces.txt')
 
     # Calculates and sets necessary data
     number_of_cells = len(data[0])
@@ -106,3 +106,5 @@ def binarize_data(CONFIG_DATA: dict):
     fig = binarized_plot(time, bin_signal)
     fig.savefig(f'preprocessing/{EXPERIMENT_NAME}/raster_plot.png', dpi=200, bbox_inches='tight')
     plt.close(fig)
+
+    return bin_signal

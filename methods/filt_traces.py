@@ -11,7 +11,7 @@ from helper_functions.utility_functions import print_progress_bar
 from helper_functions.filters import FFTFilter, Filter
 from methods import plot_configurations
 
-def filter_data(CONFIG_DATA: dict):
+def filter_data(CONFIG_DATA: dict, data: np.array, pos: np.array) -> np.array:
     """
     Filter time series data
     """
@@ -24,8 +24,8 @@ def filter_data(CONFIG_DATA: dict):
     HIGH_FREQUENCY_CUTOFF = CONFIG_DATA['HIGH_FREQUENCY_CUTOFF']
     EXPERIMENT_NAME = CONFIG_DATA['EXPERIMENT_NAME']
 
-    data = np.loadtxt('raw_data/data.txt')
-    pos = np.loadtxt('raw_data/koordinate.txt')
+    # data = np.loadtxt('raw_data/data.txt')
+    # pos = np.loadtxt('raw_data/koordinate.txt')
     if FIRST_COLUMN_TIME:
         data = data[:,1:] ##loads all data except first column (time column)
 
@@ -94,3 +94,4 @@ def filter_data(CONFIG_DATA: dict):
 
     np.savetxt(f'preprocessing/{EXPERIMENT_NAME}/filtered_data.txt',
                filtered_series, fmt='%.3lf')
+    return filtered_series

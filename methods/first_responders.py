@@ -15,7 +15,7 @@ from methods import plot_configurations
 ###Window size configurations
 
 
-def first_responder_data(CONFIG_DATA: dict):
+def first_responder_data(CONFIG_DATA: dict, data: np.array):
     """
     For determining first responder cells
     """
@@ -53,7 +53,7 @@ def first_responder_data(CONFIG_DATA: dict):
     plt.rcParams["figure.figsize"] = [8, 6]
     plt.rcParams["figure.autolayout"] = True
 
-    data = np.loadtxt('raw_data/data.txt')
+    #data = np.loadtxt('raw_data/data.txt')
     if FIRST_COLUMN_TIME:
         data = data[:,1:]
 

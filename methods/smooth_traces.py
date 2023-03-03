@@ -12,7 +12,7 @@ from helper_functions.smoothing import smooth_ts
 from helper_functions.utility_functions import print_progress_bar
 from methods import plot_configurations
 
-def smooth_data(CONFIG_DATA: dict):
+def smooth_data(CONFIG_DATA: dict, data: np.array) -> np.array:
     """
     Smooths time series data
     """
@@ -34,7 +34,7 @@ def smooth_data(CONFIG_DATA: dict):
     # N - number of time points
     # M - number of cells
     # loads all data except first column (time column)
-    data = np.loadtxt(f'preprocessing/{EXPERIMENT_NAME}/filtered_data.txt')
+    #data = np.loadtxt(f'preprocessing/{EXPERIMENT_NAME}/filtered_data.txt')
     cell_num = len(data[0]) #number of cells
 
     time = [i/SAMPLING for i in range(len(data))]
@@ -71,3 +71,4 @@ def smooth_data(CONFIG_DATA: dict):
         plt.close(fig)
 
     np.savetxt(f'preprocessing/{EXPERIMENT_NAME}/smoothed_traces.txt', smoothed_data, fmt='%.3lf')
+    return smoothed_data

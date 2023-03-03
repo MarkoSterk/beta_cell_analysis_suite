@@ -15,7 +15,7 @@ from helper_functions.cell_parameters import find_clusters
 from methods import plot_configurations
 from methods.plot_configurations import PANEL_HEIGHT, MEDIAN_PROPS, BOX_PROPS
 
-def cell_activity_data(CONFIG_DATA: dict):
+def cell_activity_data(CONFIG_DATA: dict, binarized_time_series: np.array):
     """
     Performs cell activity parameter analysis
     """
@@ -24,8 +24,8 @@ def cell_activity_data(CONFIG_DATA: dict):
     SAMPLING = CONFIG_DATA["SAMPLING"]
     EXPERIMENT_NAME = CONFIG_DATA["EXPERIMENT_NAME"]
     # Loads all data
-    binarized_time_series = np.loadtxt(
-        f'preprocessing/{EXPERIMENT_NAME}/results/final_binarized_data.txt')
+    # binarized_time_series = np.loadtxt(
+    #     f'preprocessing/{EXPERIMENT_NAME}/results/final_binarized_data.txt')
     sampling = SAMPLING
 
     interval_start_time_frames = int(INTERVAL_START_TIME_SECONDS*sampling)

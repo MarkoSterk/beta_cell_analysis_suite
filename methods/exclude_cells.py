@@ -8,7 +8,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from helper_functions.ploting_funcs import binarized_plot
 
-def exclude_data(CONFIG_DATA: dict):
+def exclude_data(CONFIG_DATA: dict, smoothed_data: np.array,
+                 binarized_data: np.array, pos: np.array) -> tuple:
     """
     Excludes bad data
     """
@@ -16,9 +17,9 @@ def exclude_data(CONFIG_DATA: dict):
     EXCLUDE_CELLS = CONFIG_DATA["EXCLUDE_CELLS"]
     EXPERIMENT_NAME = CONFIG_DATA["EXPERIMENT_NAME"]
     ##Loads all necessary data
-    smoothed_data = np.loadtxt(f'preprocessing/{EXPERIMENT_NAME}/smoothed_traces.txt')
-    binarized_data = np.loadtxt(f'preprocessing/{EXPERIMENT_NAME}/binarized_traces.txt', dtype=int)
-    pos = np.loadtxt('raw_data/koordinate.txt')
+    #smoothed_data = np.loadtxt(f'preprocessing/{EXPERIMENT_NAME}/smoothed_traces.txt')
+    #binarized_data = np.loadtxt(f'preprocessing/{EXPERIMENT_NAME}/binarized_traces.txt', dtype=int)
+    #pos = np.loadtxt('raw_data/koordinate.txt')
     excluded_cells = EXCLUDE_CELLS
 
     ###Calculates and sets necessary data and performs cell exclusions
@@ -58,3 +59,4 @@ def exclude_data(CONFIG_DATA: dict):
 
     # pylint: disable-next=C0301
     print(f'Finished. {len(excluded_cells)} cells were excluded and {len(final_pos)} cells are remaining.')
+    return final_smoothed_data, final_binarized_data, final_pos

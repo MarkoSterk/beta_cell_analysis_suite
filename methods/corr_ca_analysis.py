@@ -24,7 +24,7 @@ from helper_functions.coactivity import coactivity
 from methods.plot_configurations import PANEL_WIDTH
 from methods import plot_configurations
 
-def corr_ca_analysis_data(CONFIG_DATA: dict):
+def corr_ca_analysis_data(CONFIG_DATA: dict, time_series: np.array, pos: np.array):
     """
     Performs the correlation/coactivity network analysis
     """
@@ -52,16 +52,16 @@ def corr_ca_analysis_data(CONFIG_DATA: dict):
 
     #############DON'T CHANGE ANYTHING
     ###Loads data
-    time_series = None
-    if analysis_type == 'correlation':
-        time_series = np.loadtxt(f'preprocessing/{EXPERIMENT_NAME}/results/final_smoothed_data.txt')
-    elif analysis_type == 'coactivity':
-        time_series = np.loadtxt(f'preprocessing/{EXPERIMENT_NAME}/results/final_binarized_data.txt'
-                                 )
-    else:
-        raise BaseException('Please select a valid analysis type (analysis_type).')
+    # time_series = None
+    # if analysis_type == 'correlation':
+    #     time_series = np.loadtxt(f'preprocessing/{EXPERIMENT_NAME}/results/final_smoothed_data.txt')
+    # elif analysis_type == 'coactivity':
+    #     time_series = np.loadtxt(f'preprocessing/{EXPERIMENT_NAME}/results/final_binarized_data.txt'
+    #                              )
+    # else:
+    #     raise BaseException('Please select a valid analysis type (analysis_type).')
 
-    pos = np.loadtxt(f'preprocessing/{EXPERIMENT_NAME}/results/final_coordinates.txt')
+    # pos = np.loadtxt(f'preprocessing/{EXPERIMENT_NAME}/results/final_coordinates.txt')
 
     ##Calculates necessary parameters/data
     interval_start_frames = int(interval_start_seconds*SAMPLING)
