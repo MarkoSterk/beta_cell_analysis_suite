@@ -9,6 +9,7 @@ import os
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.widgets import Cursor
 from methods.plot_configurations import PANEL_HEIGHT, MEDIAN_PROPS, BOX_PROPS
 from methods import plot_configurations
 
@@ -20,20 +21,16 @@ def first_responder_data(CONFIG_DATA: dict, data: np.array):
     """
     global current_cell
     EXPERIMENT_NAME = CONFIG_DATA['EXPERIMENT_NAME']
-    FIRST_COLUMN_TIME = CONFIG_DATA['FIRST_COLUMN_TIME']
     SAMPLING = CONFIG_DATA['SAMPLING']
 
-    if FIRST_COLUMN_TIME:
-        data = data[:,1:40]
-    
     cell_num = len(data[0])
     time = [i/SAMPLING for i in range(len(data))]
     show_time = time[int(0.5*len(time))]
 
     response_times = np.zeros(cell_num, float)
 
-    if not os.path.exists(f'preprocessing/{EXPERIMENT_NAME}/first_responders'):
-        os.makedirs(f'preprocessing/{EXPERIMENT_NAME}/first_responders')
+    if not os.path.exists(f'preprocessing/{EXPERIMENT_NAME}'):
+        os.makedirs(f'preprocessing/{EXPERIMENT_NAME}')
 
     def on_click(event):
         """
@@ -61,35 +58,45 @@ def first_responder_data(CONFIG_DATA: dict, data: np.array):
                 current_cell-=2
                 plt.close()
         if str(event.key) == 'right':
-            ###Sets response time of current cell to NaN if it wasn't set before
+            ###If the response time of this cell was not already set it sets the time to Nan
+            ### and continous to the next cell
+            ### else it just closes the figure and continous on.
             if response_times[current_cell] == 0.0:
-                response_times[current_cell]=np.nan
+                response_times[current_cell] = np.nan
+            plt.close()
         if str(event.key) in ['r', 'R']:
-            ###Sets a previously clicked cell back to NaN
+            ###Sets response time to NaN
             response_times[current_cell] = np.nan
             plt.close()
 
 
     plt.rcParams['backend'] = 'TkAgg'
-    plt.rcParams["figure.figsize"] = [8, 6]
+    plt.rcParams["figure.figsize"] = [10, 7]
     plt.rcParams["figure.autolayout"] = True
 
     while current_cell < cell_num:
         fig = plt.figure()
+        fig.set_tight_layout(False)
         fig.canvas.mpl_connect('button_release_event', on_click)
         fig.canvas.mpl_connect('key_press_event', on_press)
         ax = fig.add_subplot(1,1,1)
+        # pylint: disable-next=W0612
+        cursor = Cursor(ax, horizOn=True, vertOn=True, color='green', linewidth=1.0, useblit=True)
         fig.suptitle(f'Cell {current_cell}')
         ax.plot(time, data[:,current_cell], linewidth=0.4, c='gray')
         ax.set_xlim(0,show_time)
+        ax.set_xlabel('time (s)')
+        ax.set_ylabel('Cell signal (a.u.)')
         plt.show()
         current_cell+=1
     plt.close()
-    np.savetxt(f'preprocessing/{EXPERIMENT_NAME}/first_responders/first_responder_times.txt',
+    np.savetxt(f'preprocessing/{EXPERIMENT_NAME}/first_responder_times.txt',
                response_times, fmt='%.2lf')
+
+    valid_times = response_times[~np.isnan(response_times)]
     fig=plt.figure(figsize=(PANEL_HEIGHT, PANEL_HEIGHT))
     ax=fig.add_subplot(1,1,1)
-    ax.boxplot(response_times,
+    ax.boxplot([valid_times],
                showfliers=False, patch_artist=True,
                medianprops=MEDIAN_PROPS, boxprops=BOX_PROPS)
     ax.set_xticks([])
@@ -97,6 +104,9 @@ def first_responder_data(CONFIG_DATA: dict, data: np.array):
     ax.set_ylabel('Response time (s)')
 
     #pylint: disable-next=C0301
-    fig.savefig(f'preprocessing/{EXPERIMENT_NAME}/first_responders/first_responder_times_boxplot.png',
+    fig.savefig(f'preprocessing/{EXPERIMENT_NAME}/first_responder_times_boxplot.png',
                 dpi=300, bbox_inches='tight')
     plt.close(fig)
+
+    print('First responder analysis finished successfully.')
+    return response_times

@@ -69,6 +69,7 @@ python run.py    or    python -m run
 After running the command you will be prompted to select the specific step.
 
 Available analysis steps are:
+* init: Loads raw data with provided configurations
 * 1: First responder analysis
 * 2: Time series filtration
 * 3: Time series smoothing
@@ -80,11 +81,12 @@ Available analysis steps are:
 * 99: Save current configuration data to experiment folder
 * exit: Exit the program
 * options: Prints available options
+* load: Loads any existing data from the folder structure with provided configurations
 
-Just input the correct number or exit.
+Just input the correct number/string or exit.
 
 The program will run in an endless loop until exited with the proper command.
-You will be asked for the next step everytime an analysis step finishes. The configurations are updated
+You will be asked for the next step everytime a step finishes. The configurations are updated
 on-the-go (in case you make changes) so you don't have to exit and re-run the program for every step.
 
 ## Output folder structure
@@ -93,10 +95,16 @@ Any output folders and files are created on-the-go if not already present. No ac
 ## General experiment information
 * EXPERIMENT_NAME - name of the experiment. Can be any string without whitespaces or special charecters
 * SAMPLING - the data sampling rate in Hz (float or integer number)\
+* RAW_DATA_FOLDER - folder name in which raw data resides\
+* RAW_DATA_NAME - name of the raw data time series file (including extension!)\
+* RAW_POSITIONS_NAME - name of the raw data positions file (including extension!)\
 \
 Example:\
 EXPERIMENT_NAME = '2023_01_03_GLC9_MS_SER_1'\
 SAMPLING = 10.0\
+RAW_DATA_FOLDER = 'raw_data'\
+RAW_DATA_NAME = 'data.txt'\
+RAW_POSITIONS_NAME = 'koordinate.txt'\
 
 Output data is generated in the "preprocessing/" and "results" folders in subfolders with the provided experiment name.
 
@@ -164,7 +172,7 @@ Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/
 
 ## Exclude cells step configurations
 Add numbers (integers) into the "EXCLUDE_CELLS" list.
-Beware that you don't repeat the same number!\
+Repeated numbers are ignored!\
 \
 Example:\
 EXCLUDE_CELLS = [0,8,92,17,94]\
@@ -172,7 +180,7 @@ EXCLUDE_CELLS = [0,8,92,17,94]\
 Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "results"
 
 **ATTENTION**
-**This step is required (EVEN OF NO CELLS ARE EXCLUDED) and requires that all previous steps were completed.**
+**This step is required (EVEN IF NO CELLS ARE EXCLUDED) and requires that all previous steps were completed.**
 **Exception to this requirement is the first responder analysis which is not required.**
 
 The output if this script is used for further cell/network analysis.

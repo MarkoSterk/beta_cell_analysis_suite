@@ -1,6 +1,9 @@
 {
     "EXPERIMENT_NAME": "2023_01_03_GLC9_MS_SER1",
     "SAMPLING": 10.0,
+    "RAW_DATA_FOLDER": "raw",
+    "RAW_DATA_NAME": "data.txt",
+    "RAW_POSITIONS_NAME": "koordinate.txt",
     "INTERVAL_START_TIME_SECONDS": 800.0,
     "INTERVAL_END_TIME_SECONDS": 1300.0,
     "FILTER_SELECTION": "fft",

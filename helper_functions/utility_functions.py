@@ -4,6 +4,7 @@ Utility function for the scripts
 # pylint: disable=R0913
 import os
 import json
+import numpy as np
 
 def create_sample_config() -> dict:
     """
@@ -12,6 +13,9 @@ def create_sample_config() -> dict:
     sample_config_data = {
         "EXPERIMENT_NAME": "2023_01_03_GLC9_MS_SER1",
         "SAMPLING": 10.0,
+        "RAW_DATA_FOLDER": "raw_data",
+        "RAW_DATA_NAME": "data.txt",
+        "RAW_POSITIONS_NAME": "koordinate.txt",
         "INTERVAL_START_TIME_SECONDS": 800.0,
         "INTERVAL_END_TIME_SECONDS": 1300.0,
         "FILTER_SELECTION": 'fft',
@@ -38,16 +42,40 @@ def create_sample_config() -> dict:
     return sample_config_data
 
 
-def save_config_data(CONFIG_DATA: dict):
+def save_config_data(config_data: dict):
     """
     Saves all config data to file
     """
-    if not os.path.exists(f'results/{CONFIG_DATA["EXPERIMENT_NAME"]}'):
-        os.makedirs(f'results/{CONFIG_DATA["EXPERIMENT_NAME"]}')
+    if not os.path.exists(f'results/{config_data["EXPERIMENT_NAME"]}'):
+        os.makedirs(f'results/{config_data["EXPERIMENT_NAME"]}')
 
-    with open(f'results/{CONFIG_DATA["EXPERIMENT_NAME"]}/configuration.txt',
+    with open(f'results/{config_data["EXPERIMENT_NAME"]}/configuration.txt',
               'w', encoding='utf-8') as file:
-        json.dump(CONFIG_DATA, file, indent=4)
+        json.dump(config_data, file, indent=4)
+
+def load_existing_data(config_data: dict):
+    """
+    Loads all existing data from the project folders
+    """
+    data_collection = {}
+    data_list = ['filtered_traces',
+    'smoothed_traces', 'binarized_traces', 'response_times',
+    'final_smoothed_traces', 'final_binarized_traces', 'final_pos',
+    'final_response_times']
+
+    for data_name in data_list:
+        data = None
+        path = ''
+        try:
+            if data_name.startswith('final'):
+                path = 'results/'
+            # pylint: disable-next=C0301
+            data = np.loadtxt(f'preprocessing/{config_data["EXPERIMENT_NAME"]}/{path}{data_name}.txt')
+        except FileNotFoundError:
+            pass
+        data_collection[data_name] = data
+
+    return data_collection
 
 # Print iterations progress
 def print_progress_bar (iteration: int, total: int, prefix: str = '', suffix: str = '',

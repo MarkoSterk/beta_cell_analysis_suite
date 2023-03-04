@@ -19,15 +19,9 @@ def filter_data(CONFIG_DATA: dict, data: np.array, pos: np.array) -> np.array:
     INTERVAL_END_TIME_SECONDS = CONFIG_DATA['INTERVAL_END_TIME_SECONDS']
     SAMPLING = CONFIG_DATA['SAMPLING']
     FILTER_SELECTION = CONFIG_DATA['FILTER_SELECTION']
-    FIRST_COLUMN_TIME = CONFIG_DATA['FIRST_COLUMN_TIME']
     LOW_FREQUENCY_CUTOFF = CONFIG_DATA['LOW_FREQUENCY_CUTOFF']
     HIGH_FREQUENCY_CUTOFF = CONFIG_DATA['HIGH_FREQUENCY_CUTOFF']
     EXPERIMENT_NAME = CONFIG_DATA['EXPERIMENT_NAME']
-
-    # data = np.loadtxt('raw_data/data.txt')
-    # pos = np.loadtxt('raw_data/koordinate.txt')
-    if FIRST_COLUMN_TIME:
-        data = data[:,1:] ##loads all data except first column (time column)
 
     if len(data[0]) != len(pos):
         # pylint: disable-next=W0719
@@ -92,6 +86,6 @@ def filter_data(CONFIG_DATA: dict, data: np.array, pos: np.array) -> np.array:
 
         filtered_series[:,ts_num] = cut_signal
 
-    np.savetxt(f'preprocessing/{EXPERIMENT_NAME}/filtered_data.txt',
+    np.savetxt(f'preprocessing/{EXPERIMENT_NAME}/filtered_traces.txt',
                filtered_series, fmt='%.3lf')
     return filtered_series
