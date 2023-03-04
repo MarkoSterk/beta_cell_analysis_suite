@@ -9,7 +9,7 @@ We provide sample data in the folder "raw_data/"
 The scripts require a folder with the raw data. You are free to select the name of this folder as well as the names of the two necessary raw data files (time series data and cell positions data). You just have to provide the names of the folder and raw data files in the configurations.txt file.Have a look at the "General experiment information" section for more detailed information.\
 
 Raw data files shapes:\
-* time series data <-- array of shape (MxN); M == number of data points, N == number of cells (can have an additional first column with time data: N+1)
+* time series data <-- array of shape (MxN); M == number of data points (rows), N == number of cells (columns) (can have an additional first column with time data: N+1)
 * cell positions data <-- array of shape (Nx2); where N is the number of cells. Columns represent the (x,y) coordinates of each cell
 
 ## Analysis and configurations
