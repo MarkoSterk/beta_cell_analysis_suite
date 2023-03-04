@@ -114,9 +114,11 @@ Time series of each cell is plotted and displayed on the screen. The user has to
 plot in the place where the cell has first responded to stimulation.\
 
 Accepted clicks/commands are:\
-* Left click - skips current shown cell. Response time for this cell will be 0.
 * Right click - gets the time of response from the x coordinate of the click event. Saves that as the response time for the current cell.
-* esc - escape key exits the analysis
+* Right arrow - skips cell/goes to the next cell. The response time of the skipped cell is set to NaN (not a number)
+* Left arrow - returns to previous cell and lets you reselect the response time
+* r (the letter r) - sets response time to NaN (not a number). Applies also if the response time was previously set.
+* esc - escape key exits the analysis (and closes program)
 
 Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/first_responders".
 
