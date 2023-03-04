@@ -6,16 +6,14 @@ Developed with python 3.11.1
 We provide sample data in the folder "raw_data/" 
 
 ## Raw data input
-The scripts require a folder called "raw_data" in the root folder
-of your analysis project. 
-Required files are:
+The scripts require a folder with the raw data. You are free to select the name of this folder as well as the names of the two necessary raw data files (time series data and cell positions data). You just have to provide the names of the folder and raw data files in the configurations.txt file.Have a look at the "General experiment information" section for more detailed information.\
 
-* data.txt <-- array of shape (MxN); M == number of data points, N == number of cells
-
-* koordinate.txt <-- array of shape (Nx2); where N is the number of cells. Columns represent the (x,y) coordinates of cells
+Raw data files shapes:\
+* time series data <-- array of shape (MxN); M == number of data points, N == number of cells (can have an additional first column with time data: N+1)
+* cell positions data <-- array of shape (Nx2); where N is the number of cells. Columns represent the (x,y) coordinates of each cell
 
 ## Analysis and configurations
-All analysis configurations reside in the "configurations.txt" file. **This file is created when you run the program, and the file is not already present.**\
+All analysis configurations reside in the "configurations.txt" file. **This file is created when you run the program, and the file is not already present. If the file is already present it is first validated and then loaded. If configuration fields are missing the file is swapped for default configurations.**\
 You may change any of the configuration parameters as you see fit.
 Have a look at the steps below for further information and options.
 
@@ -36,7 +34,7 @@ All steps and instructions assume that you have python installed on your
 computer and that the command "python" points to this installation.
 
 #### Use of virtual environment
-I suggest the use of a virtual environment.
+I suggest the use of a virtual environment to make sure all steps work as intended.
 Use 
 ```
 python -m venv venv
@@ -68,7 +66,7 @@ python run.py    or    python -m run
 
 After running the command you will be prompted to select the specific step.
 
-Available analysis steps are:
+##### Available analysis steps:
 * init: Loads raw data with provided configurations
 * 1: First responder analysis
 * 2: Time series filtration
