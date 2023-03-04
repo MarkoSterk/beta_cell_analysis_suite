@@ -13,7 +13,7 @@ class RouterConfig:
     # init: loads raw data
     # options: prints options
 
-    EXCLUDE_METHODS_RUN_ALL = [0, 1, 'exit', 'options', 'init']
+    EXCLUDE_METHODS_RUN_ALL = [0, 1, 'exit', 'options', 'init', 'load']
 
     ANALYSIS_OPTIONS = """
             Available analysis steps are:

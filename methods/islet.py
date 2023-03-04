@@ -13,7 +13,7 @@ from methods.corr_ca_analysis import corr_ca_analysis_data
 from methods.cell_parameter_analysis import cell_activity_data
 from methods.first_responders import first_responder_data
 from helper_functions.utility_functions import (save_config_data, create_sample_config,
-                                                load_existing_data)
+                                                load_existing_data, validate_config_data)
 
 class Islet:
     """
@@ -48,7 +48,11 @@ class Islet:
         try:
             with open('configurations.txt', encoding='utf-8') as file:
                 config_data = file.read()
-            self.configs = json.loads(config_data)
+                if validate_config_data(config_data):
+                    self.configs = json.loads(config_data)
+                else:
+                    print('Configurations file had missing fields and was replaced with default!')
+                    self.create_and_load_sample_config_data()
         except FileNotFoundError:
             self.create_and_load_sample_config_data()
 

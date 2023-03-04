@@ -6,11 +6,7 @@ import os
 import json
 import numpy as np
 
-def create_sample_config() -> dict:
-    """
-    Creates a sample config file for the analysis
-    """
-    sample_config_data = {
+SAMPLE_CONFIG_DATA = {
         "EXPERIMENT_NAME": "2023_01_03_GLC9_MS_SER1",
         "SAMPLING": 10.0,
         "RAW_DATA_FOLDER": "raw_data",
@@ -34,12 +30,51 @@ def create_sample_config() -> dict:
         "NETWORK_METHOD": 'fixed_kavg',
         "CONNECTIVITY_LEVEL": 8.0,
         "FIXED_KAVG_TOLERANCE": 0.1
-    }
+}
+# pylint: disable-next=C0103
+def validate_config_data(CONFIG_DATA: dict) -> bool:
+    """
+    Checks if provided configuration data has all necessary fields
+    """
+    if set(SAMPLE_CONFIG_DATA) == set(CONFIG_DATA):
+        return True
+    return False
+
+
+def create_sample_config() -> dict:
+    """
+    Creates a sample config file for the analysis
+    """
+    # sample_config_data = {
+    #     "EXPERIMENT_NAME": "2023_01_03_GLC9_MS_SER1",
+    #     "SAMPLING": 10.0,
+    #     "RAW_DATA_FOLDER": "raw_data",
+    #     "RAW_DATA_NAME": "data.txt",
+    #     "RAW_POSITIONS_NAME": "koordinate.txt",
+    #     "INTERVAL_START_TIME_SECONDS": 800.0,
+    #     "INTERVAL_END_TIME_SECONDS": 1300.0,
+    #     "FILTER_SELECTION": 'fft',
+    #     "FIRST_COLUMN_TIME": True,
+    #     "LOW_FREQUENCY_CUTOFF": 0.03,
+    #     "HIGH_FREQUENCY_CUTOFF": 1.1,
+    #     "SMOOTHING_POINTS": 4,
+    #     "SMOOTHING_REPEATS": 2,
+    #     "AMP_FACT": 1.35,
+    #     "INTERPEAK_DISTANCE": 10,
+    #     "PEAK_WIDTH": 10,
+    #     "PROMINENCE": 0.35,
+    #     "REL_HEIGHT": 0.5,
+    #     "EXCLUDE_CELLS": [],
+    #     "ANALYSIS_TYPE": 'correlation',
+    #     "NETWORK_METHOD": 'fixed_kavg',
+    #     "CONNECTIVITY_LEVEL": 8.0,
+    #     "FIXED_KAVG_TOLERANCE": 0.1
+    # }
 
     with open('configurations.txt', 'w', encoding='utf-8') as file:
-        json.dump(sample_config_data, file, indent=4)
+        json.dump(SAMPLE_CONFIG_DATA, file, indent=4)
 
-    return sample_config_data
+    return SAMPLE_CONFIG_DATA
 
 
 def save_config_data(config_data: dict):
