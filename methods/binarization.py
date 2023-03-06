@@ -88,10 +88,11 @@ def binarize_data(CONFIG_DATA: dict, data: np.array) -> np.array:
         fig, (ax1, ax2) = plt.subplots(2, 1)
         ax1.set_title(f'Cell {i}')
         ax1.plot(time, data[:, i], c='dimgray', linewidth=0.5)
+        ax2.plot(time, bin_signal[:, i], c='red', linewidth=0.2)
         ax1.set_ylabel('Signal (a.u.)')
 
         ax2.plot(time, data[:, i], c='dimgray', linewidth=0.5)
-        ax2.plot(time, bin_signal[:, i], c='red', linewidth=0.5)
+        ax2.plot(time, bin_signal[:, i], c='red', linewidth=0.2)
         ax2.set_xlabel('time (s)')
         ax2.set_ylabel('Binarized signal')
         ax2.set_xlim(start_time_seconds, end_time_seconds)

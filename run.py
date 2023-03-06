@@ -19,6 +19,7 @@ routes = {
     99: islet.save_configs_to_data,
     'load': islet.load_data
 }
+
 islet.load_configs()
 router.register_routes(routes)
 router.print_options()

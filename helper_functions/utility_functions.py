@@ -5,7 +5,6 @@ Utility function for the scripts
 import os
 import json
 import numpy as np
-from deepdiff import DeepDiff
 
 SAMPLE_CONFIG_DATA = {
     "EXPERIMENT_NAME": "2023_01_03_GLC9_MS_SER1",
