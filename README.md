@@ -6,7 +6,7 @@ Developed with python 3.11.1
 We provide sample data in the folder "raw_data/" 
 
 ## Raw data input
-The scripts require a folder with the raw data. You are free to select the name of this folder as well as the names of the two necessary raw data files (time series data and cell positions data). You just have to provide the names of the folder and raw data files in the configurations.txt file.Have a look at the "General experiment information" section for more detailed information.\
+The scripts require a folder with the raw data. You are free to select the name of this folder as well as the names of the two necessary raw data files (time series data and cell positions data). You just have to provide the names of the folder and raw data files in the configurations.txt file. Have a look at the "General experiment information" section for more detailed information.\
 
 Raw data files shapes:\
 * time series data <-- array of shape (MxN); M == number of data points (rows), N == number of cells (columns) (can have an additional first column with time data: N+1)
@@ -151,7 +151,16 @@ SMOOTHING_REPEATS = 2
 Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "smoothed_traces"
 
 ## Binarization step configurations
-The binarization procedure uses the SciPy library. Specifically it uses the
+There are TWO binarization options available. The procedures differ but the end result is similar of the correct configuration parameters are set.\
+
+The first method is called "SLOPE_METHOD":\
+It calculates the amplitude and slope increases of the time series to calulate oscillation onsets. Parameters for this procedure are:
+* OSCILLATION_DURATION - the expected duration of the oscillation (in samples) (integer number)
+* ACTIVATION_SLOPE - a float number usually in the range od 0.5 - 1.5. Represents the slope of the time series at oscillation onsets.
+* AMPLITUDE_FACTOR - a float number usually in the range of 0.5-1.5. Represents the (relative) amplitude increase of the time series for an oscillation to be considered.
+
+The second method is called "PROMINENCE_METHOD":\
+This procedure uses the SciPy library. Specifically it uses the
 find_peaks method (https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.find_peaks.html) and peak_widths method (https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.peak_widths.html). For a more detailed 
 * AMP_FACT - the relative rise above the average signal to be considered as a peak
 * INTERPEAK_DISTANCE - the expected distance between two peaks (in samples) (integer number)
@@ -159,12 +168,25 @@ find_peaks method (https://docs.scipy.org/doc/scipy/reference/generated/scipy.si
 * PROMINENCE - check the find_peaks documentation
 * REL_HEIGHT - check the find_peaks documentation\
 \
-Examples:\
-AMP_FACT = 1.2\
-INTERPEAK_DISTANCE = 5\
-PEAK_WIDTH = 10\
-PROMINENCE = 0.35\
-REL_HEIGHT = 0.30
+Configuration example:
+"BINARIZATION": {
+    "USE": "SLOPE_METHOD",
+    "SLOPE_METHOD": {
+        "OSCILLATION_DURATION": 10,
+        "ACTIVATION_SLOPE": 1.0,
+        "AMPLITUDE_FACTOR": 1.0
+    },
+    "PROMINENCE_METHOD": {
+        "AMP_FACT": 1.35,
+        "INTERPEAK_DISTANCE": 10,
+        "PEAK_WIDTH": 10,
+        "PROMINENCE": 0.35,
+        "REL_HEIGHT": 0.5
+    }
+}
+The above configurations make use of the "SLOPE_METHOD" method. If you want to use the "PROMINENCE_METHOD" method just change the "USE" parameter to "PROMINENCE_METHOD". Set the appropriate parameters in the "SLOPE_METHOD" or "PROMINENCE_METHOD" fields.
+
+**If you re-run this procedure and change the method the output will override the previous output.**
 
 Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "binarized_traces"
 
