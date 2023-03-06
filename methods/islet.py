@@ -25,7 +25,7 @@ class Islet:
     Please perform filtration, smoothing and binarization and cell exclusion steps first!
     """
     raw_data_missing_error: str = """
-    Please load raw data first! Use the 'init' command.
+    Please load raw data first! Use the 'load' command.
     """
     raw_data_not_found_error: str = """
     Raw data not found. Please check folder and configurations.

@@ -93,7 +93,7 @@ After running the command you will be prompted to select the specific step.
 * 99: Save current configuration data to experiment folder
 * exit: Exit the program
 * options: Prints available options
-* load: Loads any existing data (raw and preprocessed) from the folder structure with provided configurations
+* load: Loads any existing data (raw and preprocessed) from the folder structure with provided configurations - RUN FIRST
 
 Just input the correct number/string or exit.
 
