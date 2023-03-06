@@ -8,6 +8,7 @@ import numpy as np
 from methods.filt_traces import filter_data
 from methods.smooth_traces import smooth_data
 from methods.binarization import binarize_data
+from methods.bin_traces_old import signal_binarization
 from methods.exclude_cells import exclude_data
 from methods.corr_ca_analysis import corr_ca_analysis_data
 from methods.cell_parameter_analysis import cell_activity_data
@@ -25,6 +26,9 @@ class Islet:
     """
     raw_data_missing_error: str = """
     Please load raw data first! Use the 'init' command.
+    """
+    raw_data_not_found_error: str = """
+    Raw data not found. Please check folder and configurations.
     """
 
     def __init__(self):
@@ -48,8 +52,9 @@ class Islet:
         try:
             with open('configurations.txt', encoding='utf-8') as file:
                 config_data = file.read()
+                config_data = json.loads(config_data)
                 if validate_config_data(config_data):
-                    self.configs = json.loads(config_data)
+                    self.configs = config_data
                 else:
                     print('Configurations file had missing fields and was replaced with default!')
                     self.create_and_load_sample_config_data()
@@ -94,8 +99,17 @@ class Islet:
         Calls binarization function
         """
         if self.smoothed_traces is not None:
-            self.binarized_traces = binarize_data(
-                self.configs, self.smoothed_traces)
+            # self.binarized_traces = binarize_data(
+            #     self.configs, self.smoothed_traces)
+            use_method = self.configs['BINARIZATION']['USE']
+            if use_method == 'SLOPE_METHOD':
+                self.binarized_traces = signal_binarization(self.configs,
+                                                       self.smoothed_traces)
+            elif use_method == 'PROMINENCE_METHOD':
+                self.binarized_traces = binarize_data(self.configs,
+                                                      self.smoothed_traces)
+            else:
+                print('Please select a valid binarization method')
         else:
             print('Please perform the smoothing step first!')
 
@@ -147,9 +161,12 @@ class Islet:
         else:
             print(self.raw_data_missing_error)
 
-    def load_raw_data(self):
+    def load_data(self):
         """
         Loads raw data from existing raw data folder
+
+        Calls load existing data function
+        Loads any existing data from the folder structure
         """
         try:
             raw_data_path = os.path.join(self.configs["RAW_DATA_FOLDER"],
@@ -164,13 +181,10 @@ class Islet:
             self.positions = np.loadtxt(raw_positions_path)
             print('Raw data loaded successfully.')
         except FileNotFoundError:
-            print('Raw data not found. Please check configurations')
+            print(self.raw_data_not_found_error)
 
-    def load_data(self):
-        """
-        Calls load existing data function
-        Loads any existing data from the folder structure
-        """
-        data = load_existing_data(self.configs)
+        data, loaded_data = load_existing_data(self.configs)
         for key, value in data.items():
             setattr(self, key, value)
+        preprocess_data_msg = '\n'.join(loaded_data)
+        print(preprocess_data_msg)

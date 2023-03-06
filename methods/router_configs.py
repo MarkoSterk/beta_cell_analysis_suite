@@ -10,10 +10,9 @@ class RouterConfig:
     # 0: run_all_methods (obviously)
     # 1: first responder analysis
     # exit: exits program
-    # init: loads raw data
     # options: prints options
 
-    EXCLUDE_METHODS_RUN_ALL = [0, 1, 'exit', 'options', 'init', 'load']
+    EXCLUDE_METHODS_RUN_ALL = [0, 1, 'exit', 'options', 'load']
 
     ANALYSIS_OPTIONS = """
             Available analysis steps are:
@@ -26,10 +25,9 @@ class RouterConfig:
             7: Cell activity parameter analysis
             0: Run all of the above steps
             99: Save current configuration data to experiment folder
-            exit: Exit the program
             options: Prints available options,
-            load: Loads any existing data (preprocessed)
-            init: Loads raw data with provided configurations - RUN FIRST!
+            load: Loads raw data and any available preprocess data - RUN FIRST!
+            exit: Exit the program
             """
 
     RESERVED_ROUTES = ['options', 'exit', 0]

@@ -92,19 +92,19 @@ Any output folders and files are created on-the-go if not already present. No ac
 
 ## General experiment information
 * EXPERIMENT_NAME - name of the experiment. Can be any string without whitespaces or special charecters
-* SAMPLING - the data sampling rate in Hz (float or integer number)\
-* RAW_DATA_FOLDER - folder name in which raw data resides\
-* RAW_DATA_NAME - name of the raw data time series file (including extension!)\
-* RAW_POSITIONS_NAME - name of the raw data positions file (including extension!)\
+* SAMPLING - the data sampling rate in Hz (float or integer number)
+* RAW_DATA_FOLDER - folder name in which raw data resides
+* RAW_DATA_NAME - name of the raw data time series file (including extension!)
+* RAW_POSITIONS_NAME - name of the raw data positions file (including extension!)
 \
 Example:\
 EXPERIMENT_NAME = '2023_01_03_GLC9_MS_SER_1'\
 SAMPLING = 10.0\
 RAW_DATA_FOLDER = 'raw_data'\
 RAW_DATA_NAME = 'data.txt'\
-RAW_POSITIONS_NAME = 'koordinate.txt'\
+RAW_POSITIONS_NAME = 'koordinate.txt'
 
-Output data is generated in the "preprocessing/" and "results" folders in subfolders with the provided experiment name.
+Output data is generated in the "preprocessing/" and "results/" folders in subfolders with the provided experiment name.
 
 ## General analysis configurations
 * INTERVAL_START_TIME_SECONDS - the start time (in seconds) of the intervals for visualization and analysis. This parameter is required for the filtration, smoothing, binarization and network analysis steps. You can change this parameter from one analysis step to the other
@@ -112,14 +112,14 @@ Output data is generated in the "preprocessing/" and "results" folders in subfol
 \
 Examples:\
 INTERVAL_START_TIME_SECONDS = 800.0\
-INTERVAL_END_TIME_SECONDS = 1300\
+INTERVAL_END_TIME_SECONDS = 1300
 
 ## First responder step configurations
 No configurations are required aside from general experiment information.\
 Time series of each cell is plotted and displayed on the screen. The user has to click on the
-plot in the place where the cell has first responded to stimulation.\
+plot in the place where the cell has first responded to stimulation.
 
-Accepted clicks/commands are:\
+Accepted clicks/commands are:
 * Right click - gets the time of response from the x coordinate of the click event. Saves that as the response time for the current cell.
 * Right arrow - skips cell/goes to the next cell. The response time of the skipped cell is set to NaN (not a number)
 * Left arrow - returns to previous cell and lets you reselect the response time
@@ -132,11 +132,11 @@ Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/
 * FILTER_SELECTION - "fft" or "analog". Usually "fft" is the better option.
 * FIRST_COLUMN_TIME - True or False. If the first column in you raw "data.txt" file represents time
 * LOW_FREQUENCY_CUTOFF - a number larger then 0. Represents the low frequency threshold for the band-pass filter
-* HIGH_FREQUENCY_CUTOFF - a number larger then LOW_FREQUENCY_CUTOFF. Represents the high frequency threshold for the band-padd filter\
+* HIGH_FREQUENCY_CUTOFF - a number larger then LOW_FREQUENCY_CUTOFF. Represents the high frequency threshold for the band-padd filter
 \
 Examples:\
 LOW_FREQUENCY_CUTOFF = 0.03\
-HIGH_FREQUENCY_CUTOFF = 1.2\
+HIGH_FREQUENCY_CUTOFF = 1.2
 
 Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "filt_traces/"
 
@@ -146,7 +146,7 @@ Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/
 \
 Examples:\
 SMOOTHING_POINTS = 5\
-SMOOTHING_REPEATS = 2\
+SMOOTHING_REPEATS = 2
 
 Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "smoothed_traces"
 
@@ -164,7 +164,7 @@ AMP_FACT = 1.2\
 INTERPEAK_DISTANCE = 5\
 PEAK_WIDTH = 10\
 PROMINENCE = 0.35\
-REL_HEIGHT = 0.30\
+REL_HEIGHT = 0.30
 
 Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "binarized_traces"
 
@@ -173,7 +173,7 @@ Add numbers (integers) into the "EXCLUDE_CELLS" list.
 Repeated numbers are ignored!\
 \
 Example:\
-EXCLUDE_CELLS = [0,8,92,17,94]\
+EXCLUDE_CELLS = [0,8,92,17,94]
 
 Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "results"
 
