@@ -40,6 +40,11 @@ Use
 python -m venv venv
 ```
 
+or, if you use conda:
+```
+conda create --name venv
+```
+
 to create a virtual environment in your project folder.
 
 Activate the virtual environment with:
@@ -53,7 +58,17 @@ Linux:
 source venv/bin/activate
 ```
 
-Install all dependancies in the virtual environment with:
+Conda (Windows):
+```
+conda activate venv
+```
+
+Conda users also run:
+```
+conda install -n venv pip
+```
+
+Install all dependancies in the virtual environment with pip:
 ```
 pip install -r requirements.txt
 ```
