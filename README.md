@@ -82,7 +82,6 @@ python run.py    or    python -m run
 After running the command you will be prompted to select the specific step.
 
 ##### Available analysis steps:
-* init: Loads raw data with provided configurations
 * 1: First responder analysis
 * 2: Time series filtration
 * 3: Time series smoothing
