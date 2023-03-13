@@ -16,6 +16,7 @@ from methods.first_responders import first_responder_data
 from helper_functions.utility_functions import (save_config_data, create_sample_config,
                                                 load_existing_data, validate_config_data)
 
+# pylint: disable-next=R0902
 class Islet:
     """
     Class containing all methods and data for Islet analysis
@@ -98,16 +99,17 @@ class Islet:
         """
         Calls binarization function
         """
+        #Availale methods for binarization
+        methods = {
+            'SLOPE_METHOD': signal_binarization,
+            'PROMINENCE_METHOD': binarize_data
+        }
+        #Selected method for binarization
+        selected_method = self.configs['BINARIZATION']['USE']
         if self.smoothed_traces is not None:
-            # self.binarized_traces = binarize_data(
-            #     self.configs, self.smoothed_traces)
-            use_method = self.configs['BINARIZATION']['USE']
-            if use_method == 'SLOPE_METHOD':
-                self.binarized_traces = signal_binarization(self.configs,
-                                                       self.smoothed_traces)
-            elif use_method == 'PROMINENCE_METHOD':
-                self.binarized_traces = binarize_data(self.configs,
-                                                      self.smoothed_traces)
+            if selected_method in methods:
+                self.binarized_traces = methods[selected_method](self.configs,
+                                                            self.smoothed_traces)
             else:
                 print('Please select a valid binarization method')
         else:

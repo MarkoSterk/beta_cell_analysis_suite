@@ -5,6 +5,7 @@ Utility function for the scripts
 import os
 import json
 import numpy as np
+from copy import deepcopy
 
 SAMPLE_CONFIG_DATA = {
     "EXPERIMENT_NAME": "2023_01_03_GLC9_MS_SER1",
@@ -107,7 +108,7 @@ def load_existing_data(config_data: dict):
     data_collection = {}
     data_list = ['filtered_traces',
                  'smoothed_traces', 'binarized_traces', 'response_times',
-                 'final_smoothed_traces', 'final_binarized_traces', 'final_pos',
+                 'final_smoothed_traces', 'final_binarized_traces', 'final_coordinates',
                  'final_response_times']
     loaded_data = []
     for data_name in data_list:
@@ -124,7 +125,7 @@ def load_existing_data(config_data: dict):
             )
         except FileNotFoundError:
             pass
-        data_collection[data_name] = data
+        data_collection[data_name] = deepcopy(data)
 
     return data_collection, loaded_data
 

@@ -2,6 +2,7 @@
 Router default/config options
 """
 
+# pylint: disable-next=R0903
 class RouterConfig:
     """
     Main config class for router
