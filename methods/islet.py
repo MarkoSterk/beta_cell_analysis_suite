@@ -41,9 +41,9 @@ class Islet:
         self.smoothed_traces: np.array = None
         self.binarized_traces: np.array = None
         self.response_times: np.array = None
-        self.final_smoothed_data: np.array = None
-        self.final_binarized_data: np.array = None
-        self.final_pos: np.array = None
+        self.final_smoothed_traces: np.array = None
+        self.final_binarized_traces: np.array = None
+        self.final_coordinates: np.array = None
         self.final_response_times: np.array = None
 
     def load_configs(self):
@@ -127,9 +127,9 @@ class Islet:
                                                                 self.binarized_traces,
                                                                 self.positions, self.response_times)
 
-            self.final_smoothed_data = final_smoothed_data
-            self.final_binarized_data = final_binarized_data
-            self.final_pos = final_pos
+            self.final_smoothed_traces = final_smoothed_data
+            self.final_binarized_traces = final_binarized_data
+            self.final_coordinates = final_pos
             self.final_response_times = final_resp_times
         else:
             print(self.perform_preprocess_steps_first_error)
@@ -138,10 +138,10 @@ class Islet:
         """
         Calls corr/coact network analysis
         """
-        if self.final_binarized_data is not None and self.final_smoothed_data is not None:
-            time_series = self.final_binarized_data if self.configs[
-                'ANALYSIS_TYPE'] == 'coactivity' else self.final_smoothed_data
-            corr_ca_analysis_data(self.configs, time_series, self.final_pos)
+        if self.final_binarized_traces is not None and self.final_smoothed_traces is not None:
+            time_series = self.final_binarized_traces if self.configs[
+                'ANALYSIS_TYPE'] == 'coactivity' else self.final_smoothed_traces
+            corr_ca_analysis_data(self.configs, time_series, self.final_coordinates)
         else:
             print(self.perform_preprocess_steps_first_error)
 
@@ -149,8 +149,8 @@ class Islet:
         """
         Calls call activity parameter data analysis
         """
-        if self.final_binarized_data is not None:
-            cell_activity_data(self.configs, self.final_binarized_data)
+        if self.final_binarized_traces is not None:
+            cell_activity_data(self.configs, self.final_binarized_traces)
         else:
             print(self.perform_preprocess_steps_first_error)
 
@@ -190,3 +190,4 @@ class Islet:
             setattr(self, key, value)
         preprocess_data_msg = '\n'.join(loaded_data)
         print(preprocess_data_msg)
+        print('\n')
