@@ -181,6 +181,7 @@ class Islet:
             raw_positions_path = os.path.join(self.configs["RAW_DATA_FOLDER"],
                                               self.configs["RAW_POSITIONS_NAME"])
             self.positions = np.loadtxt(raw_positions_path)
+            self.positions = self.positions * self.configs["COORDINATE_TRANSFORM"]
             print('Raw data loaded successfully.')
         except FileNotFoundError:
             print(self.raw_data_not_found_error)

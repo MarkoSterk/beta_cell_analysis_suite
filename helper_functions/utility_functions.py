@@ -10,6 +10,7 @@ from copy import deepcopy
 SAMPLE_CONFIG_DATA = {
     "EXPERIMENT_NAME": "2023_01_03_GLC9_MS_SER1",
     "SAMPLING": 10.0,
+    "COORDINATE_TRANSFORM": 1.0,
     "RAW_DATA_FOLDER": "raw_data",
     "RAW_DATA_NAME": "data.txt",
     "RAW_POSITIONS_NAME": "koordinate.txt",
