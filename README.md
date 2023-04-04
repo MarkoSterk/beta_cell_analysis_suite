@@ -107,12 +107,14 @@ Any output folders and files are created on-the-go if not already present. No ac
 ## General experiment information
 * EXPERIMENT_NAME - name of the experiment. Can be any string without whitespaces or special charecters
 * SAMPLING - the data sampling rate in Hz (float or integer number)
+* COORDINATE_TRANSFORM - transformation of pixel coordinates to micrometer coordinates. Means number of microns/pixel
 * RAW_DATA_FOLDER - folder name in which raw data resides
 * RAW_DATA_NAME - name of the raw data time series file (including extension!)
 * RAW_POSITIONS_NAME - name of the raw data positions file (including extension!)
 \
 Example:\
 EXPERIMENT_NAME = '2023_01_03_GLC9_MS_SER_1'\
+COORDINATE_TRANSFORM = 0.9 <-- 1 px = 0.9 um\
 SAMPLING = 10.0\
 RAW_DATA_FOLDER = 'raw_data'\
 RAW_DATA_NAME = 'data.txt'\
