@@ -1,0 +1,36 @@
+{
+    "EXPERIMENT_NAME": "2023_01_03_GLC9_MS_SER1",
+    "SAMPLING": 10.0,
+    "COORDINATE_TRANSFORM": 1.0,
+    "RAW_DATA_FOLDER": "",
+    "RAW_DATA_NAME": "data.txt",
+    "RAW_POSITIONS_NAME": "koordinate.txt",
+    "INTERVAL_START_TIME_SECONDS": 800.0,
+    "INTERVAL_END_TIME_SECONDS": 1300.0,
+    "FILTER_SELECTION": "fft",
+    "FIRST_COLUMN_TIME": true,
+    "LOW_FREQUENCY_CUTOFF": 0.03,
+    "HIGH_FREQUENCY_CUTOFF": 1.1,
+    "SMOOTHING_POINTS": 4,
+    "SMOOTHING_REPEATS": 2,
+    "BINARIZATION": {
+        "USE": "SLOPE_METHOD",
+        "SLOPE_METHOD": {
+            "OSCILLATION_DURATION": 10,
+            "ACTIVATION_SLOPE": 1.0,
+            "AMPLITUDE_FACTOR": 1.0
+        },
+        "PROMINENCE_METHOD": {
+            "AMP_FACT": 1.35,
+            "INTERPEAK_DISTANCE": 10,
+            "PEAK_WIDTH": 10,
+            "PROMINENCE": 0.35,
+            "REL_HEIGHT": 0.5
+        }
+    },
+    "EXCLUDE_CELLS": [],
+    "ANALYSIS_TYPE": "correlation",
+    "NETWORK_METHOD": "fixed_kavg",
+    "CONNECTIVITY_LEVEL": 8.0,
+    "FIXED_KAVG_TOLERANCE": 0.1
+}
