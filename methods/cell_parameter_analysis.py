@@ -48,25 +48,34 @@ def cell_activity_data(CONFIG_DATA: dict, binarized_time_series: np.array):
             np.sum(binarized_time_series[:, i])/time_series_length)
 
         activity_clusters = find_clusters(binarized_time_series[:, i])
+        frequency = np.nan
+        osc_dur = np.nan
+        if len(activity_clusters[1])>0:
+            frequency = len(activity_clusters[0]) / \
+                (INTERVAL_END_TIME_SECONDS-INTERVAL_START_TIME_SECONDS)
+            osc_dur = np.average(activity_clusters[1])/sampling
 
-        frequency = len(activity_clusters[0]) / \
-            (INTERVAL_END_TIME_SECONDS-INTERVAL_START_TIME_SECONDS)
         cell_data['oscillation_frequencies'].append(frequency)
-
-        cell_data['avg_oscillation_durations'].append(np.average(activity_clusters[1])/sampling)
+        cell_data['avg_oscillation_durations'].append(osc_dur)
 
         inactivity_clusters = find_clusters(
             binarized_time_series[:, i], trigger_val=0)
 
-        avg_inactivity_duration = np.average(inactivity_clusters[1])/sampling
-        inactivity_duration_std = np.std(inactivity_clusters[1])/sampling
-        cell_data['interoscillation_int_var'].append(
-            inactivity_duration_std/avg_inactivity_duration)
+        avg_inactivity_duration = np.nan
+        inactivity_duration_std = np.nan
+        if len(inactivity_clusters[1] > 2):
+            inactivity_duration_std = np.std(inactivity_clusters[1])/sampling
+            avg_inactivity_duration = np.average(inactivity_clusters[1])/sampling
+
+        intosc_int_var = np.nan
+        if np.nan not in (inactivity_duration_std, avg_inactivity_duration):
+            intosc_int_var = inactivity_duration_std/avg_inactivity_duration
+        cell_data['interoscillation_int_var'].append(intosc_int_var)
 
     avg_islet_values = {key: {} for key in cell_data}
     for key, value in cell_data.items():
-        avg_islet_values[key]['avg'] = np.average(value)
-        avg_islet_values[key]['std'] = np.std(value)
+        avg_islet_values[key]['avg'] = np.nanmean(value)
+        avg_islet_values[key]['std'] = np.nanstd(value)
 
     AVG_DATA_STRING = ' '.join([f'{avg_islet_values[key]["avg"]:.3f} {avg_islet_values[key]["std"]:.3f}'
                             for key in avg_islet_values])

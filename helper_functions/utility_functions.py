@@ -97,7 +97,7 @@ def save_config_data(config_data: dict):
     if not os.path.exists(f'results/{config_data["EXPERIMENT_NAME"]}'):
         os.makedirs(f'results/{config_data["EXPERIMENT_NAME"]}')
 
-    with open(f'results/{config_data["EXPERIMENT_NAME"]}/configuration.txt',
+    with open(f'results/{config_data["EXPERIMENT_NAME"]}/configurations.txt',
               'w', encoding='utf-8') as file:
         json.dump(config_data, file, indent=2)
 

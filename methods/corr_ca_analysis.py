@@ -7,7 +7,9 @@ Correlation analysis of islet
 # pylint: disable=R0915, R0914
 
 import os
+import matplotlib
 import numpy as np
+import matplotlib.cm as cm
 import matplotlib.pyplot as plt
 import networkx as nx
 from networkx.algorithms import clustering
@@ -100,11 +102,21 @@ def corr_ca_analysis_data(CONFIG_DATA: dict, time_series: np.array, pos: np.arra
     assortativity = nx.algorithms.degree_assortativity_coefficient(G)
     num_comm, Q, communities = commstructure(G)
     node_sizes = [np.sqrt(G.degree(i))+3.0 for i in range(cell_num)]
+    node_colors = []
+    cmap = cm.get_cmap('jet')
+    for i in range(cell_num):
+        if G.degree(i) == 0:
+            node_colors.append('lightgray')
+        else:
+            # will return rgba, we take only first 3 so we get rgb
+            rgb = cmap(communities[i]/np.amax(communities))[:3]
+            color = matplotlib.colors.rgb2hex(rgb)
+            node_colors.append(color)
 
     fig = plt.figure(figsize=(PANEL_WIDTH, PANEL_WIDTH))
     ax = fig.add_subplot(1,1,1)
-    nx.draw(G, pos=pos, node_size=node_sizes, node_color=communities,
-            edge_color='dimgray', width=0.75, cmap=plt.get_cmap('jet'), ax=ax)
+    nx.draw(G, pos=pos, node_size=node_sizes, node_color=node_colors,
+            edge_color='dimgray', width=0.75, ax=ax)
     # pylint: disable-next=C0301
     fig.savefig(f'results/{EXPERIMENT_NAME}/{analysis_type}_analysis/{network_method}/{analysis_type}_graph.png', 
                 dpi=600, bbox_inches='tight', pad_inches=0.01)
