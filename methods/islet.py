@@ -31,6 +31,13 @@ class Islet:
     raw_data_not_found_error: str = """
     Raw data not found. Please check folder and configurations.
     """
+    raw_data_columns_clash_error: str = """
+        Number of columns and number of coordinates doesnt match. Please check if first column is or is not time.
+    """
+    
+    raw_data_loaded_successfully: str = """
+        Raw data loaded successfully.
+    """
 
     def __init__(self):
         self.raw_data: np.array = None
@@ -173,6 +180,7 @@ class Islet:
         try:
             raw_data_path = os.path.join(self.configs["RAW_DATA_FOLDER"],
                                          self.configs["RAW_DATA_NAME"])
+
             raw_data = np.loadtxt(raw_data_path)
 
             if self.configs['FIRST_COLUMN_TIME']:
@@ -180,14 +188,15 @@ class Islet:
 
             raw_positions_path = os.path.join(self.configs["RAW_DATA_FOLDER"],
                                               self.configs["RAW_POSITIONS_NAME"])
+
             self.positions = np.loadtxt(raw_positions_path)
             if len(self.positions) != len(raw_data[0]):
                 #pylint: disable=C0301
-                print('Number of columns and number of coordinates doesnt match. Please check if first column is or is not time.')
+                print(self.raw_data_columns_clash_error)
             else:
                 self.positions = self.positions * self.configs["COORDINATE_TRANSFORM"]
                 self.raw_data = raw_data
-                print('Raw data loaded successfully.')
+                print(self.raw_data_loaded_successfully)
         except FileNotFoundError:
             print(self.raw_data_not_found_error)
 
