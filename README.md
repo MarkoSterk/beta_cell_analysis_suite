@@ -93,6 +93,7 @@ After running the command you will be prompted to select the specific step.
 * 99: Save current configuration data to experiment folder
 * exit: Exit the program
 * options: Prints available options
+* bundle: Creates zip bundle of all available preprocessing and results data
 * load: Loads any existing data (raw and preprocessed) from the folder structure with provided configurations - RUN FIRST
 
 Just input the correct number/string or exit.
@@ -271,6 +272,10 @@ This options exits the program.
 
 ## options: Prints available options
 This option prints all available options to the screen (again)
+
+## bundle: Creates .zip bundle of all available preprocessing and results data
+This options creates a bundle (results_bundle.zip) with all available preprocessing and results data.
+Can be usefull for storage and transportation or sending via the internet.
 
 ## References
 The procedures in this suite were previously used in the following research articles:
