@@ -102,7 +102,7 @@ def cell_activity_data(CONFIG_DATA: dict, binarized_time_series: np.array):
     fig = plt.figure(figsize=(COLS*PANEL_HEIGHT, rows*PANEL_HEIGHT))
     axes = [fig.add_subplot(rows, COLS, int(i+1)) for i in range(COLS*rows) if i < number_of_panels]
     for (key, value), ax in zip(cell_data.items(), axes):
-        ax.boxplot([value], showfliers=False, patch_artist=True,
+        ax.boxplot([val for val in value if np.isfinite(val)], showfliers=False, patch_artist=True,
                 medianprops=MEDIAN_PROPS, boxprops=BOX_PROPS)
         ax.set_ylabel(key)
         ax.set_xticks([])

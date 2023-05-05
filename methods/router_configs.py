@@ -13,7 +13,7 @@ class RouterConfig:
     # exit: exits program
     # options: prints options
 
-    EXCLUDE_METHODS_RUN_ALL = [0, 1, 'exit', 'options', 'load']
+    EXCLUDE_METHODS_RUN_ALL = [0, 1, 'exit', 'options', 'load', 'bundle']
 
     ANALYSIS_OPTIONS = """
             Available analysis steps are:
@@ -26,8 +26,9 @@ class RouterConfig:
             7: Cell activity parameter analysis
             0: Run all of the above steps
             99: Save current configuration data to experiment folder
-            options: Prints available options,
+            options: Prints available options
             load: Loads raw data and any available preprocess data - RUN FIRST!
+            bundle: Bundles all available preprocessing results and final results into one zip file
             exit: Exit the program
             """
 

@@ -73,3 +73,6 @@ venv.bak/
 preprocessing/
 .results
 results/
+test_zip.py
+test_zip.gz
+test_zip.zip

@@ -17,7 +17,8 @@ routes = {
     6: islet.corr_coact_analysis,
     7: islet.cell_activity_analysis,
     99: islet.save_configs_to_data,
-    'load': islet.load_data
+    'load': islet.load_data,
+    'bundle': islet.bundle_data
 }
 
 islet.load_configs()

@@ -2,6 +2,7 @@
 Base class for Islet data
 """
 from typing import Union
+import zipfile
 import json
 import os
 import numpy as np
@@ -206,3 +207,32 @@ class Islet:
         preprocess_data_msg = '\n'.join(loaded_data)
         print(preprocess_data_msg)
         print('\n')
+    
+    def bundle_data(self):
+        """
+        Creates a .zip bundle with all preprocessing results and final results available
+        """
+        with zipfile.ZipFile(
+            f'results/{self.configs["EXPERIMENT_NAME"]}/results_bundle.zip', 'w'
+            ) as file:
+            preprocessing_data_list = ['final_smoothed_traces.txt',
+                                       'final_binarized_traces.txt',
+                                        'final_coordinates.txt',
+                                        'final_response_times.txt']
+            for data_name in preprocessing_data_list:
+                try:
+                    # pylint: disable-next=C0301
+                    file.write(f'preprocessing/{self.configs["EXPERIMENT_NAME"]}/results/{data_name}',
+                                data_name)
+                except FileNotFoundError:
+                    pass
+            final_results_data_list = ['configuration.txt',
+                                       'cellular_activity_parameters.txt',
+                                       'average_islet_activity_parameters.txt',
+                                       'cell_parameters_box_plots.png']
+            for data_name in final_results_data_list:
+                try:
+                    file.write(f'results/{self.configs["EXPERIMENT_NAME"]}/{data_name}',
+                            data_name)
+                except FileNotFoundError:
+                    pass
