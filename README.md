@@ -274,7 +274,8 @@ This options exits the program.
 This option prints all available options to the screen (again)
 
 ## bundle: Creates .zip bundle of all available preprocessing and results data
-This options creates a bundle (results_bundle.zip) with all available preprocessing and results data.
+This options creates a bundle (results/{EXPERIMENT_NAME}/results_bundle.zip) with all available preprocessing and results data.
+The bundle is saved in the results folder of the current experiment data ('results/{EXPERIMENT_NAME}/results_bundle.zip')
 Can be usefull for storage and transportation or sending via the internet.
 
 ## References
