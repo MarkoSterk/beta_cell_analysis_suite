@@ -212,6 +212,7 @@ class Islet:
         """
         Creates a .zip bundle with all preprocessing results and final results available
         """
+
         with zipfile.ZipFile(
             f'results/{self.configs["EXPERIMENT_NAME"]}/results_bundle.zip', 'w'
             ) as file:
@@ -226,13 +227,18 @@ class Islet:
                                 data_name)
                 except FileNotFoundError:
                     pass
-            final_results_data_list = ['configuration.txt',
-                                       'cellular_activity_parameters.txt',
-                                       'average_islet_activity_parameters.txt',
-                                       'cell_parameters_box_plots.png']
-            for data_name in final_results_data_list:
-                try:
-                    file.write(f'results/{self.configs["EXPERIMENT_NAME"]}/{data_name}',
-                            data_name)
-                except FileNotFoundError:
-                    pass
+
+            final_results_path = f'results/{self.configs["EXPERIMENT_NAME"]}/'
+            for _, _, files in os.walk(final_results_path):
+                for file in files:
+                    file.write(os.path.join(final_results_path, file), f'results/{file}')
+            # final_results_data_list = ['configuration.txt',
+            #                            'cellular_activity_parameters.txt',
+            #                            'average_islet_activity_parameters.txt',
+            #                            'cell_parameters_box_plots.png']
+            # for data_name in final_results_data_list:
+            #     try:
+            #         file.write(f'results/{self.configs["EXPERIMENT_NAME"]}/{data_name}',
+            #                 data_name)
+            #     except FileNotFoundError:
+            #         pass
