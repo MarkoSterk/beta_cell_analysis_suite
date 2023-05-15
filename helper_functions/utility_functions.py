@@ -108,9 +108,9 @@ def load_existing_data(config_data: dict):
     """
     data_collection = {}
     data_list = ['filtered_traces',
-                 'smoothed_traces', 'binarized_traces', 'response_times',
+                 'smoothed_traces', 'binarized_traces', 'first_responder_times',
                  'final_smoothed_traces', 'final_binarized_traces', 'final_coordinates',
-                 'final_response_times']
+                 'final_first_responder_times']
     loaded_data = []
     for data_name in data_list:
         data = None

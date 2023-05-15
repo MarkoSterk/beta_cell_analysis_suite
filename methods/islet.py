@@ -48,11 +48,11 @@ class Islet:
         self.filtered_traces: np.array = None
         self.smoothed_traces: np.array = None
         self.binarized_traces: np.array = None
-        self.response_times: np.array = None
+        self.first_responder_times: np.array = None
         self.final_smoothed_traces: np.array = None
         self.final_binarized_traces: np.array = None
         self.final_coordinates: np.array = None
-        self.final_response_times: np.array = None
+        self.final_first_responder_times: np.array = None
 
     def load_configs(self):
         """
@@ -133,12 +133,12 @@ class Islet:
             final_smoothed_data, final_binarized_data, final_pos, final_resp_times = exclude_data(self.configs,
                                                                 self.smoothed_traces,
                                                                 self.binarized_traces,
-                                                                self.positions, self.response_times)
+                                                                self.positions, self.first_responder_times)
 
             self.final_smoothed_traces = final_smoothed_data
             self.final_binarized_traces = final_binarized_data
             self.final_coordinates = final_pos
-            self.final_response_times = final_resp_times
+            self.final_first_responder_times = final_resp_times
         else:
             print(self.perform_preprocess_steps_first_error)
 
@@ -167,7 +167,7 @@ class Islet:
         Calls first responder analysis
         """
         if self.raw_data is not None:
-            self.response_times = first_responder_data(self.configs, self.raw_data)
+            self.first_responder_times = first_responder_data(self.configs, self.raw_data)
         else:
             print(self.raw_data_missing_error)
 
@@ -228,10 +228,6 @@ class Islet:
                 except FileNotFoundError:
                     pass
 
-            # final_results_path = f'results/{self.configs["EXPERIMENT_NAME"]}/'
-            # for _, _, files in os.walk(final_results_path):
-            #     for file in files:
-            #         file.write(os.path.join(final_results_path, file), f'results/{file}')
             final_results_data_list = ['configuration.txt',
                                        'cellular_activity_parameters.txt',
                                        'average_islet_activity_parameters.txt',

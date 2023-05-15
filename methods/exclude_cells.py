@@ -35,7 +35,7 @@ def exclude_data(CONFIG_DATA: dict, smoothed_data: np.array,
     final_smoothed_data[:,:] = smoothed_data[:,remaining_cell_indexes]
     final_binarized_data[:,:] = binarized_data[:,remaining_cell_indexes]
     final_pos[:,:] = pos[remaining_cell_indexes,:]
-    if response_times:
+    if response_times is not None:
         final_response_times[:] = response_times[remaining_cell_indexes]
 
     time = [i/SAMPLING for i in range(len(final_binarized_data))]
@@ -51,16 +51,16 @@ def exclude_data(CONFIG_DATA: dict, smoothed_data: np.array,
             final_binarized_data, fmt='%d')
     np.savetxt(f'preprocessing/{EXPERIMENT_NAME}/results/final_coordinates.txt',
             final_pos, fmt='%.1lf')
-    if response_times:
-        np.savetxt(f'preprocessing/{EXPERIMENT_NAME}/results/final_response_times.txt',
-                final_pos, fmt='%.1lf')
+    if response_times is not None:
+        np.savetxt(f'preprocessing/{EXPERIMENT_NAME}/results/final_first_responder_times.txt',
+                final_response_times, fmt='%.1lf')
 
     fig = binarized_plot(time, final_binarized_data)
     fig.savefig(f'preprocessing/{EXPERIMENT_NAME}/results/final_raster_plot.png',
                 dpi=200,bbox_inches = 'tight')
     plt.close(fig)
 
-    if not response_times:
+    if response_times is None:
         final_response_times = None
 
     # pylint: disable-next=C0301
