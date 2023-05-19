@@ -264,6 +264,29 @@ Islet average parameters are:
 Output of this analysis is saved in the "results/{EXPERIMENT_NAME}/" folder in files:
 "average_islet_activity_parameters.txt", "cellular_activity_parameters.txt" and "cell_parameters_box_plots.png".
 
+## Wave detection analysis
+This analysis step requires a sampling rate of at least 5 Hz. Works best with 10 Hz or above.
+The wave detection analysis step detects waves in the binarized cellular signals (final_binarized_traces).
+
+Input parameters are:
+* TIME_TH_SECONDS - temporal delay between oscillation onsets between cells in the same wave.
+* DISTANCE_TH - spatial distance between two cells in the same wave
+* REL_SIZE_THRESHOLD - relative size of detected waves to be considered in the analysis
+
+The delay threshold is the temporal delay between oscillation onsets of two cells between which the wave is propagating. 
+The value of this parameter depends on the type of dynamics. For fast calcium oscillations in beta cells with a sampling rate of 10 Hz a good value is 0.5 s.
+The distance threshold is the physical distance between two cells between which the wave propagates. It depends on the spatial distribution of the cells. A good value is: D = avg(distance) - X * std(distance), where D is the threshold value,
+distance is the distance matrix for all cells and X is a fraction. BEWARE that the set value must take into account the conversion between pixels and micrometers if the COORDINATE_TRANSFORM parameter is set.
+The relative size threshold is the minimum (relative) size of waves that are considered in the analysis and outputed in the files. Small waves are usually not worth it. A good value is around 0.45 (45% relative size)
+
+OUTPUT of this analysis set are:
+* act_signal.txt - same shape as the binarized signal with numbers denoting the wave to which each cell belongs in a given time frame
+* events_parameters.txt - event/wave parameters: start/end frame, duration and (rel)size
+* raster_plot.txt - the raster plot for all detected waves. 
+* raster_plot.png - visualized raster plot for all detected waves.
+
+All output files are stored in the "results/{EXPERIMENT_NAME}/waves" folder.
+
 ## 99: Save current configuration data to experiment folder
 This step saves the current data to the results folder of the analysis. This can be useful to compare or share configurations.
 
