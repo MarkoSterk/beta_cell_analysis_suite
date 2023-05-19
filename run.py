@@ -16,6 +16,7 @@ routes = {
     5: islet.exclude_traces,
     6: islet.corr_coact_analysis,
     7: islet.cell_activity_analysis,
+    8: islet.wave_anaylsis,
     99: islet.save_configs_to_data,
     'load': islet.load_data,
     'bundle': islet.bundle_data

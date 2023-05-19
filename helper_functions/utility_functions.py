@@ -41,7 +41,12 @@ SAMPLE_CONFIG_DATA = {
     "ANALYSIS_TYPE": "correlation",
     "NETWORK_METHOD": "fixed_kavg",
     "CONNECTIVITY_LEVEL": 8.0,
-    "FIXED_KAVG_TOLERANCE": 0.1
+    "FIXED_KAVG_TOLERANCE": 0.1,
+    "WAVES": {
+        "TIME_TH_SECONDS": 0.5,
+        "DISTANCE_TH": 30,
+        "REL_SIZE_THRESHOLD": 0.45
+    }
 }
 # pylint: disable-next=C0103
 
@@ -75,6 +80,15 @@ def validate_config_data(config_data: dict) -> bool:
     provided_prominence_method_fields = set(
         config_data['BINARIZATION']['PROMINENCE_METHOD']) if 'PROMINENCE_METHOD' in config_data['BINARIZATION'] else set([])
     if sample_prominence_method_fields != provided_prominence_method_fields:
+        return False
+
+    sample_wave_method_fields = set(
+        SAMPLE_CONFIG_DATA["WAVES"]
+    )
+    provided_wave_method_fields = set(
+        config_data["WAVES"] if "WAVES" in config_data else []
+    )
+    if sample_wave_method_fields != provided_wave_method_fields:
         return False
 
     return True

@@ -24,6 +24,7 @@ class RouterConfig:
             5: Excluding of cells and time series
             6: Correlation/coactivity analysis
             7: Cell activity parameter analysis
+            8: Wave analysis
             0: Run all of the above steps
             99: Save current configuration data to experiment folder
             options: Prints available options

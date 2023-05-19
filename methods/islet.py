@@ -14,6 +14,7 @@ from methods.exclude_cells import exclude_data
 from methods.corr_ca_analysis import corr_ca_analysis_data
 from methods.cell_parameter_analysis import cell_activity_data
 from methods.first_responders import first_responder_data
+from methods.wave_detection import wave_detection, wave_characterization, wave_raster_plot
 from helper_functions.utility_functions import (save_config_data, create_sample_config,
                                                 load_existing_data, validate_config_data)
 
@@ -53,6 +54,9 @@ class Islet:
         self.final_binarized_traces: np.array = None
         self.final_coordinates: np.array = None
         self.final_first_responder_times: np.array = None
+        self.wave_act_sig: np.array = None
+        self.wave_characteristics: np.array = None
+        self.wave_raster_plot: np.array = None
 
     def load_configs(self):
         """
@@ -171,6 +175,25 @@ class Islet:
         else:
             print(self.raw_data_missing_error)
 
+    def wave_anaylsis(self):
+        """
+        Performs wave detection analysis
+        """
+        if self.final_binarized_traces is not None:
+            self.wave_act_sig = wave_detection(self.configs, self.final_binarized_traces, self.final_coordinates)
+        else:
+            print(self.perform_preprocess_steps_first_error)
+        
+        if self.wave_act_sig is not None:
+            self.wave_characteristics = wave_characterization(self.configs, self.wave_act_sig)
+        else:
+            print('Please perform wave detection step first.')
+        
+        if self.wave_characteristics is not None:
+            self.wave_raster_plot = wave_raster_plot(self.configs, self.wave_act_sig, self.wave_characteristics)
+        else:
+            print('Please perform wave detection step first.')
+    
     def load_data(self):
         """
         Loads raw data from existing raw data folder
@@ -207,7 +230,7 @@ class Islet:
         preprocess_data_msg = '\n'.join(loaded_data)
         print(preprocess_data_msg)
         print('\n')
-    
+
     def bundle_data(self):
         """
         Creates a .zip bundle with all preprocessing results and final results available
