@@ -77,7 +77,7 @@ def cell_activity_data(CONFIG_DATA: dict, binarized_time_series: np.array):
         avg_islet_values[key]['avg'] = np.nanmean(value)
         avg_islet_values[key]['std'] = np.nanstd(value)
 
-    AVG_DATA_STRING = ' '.join([f'{avg_islet_values[key]["avg"]:.3f} {avg_islet_values[key]["std"]:.3f}'
+    AVG_DATA_STRING = ' '.join([f'{avg_islet_values[key]["avg"]:.4f} {avg_islet_values[key]["std"]:.4f}'
                             for key in avg_islet_values])
     with open(f'results/{EXPERIMENT_NAME}/average_islet_activity_parameters.txt',
             'w', encoding='utf-8') as file:
@@ -93,7 +93,7 @@ def cell_activity_data(CONFIG_DATA: dict, binarized_time_series: np.array):
             freq_i = cell_data['oscillation_frequencies'][i]
             dur_i = cell_data['avg_oscillation_durations'][i]
             ioiv_i = cell_data['interoscillation_int_var'][i]
-            print(f'{act_time_i:.2f} {freq_i:.2f} {dur_i:.2f} {ioiv_i:.2f}', file=file)
+            print(f'{act_time_i:.4f} {freq_i:.4f} {dur_i:.4f} {ioiv_i:.4f}', file=file)
 
 
     number_of_panels = len(cell_data.keys())
