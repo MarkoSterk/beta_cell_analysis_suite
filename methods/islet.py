@@ -193,7 +193,26 @@ class Islet:
             self.wave_raster_plot = wave_raster_plot(self.configs, self.wave_act_sig, self.wave_characteristics)
         else:
             print('Please perform wave detection step first.')
-    
+
+    def reset_app(self):
+        """
+        Resets the app for new analysis
+        """
+        self.raw_data = None
+        self.positions = None
+
+        self.filtered_traces = None
+        self.smoothed_traces = None
+        self.binarized_traces = None
+        self.first_responder_times = None
+        self.final_smoothed_traces = None
+        self.final_binarized_traces = None
+        self.final_coordinates = None
+        self.final_first_responder_times = None
+        self.wave_act_sig = None
+        self.wave_characteristics = None
+        self.wave_raster_plot = None
+
     def load_data(self):
         """
         Loads raw data from existing raw data folder
@@ -201,6 +220,7 @@ class Islet:
         Calls load existing data function
         Loads any existing data from the folder structure
         """
+        self.reset_app()
         try:
             raw_data_path = os.path.join(self.configs["RAW_DATA_FOLDER"],
                                          self.configs["RAW_DATA_NAME"])
