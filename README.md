@@ -209,6 +209,7 @@ Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/
 
 ## Exclude cells step configurations
 Once you run the 5th step (cell exclusion) time series of each cell is plotted and displayed on the screen. Similar to the first responder analysis.
+The time series are plotet between the provided "INTERVAL_START_TIME_SECONDS" and "INTERVAL_END_TIME_SECONDS" time points. You can pan across the plot with the panning tool.
 After visual inspection you can do/click/select:
 
 * right arraw: keeps the current cell
@@ -217,6 +218,7 @@ After visual inspection you can do/click/select:
 * esc: exits entire app
 
 The excluded cells are added to the configurations.txt file in the field "EXCLUDE_CELLS". **DO NOT CHANGE THIS FIELD MANUALLY!!!**
+
 Output of this step is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "results"
 
 **ATTENTION**
