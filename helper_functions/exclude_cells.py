@@ -1,5 +1,5 @@
 """
-First responder cell identification
+Graphic cell exclusion
 """
 # pylint: disable=C0103, C0411
 # pylint: disable=W0611, W0603, W0719
@@ -13,37 +13,27 @@ from matplotlib.widgets import Cursor
 from methods.plot_configurations import PANEL_HEIGHT, MEDIAN_PROPS, BOX_PROPS
 from methods import plot_configurations
 
+def pick_exclude_cells(CONFIG_DATA: dict,
+                  smoothed_data: np.ndarray,
+                  binerized_data: np.ndarray) -> list:
+    """
+    For excluding cells
+    """
 
-def first_responder_data(CONFIG_DATA: dict, data: np.array):
-    """
-    For determining first responder cells
-    """
     current_cell = 0
+
     EXPERIMENT_NAME = CONFIG_DATA['EXPERIMENT_NAME']
     SAMPLING = CONFIG_DATA['SAMPLING']
 
-    cell_num = len(data[0])
-    time = [i/SAMPLING for i in range(len(data))]
-    show_time = time[int(0.5*len(time))]
+    cell_num = len(smoothed_data[0])
+    time = [i/SAMPLING for i in range(len(smoothed_data))]
 
-    response_times = np.zeros(cell_num, float)
-    
+    excluded_cells = []
     click_params = {
         'next_cell': None
     }
-
     if not os.path.exists(f'preprocessing/{EXPERIMENT_NAME}'):
         os.makedirs(f'preprocessing/{EXPERIMENT_NAME}')
-
-    def on_click(event, cell):
-        """
-        on-click event handler
-        """
-        if event.inaxes == ax:
-            if event.button==plt.MouseButton.RIGHT:
-                response_times[cell]=event.xdata
-                click_params['next_cell'] = cell
-                plt.close()
 
     def on_press(event, cell):
         """
@@ -59,19 +49,18 @@ def first_responder_data(CONFIG_DATA: dict, data: np.array):
             ### loop after the figure closes
             if cell > 0:
                 click_params['next_cell'] = cell-2
+                excluded_cells.pop()
                 plt.close()
         if str(event.key) == 'right':
             ###If the response time of this cell was not already set it sets the time to Nan
             ### and continous to the next cell
             ### else it just closes the figure and continous on.
-            if response_times[cell] == 0.0:
-                response_times[cell] = np.nan
             click_params['next_cell'] = cell
             plt.close()
         if str(event.key) in ['r', 'R']:
-            ###Sets response time to NaN
-            response_times[cell] = np.nan
+            ###Removes current cells (adds it to excluded_cells list)
             click_params['next_cell'] = cell
+            excluded_cells.append(cell)
             plt.close()
 
 
@@ -82,36 +71,17 @@ def first_responder_data(CONFIG_DATA: dict, data: np.array):
     while current_cell < cell_num:
         fig = plt.figure()
         fig.set_tight_layout(False)
-        fig.canvas.mpl_connect('button_release_event', lambda event: on_click(event, current_cell))
         fig.canvas.mpl_connect('key_press_event', lambda event: on_press(event, current_cell))
         ax = fig.add_subplot(1,1,1)
-        # pylint: disable-next=W0612
-        cursor = Cursor(ax, horizOn=True, vertOn=True, color='green', linewidth=1.0, useblit=True)
         fig.suptitle(f'Cell {current_cell}')
-        ax.plot(time, data[:,current_cell], linewidth=0.4, c='gray')
-        ax.set_xlim(0,show_time)
+        ax.plot(time, smoothed_data[:,current_cell], linewidth=0.4, c='gray')
+        ax.plot(time, binerized_data[:,current_cell], linewidth=0.2, c='r')
+        ax.set_xlim(CONFIG_DATA['INTERVAL_START_TIME_SECONDS'], CONFIG_DATA['INTERVAL_END_TIME_SECONDS'])
         ax.set_xlabel('time (s)')
         ax.set_ylabel('Cell signal (a.u.)')
         plt.show()
         current_cell = click_params['next_cell'] + 1
     plt.close()
-    np.savetxt(f'preprocessing/{EXPERIMENT_NAME}/first_responder_times.txt',
-               response_times, fmt='%.2lf')
 
-    valid_times = response_times[~np.isnan(response_times)]
-    fig=plt.figure(figsize=(PANEL_HEIGHT, PANEL_HEIGHT))
-    ax=fig.add_subplot(1,1,1)
-    ax.boxplot([valid_times],
-               showfliers=False, patch_artist=True,
-               medianprops=MEDIAN_PROPS, boxprops=BOX_PROPS)
-    ax.set_xticks([])
-    ax.set_xlabel('')
-    ax.set_ylabel('Response time (s)')
-
-    #pylint: disable-next=C0301
-    fig.savefig(f'preprocessing/{EXPERIMENT_NAME}/first_responder_times_boxplot.png',
-                dpi=300, bbox_inches='tight')
-    plt.close(fig)
-
-    print('First responder analysis finished successfully.')
-    return response_times
+    print('Cells excluded successfully.')
+    return excluded_cells

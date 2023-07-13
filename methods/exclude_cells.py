@@ -7,17 +7,18 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 from helper_functions.ploting_funcs import binarized_plot
+from helper_functions.exclude_cells import pick_exclude_cells
 
-def exclude_data(CONFIG_DATA: dict, smoothed_data: np.array,
-                 binarized_data: np.array, pos: np.array,
-                 response_times: np.array) -> tuple:
+
+def exclude_data(CONFIG_DATA: dict, smoothed_data: np.ndarray,
+                 binarized_data: np.ndarray, pos: np.ndarray,
+                 response_times: np.ndarray) -> tuple:
     """
     Excludes bad data
     """
     SAMPLING = CONFIG_DATA["SAMPLING"]
-    EXCLUDE_CELLS = CONFIG_DATA["EXCLUDE_CELLS"]
     EXPERIMENT_NAME = CONFIG_DATA["EXPERIMENT_NAME"]
-    excluded_cells = list(set(EXCLUDE_CELLS))
+    excluded_cells = pick_exclude_cells(CONFIG_DATA, smoothed_data, binarized_data)
 
     ###Calculates and sets necessary data and performs cell exclusions
     number_of_all_cells = len(smoothed_data[0])
@@ -65,4 +66,4 @@ def exclude_data(CONFIG_DATA: dict, smoothed_data: np.array,
 
     # pylint: disable-next=C0301
     print(f'Finished. {len(excluded_cells)} cells were excluded and {len(final_pos)} cells are remaining.')
-    return final_smoothed_data, final_binarized_data, final_pos, final_response_times
+    return final_smoothed_data, final_binarized_data, final_pos, final_response_times, excluded_cells

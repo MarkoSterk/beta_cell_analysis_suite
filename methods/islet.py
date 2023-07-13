@@ -134,7 +134,7 @@ class Islet:
 
         if self.binarized_traces is not None and self.smoothed_traces is not None:
             # pylint: disable-next=C0301
-            final_smoothed_data, final_binarized_data, final_pos, final_resp_times = exclude_data(self.configs,
+            final_smoothed_data, final_binarized_data, final_pos, final_resp_times, excluded_cells = exclude_data(self.configs,
                                                                 self.smoothed_traces,
                                                                 self.binarized_traces,
                                                                 self.positions, self.first_responder_times)
@@ -143,6 +143,10 @@ class Islet:
             self.final_binarized_traces = final_binarized_data
             self.final_coordinates = final_pos
             self.final_first_responder_times = final_resp_times
+            
+            self.configs["EXCLUDE_CELLS"] = excluded_cells
+            with open("configurations.txt", "w", encoding="utf-8") as outfile:
+                json.dump(self.configs, outfile, indent=2)
         else:
             print(self.perform_preprocess_steps_first_error)
 
