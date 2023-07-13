@@ -208,13 +208,16 @@ The above configurations make use of the "SLOPE_METHOD" method. If you want to u
 Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "binarized_traces"
 
 ## Exclude cells step configurations
-Add numbers (integers) into the "EXCLUDE_CELLS" list.
-Repeated numbers are ignored!\
-\
-Example:\
-EXCLUDE_CELLS = [0,8,92,17,94]
+Once you run the 5th step (cell exclusion) time series of each cell is plotted and displayed on the screen. Similar to the first responder analysis.
+After visual inspection you can do/click/select:
 
-Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "results"
+* right arraw: keeps the current cell
+* r or R: removes the current cells
+* left arrow: goes back to the previous cell (removes cell index from the exclusion list if it was already in it)
+* esc: exits entire app
+
+The excluded cells are added to the configurations.txt file in the field "EXCLUDE_CELLS". **DO NOT CHANGE THIS FIELD MANUALLY!!!**
+Output of this step is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "results"
 
 **ATTENTION**
 **This step is required (EVEN IF NO CELLS ARE EXCLUDED) and requires that all previous steps were completed.**
