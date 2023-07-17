@@ -8,6 +8,7 @@ Graphic cell exclusion
 import os
 import sys
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Cursor
 from methods.plot_configurations import PANEL_HEIGHT, MEDIAN_PROPS, BOX_PROPS
@@ -19,6 +20,7 @@ def pick_exclude_cells(CONFIG_DATA: dict,
     """
     For excluding cells
     """
+    matplotlib.use('TkAgg')
 
     current_cell = 0
 
@@ -73,13 +75,18 @@ def pick_exclude_cells(CONFIG_DATA: dict,
         fig = plt.figure()
         fig.set_tight_layout(False)
         fig.canvas.mpl_connect('key_press_event', lambda event: on_press(event, current_cell))
-        ax = fig.add_subplot(1,1,1)
         fig.suptitle(f'Cell {current_cell}')
-        ax.plot(time, smoothed_data[:,current_cell], linewidth=0.4, c='gray')
-        ax.plot(time, binerized_data[:,current_cell], linewidth=0.2, c='r')
-        ax.set_xlim(CONFIG_DATA['INTERVAL_START_TIME_SECONDS'], CONFIG_DATA['INTERVAL_END_TIME_SECONDS'])
-        ax.set_xlabel('time (s)')
-        ax.set_ylabel('Cell signal (a.u.)')
+        ax1 = fig.add_subplot(2,1,1)
+        ax1.plot(time, smoothed_data[:,current_cell], linewidth=0.4, c='gray')
+        ax1.plot(time, binerized_data[:,current_cell], linewidth=0.2, c='r')
+
+        ax2 = fig.add_subplot(2,1,2)
+        ax2.plot(time, smoothed_data[:,current_cell], linewidth=0.4, c='gray')
+        ax2.plot(time, binerized_data[:,current_cell], linewidth=0.2, c='r')
+        ax2.set_xlim(CONFIG_DATA['INTERVAL_START_TIME_SECONDS'], CONFIG_DATA['INTERVAL_END_TIME_SECONDS'])
+        ax2.set_xlabel('time (s)')
+        ax2.set_ylabel('Cell signal (a.u.)')
+        plt.get_current_fig_manager().window.wm_geometry("+10+10") # move the window
         plt.show()
         current_cell = click_params['next_cell'] + 1
     plt.close()

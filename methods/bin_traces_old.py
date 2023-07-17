@@ -135,21 +135,23 @@ def signal_binarization(CONFIG_DATA: dict, data: np.ndarray) -> np.ndarray:
     for rep in range(cell_num):
         ii = 0
         nobin = 0
+        binsig[:,rep] = np.amin(data[:,rep])
+        vmax = np.amax(data[:,rep])
         for i in range(ts_length-PB-2):
             # print rep,i,ii,tact[rep][ii],len(tact[rep])
             if ((tact[rep][ii] <= i <= tfin[rep][ii]) and nobin==0):
-                binsig[i][rep] = 1
+                binsig[i,rep] = vmax
             if ((i > tmin[rep][ii]) and (ii < len(tact[rep])-1)):
                 ii += 1
             if ((i > tact[rep][ii]) and (ii == (len(tact[rep])))):
                 nobin = 1
 
-    for rep in range(cell_num):
-        data[:, rep] = (data[:, rep]-min(data[:, rep])) / \
-            (max(data[:, rep])-min(data[:, rep]))
+    # for rep in range(cell_num):
+    #     data[:, rep] = (data[:, rep]-min(data[:, rep])) / \
+    #         (max(data[:, rep])-min(data[:, rep]))
 
     for i in range(cell_num):
-        print_progress_bar(i+1, cell_num, f'Ploting binarized time series {rep} ')
+        print_progress_bar(i+1, cell_num, f'Ploting binarized time series {i} ')
         fig, (ax1, ax2) = plt.subplots(2, 1)
         ax1.set_title(f'Cell {i}')
         ax1.plot(time, data[:, i], c='dimgray', linewidth=0.5)
@@ -158,6 +160,7 @@ def signal_binarization(CONFIG_DATA: dict, data: np.ndarray) -> np.ndarray:
 
         ax2.plot(time, data[:, i], c='dimgray', linewidth=0.5)
         ax2.plot(time, binsig[:, i], c='red', linewidth=0.2)
+        ax2.axhline(amp_faktor*varsig[i], c='blue', linewidth=0.2)
         ax2.set_xlabel('time (s)')
         ax2.set_ylabel('Binarized signal')
         ax2.set_xlim(start_time_seconds, end_time_seconds)

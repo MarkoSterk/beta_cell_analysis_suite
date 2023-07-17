@@ -61,9 +61,13 @@ def exclude_data(CONFIG_DATA: dict, smoothed_data: np.ndarray,
                 dpi=200,bbox_inches = 'tight')
     plt.close(fig)
 
+    np.savetxt(f'preprocessing/{EXPERIMENT_NAME}/results/excluded_cells.txt',
+               excluded_cells, fmt='%d')
+
     if response_times is None:
         final_response_times = None
 
     # pylint: disable-next=C0301
     print(f'Finished. {len(excluded_cells)} cells were excluded and {len(final_pos)} cells are remaining.')
-    return final_smoothed_data, final_binarized_data, final_pos, final_response_times, excluded_cells
+    print('WARNING: Set new time interval for further analysis!')
+    return final_smoothed_data, final_binarized_data, final_pos, final_response_times

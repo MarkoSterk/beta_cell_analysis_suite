@@ -37,7 +37,6 @@ SAMPLE_CONFIG_DATA = {
             "REL_HEIGHT": 0.5
         }
     },
-    "EXCLUDE_CELLS": [],
     "ANALYSIS_TYPE": "correlation",
     "NETWORK_METHOD": "fixed_kavg",
     "CONNECTIVITY_LEVEL": 8.0,

@@ -7,6 +7,7 @@ Wave detection
 import os
 import numpy as np
 from scipy.spatial import distance
+from scipy.stats import rankdata
 import matplotlib.pyplot as plt
 from helper_functions.utility_functions import print_progress_bar
 from methods import plot_configurations
@@ -102,14 +103,14 @@ def wave_characterization(CONFIG_DATA: dict, act_sig: np.array):
     file = open(f'{folder_path}/events_parameters.txt', 'w', encoding='utf-8')
     print('start_frame end_frame duration event_number act_cell_num rel_act_cell_num', file=file)
 
-    for event in events:
+    for kkk, event in enumerate(events):
         frames, cells = np.where(act_sig==event)
         act_cell_num = len(np.unique(cells))
         start_frame = np.amin(frames)
         end_frame = np.amax(frames)
         duration = end_frame - start_frame
         if(act_cell_num/cell_num > SIZE_TH):
-            print(start_frame, end_frame, duration, event, act_cell_num, act_cell_num/cell_num, file=file)
+            print(start_frame, end_frame, duration, kkk+1, act_cell_num, act_cell_num/cell_num, file=file)
             characteristics = np.vstack((characteristics, np.array([start_frame, end_frame, duration, event, act_cell_num, act_cell_num/cell_num])))
     file.close()
     return characteristics
@@ -130,28 +131,34 @@ def wave_raster_plot(CONFIG_DATA: dict, act_sig: np.array, characteristics: np.a
         start_time = int(characteristics[kkk,0])
         end_time = int(characteristics[kkk,1])
         event_num = int(characteristics[kkk,3])
-
+        rnd_num = np.random.randint(1, 600)
         used = []
         for i in range(start_time, end_time+1, 1):
             for j in range(len(act_sig[0])):
                 if act_sig[i,j]==event_num and j not in used:
-                    rast_plot.append((((start_time+i)/sampling), j, event_num, characteristics[kkk,4]))
+                    rast_plot.append((((i)/sampling), ((i-start_time)/sampling), 0, j, event_num, rnd_num, characteristics[kkk,4]))
                     used.append(j)
 
     rast_plot = np.array(rast_plot, float)
+    all_event_numbers = np.unique(rast_plot[:,4])
+    for event_num in all_event_numbers:
+        act_times = rast_plot[np.where(rast_plot[:,4]==event_num)][:,1] #act_delays
+        ranks = rankdata(act_times, 'min')
+        rast_plot[np.where(rast_plot[:,4]==event_num)[0],2] = ranks
+        
     file = open(f'{folder_path}/raster_plot.txt', 'w', encoding='utf-8')
-    print('start_time cell event_num rel_event_size', file=file)
+    print('start_time act_delay act_rank cell event_num rnd_event_num rel_event_size', file=file)
     for i in range(len(rast_plot)):
-        print(rast_plot[i,0], rast_plot[i,1], rast_plot[i,2], rast_plot[i,3], file=file)
+        print(rast_plot[i,0], rast_plot[i,1], rast_plot[i,2], int(rast_plot[i,3]), rast_plot[i,4], rast_plot[i,5], rast_plot[i,6], file=file)
     file.close()
 
     cmap=plt.cm.get_cmap('jet_r')
-    vmin=np.amin(rast_plot[:,2])
-    vmax=np.amax(rast_plot[:,2])
+    vmin=np.amin(rast_plot[:,5])
+    vmax=np.amax(rast_plot[:,5])
 
     fig=plt.figure(figsize=(8,4))
     ax=fig.add_subplot(111)
-    ax.scatter(rast_plot[:,0], rast_plot[:,1], s=0.5, c=rast_plot[:,2],
+    ax.scatter(rast_plot[:,0], rast_plot[:,3], s=0.5, c=rast_plot[:,5],
                marker='o', vmin=vmin, vmax=vmax, cmap=cmap)
     ax.set_xlabel('Time (s)')
     ax.set_ylabel('Cell $i$')
