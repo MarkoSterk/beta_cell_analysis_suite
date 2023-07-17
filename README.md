@@ -217,12 +217,12 @@ After visual inspection you can do/click/select:
 * left arrow: goes back to the previous cell (removes cell index from the exclusion list if it was already in it)
 * esc: exits entire app
 
-The excluded cells are added to the configurations.txt file in the field "EXCLUDE_CELLS". **DO NOT CHANGE THIS FIELD MANUALLY!!!**
+The excluded cells are added to the excluded_cells.txt file in the preprocessing/{EXPERIMENT_NAME}/results folder.
 
-Output of this step is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "results"
+Output files of this step is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "results"
 
 **ATTENTION**
-**This step is required (EVEN IF NO CELLS ARE EXCLUDED) and requires that all previous steps were completed.**
+**This step is required (EVEN IF NO CELLS ARE EXCLUDED) and requires that all previous steps are completed.**
 **Exception to this requirement is the first responder analysis which is not required.**
 
 The output if this script is used for further cell/network analysis.
