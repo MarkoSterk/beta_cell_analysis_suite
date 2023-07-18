@@ -18,7 +18,12 @@ def exclude_data(CONFIG_DATA: dict, smoothed_data: np.ndarray,
     """
     SAMPLING = CONFIG_DATA["SAMPLING"]
     EXPERIMENT_NAME = CONFIG_DATA["EXPERIMENT_NAME"]
-    excluded_cells = pick_exclude_cells(CONFIG_DATA, smoothed_data, binarized_data)
+    use_file = input('Use existing excluded cells file? (yes/no): ')
+    excluded_cells = None
+    if(use_file.lower() == 'yes'):
+        excluded_cells = list(np.loadtxt(f'preprocessing/{EXPERIMENT_NAME}/excluded_cells.txt'))
+    else:
+        excluded_cells = pick_exclude_cells(CONFIG_DATA, smoothed_data, binarized_data)
 
     ###Calculates and sets necessary data and performs cell exclusions
     number_of_all_cells = len(smoothed_data[0])
@@ -61,7 +66,7 @@ def exclude_data(CONFIG_DATA: dict, smoothed_data: np.ndarray,
                 dpi=200,bbox_inches = 'tight')
     plt.close(fig)
 
-    np.savetxt(f'preprocessing/{EXPERIMENT_NAME}/results/excluded_cells.txt',
+    np.savetxt(f'preprocessing/{EXPERIMENT_NAME}/excluded_cells.txt',
                excluded_cells, fmt='%d')
 
     if response_times is None:
