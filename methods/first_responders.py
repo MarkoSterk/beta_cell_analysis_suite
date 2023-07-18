@@ -92,6 +92,7 @@ def first_responder_data(CONFIG_DATA: dict, data: np.array):
         ax.set_xlim(0,show_time)
         ax.set_xlabel('time (s)')
         ax.set_ylabel('Cell signal (a.u.)')
+        plt.get_current_fig_manager().window.wm_geometry("+10+10") # move the window
         plt.show()
         current_cell = click_params['next_cell'] + 1
     plt.close()
