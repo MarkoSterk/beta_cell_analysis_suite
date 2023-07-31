@@ -208,8 +208,8 @@ The above configurations make use of the "SLOPE_METHOD" method. If you want to u
 Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "binarized_traces"
 
 ## Exclude cells step configurations
-Once you run the 5th step (cell exclusion) time series of each cell is plotted and displayed on the screen. Similar to the first responder analysis.
-The time series are plotet between the provided "INTERVAL_START_TIME_SECONDS" and "INTERVAL_END_TIME_SECONDS" time points. You can pan across the plot with the panning tool.
+In this step you can either exclude time series/cells visually or from an existing .txt file with cell indecies.
+In the former case, the time series are plotet between the provided "INTERVAL_START_TIME_SECONDS" and "INTERVAL_END_TIME_SECONDS" time points. You can pan across the plot with the panning tool.
 After visual inspection you can do/click/select:
 
 * right arraw: keeps the current cell
@@ -218,6 +218,8 @@ After visual inspection you can do/click/select:
 * esc: exits entire app
 
 The excluded cells are added to the excluded_cells.txt file in the preprocessing/{EXPERIMENT_NAME}/results folder.
+
+If you choose to exclude cells from an existing file you have to put the file in the same folder as it would otherwise be created in ("preprocessing/{EXPERIMENT_NAME}") with the name "excluded_cells.txt". The file is loaded and only the sorted list of unique elements is used in the exclusion process. Therefore, if you are analyzing the same recording in different intervals, you can simply copy the excluded cells list of each interval into a single file and the program will create the final list of unique cell indecies that were excluded.
 
 Output files of this step is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "results"
 
