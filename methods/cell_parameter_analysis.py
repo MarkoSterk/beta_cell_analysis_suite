@@ -97,8 +97,8 @@ def cell_activity_data(CONFIG_DATA: dict, binarized_time_series: np.array):
 
 
     number_of_panels = len(cell_data.keys())
-    COLS = 3
-    rows = int(number_of_panels/3)+1
+    COLS = number_of_panels
+    rows = 1
     fig = plt.figure(figsize=(COLS*PANEL_HEIGHT, rows*PANEL_HEIGHT))
     axes = [fig.add_subplot(rows, COLS, int(i+1)) for i in range(COLS*rows) if i < number_of_panels]
     for (key, value), ax in zip(cell_data.items(), axes):
