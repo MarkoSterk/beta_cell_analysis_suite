@@ -20,8 +20,11 @@ def exclude_data(CONFIG_DATA: dict, smoothed_data: np.ndarray,
     EXPERIMENT_NAME = CONFIG_DATA["EXPERIMENT_NAME"]
     use_file = input('Use existing excluded cells file? (yes/no): ')
     excluded_cells = None
-    if(use_file.lower() == 'yes'):
+    if use_file.lower() == 'yes':
         excluded_cells = list(np.loadtxt(f'preprocessing/{EXPERIMENT_NAME}/excluded_cells.txt'))
+        excluded_cells = set(excluded_cells) ##returns unordered collection of unique elements
+        excluded_cells = list(excluded_cells) ##turns set to list type
+        excluded_cells.sort() ##orders list of unique elements in ascending order
     else:
         excluded_cells = pick_exclude_cells(CONFIG_DATA, smoothed_data, binarized_data)
 
