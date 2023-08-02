@@ -16,11 +16,11 @@ def binarize_data(CONFIG_DATA: dict, data: np.array) -> np.array:
     """
     Binarizes time series data
     """
-    AMP_FACT = CONFIG_DATA['AMP_FACT']
-    INTERPEAK_DISTANCE = CONFIG_DATA['INTERPEAK_DISTANCE']
-    PEAK_WIDTH = CONFIG_DATA['PEAK_WIDTH']
-    PROMINENCE = CONFIG_DATA['PROMINENCE']
-    REL_HEIGHT = CONFIG_DATA['REL_HEIGHT']
+    AMP_FACT = CONFIG_DATA['BINARIZATION']['PROMINENCE_METHOD']['AMP_FACT']
+    INTERPEAK_DISTANCE = CONFIG_DATA['BINARIZATION']['PROMINENCE_METHOD']['INTERPEAK_DISTANCE']
+    PEAK_WIDTH = CONFIG_DATA['BINARIZATION']['PROMINENCE_METHOD']['PEAK_WIDTH']
+    PROMINENCE = CONFIG_DATA['BINARIZATION']['PROMINENCE_METHOD']['PROMINENCE']
+    REL_HEIGHT = CONFIG_DATA['BINARIZATION']['PROMINENCE_METHOD']['REL_HEIGHT']
     INTERVAL_START_TIME_SECONDS = CONFIG_DATA['INTERVAL_START_TIME_SECONDS']
     INTERVAL_END_TIME_SECONDS = CONFIG_DATA['INTERVAL_END_TIME_SECONDS']
     SAMPLING = CONFIG_DATA['SAMPLING']
@@ -88,7 +88,7 @@ def binarize_data(CONFIG_DATA: dict, data: np.array) -> np.array:
         fig, (ax1, ax2) = plt.subplots(2, 1)
         ax1.set_title(f'Cell {i}')
         ax1.plot(time, data[:, i], c='dimgray', linewidth=0.5)
-        ax2.plot(time, bin_signal[:, i], c='red', linewidth=0.2)
+        ax1.plot(time, bin_signal[:, i], c='red', linewidth=0.2)
         ax1.set_ylabel('Signal (a.u.)')
 
         ax2.plot(time, data[:, i], c='dimgray', linewidth=0.5)
