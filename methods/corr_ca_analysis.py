@@ -79,7 +79,7 @@ def corr_ca_analysis_data(CONFIG_DATA: dict, time_series: np.array, pos: np.arra
     elif analysis_type == 'coactivity':
         corr_matrix = coactivity(time_series)
     else:
-        raise BaseException('Correlation was not calculated. Check Analysis type (analysis_type).')
+        raise BaseException('Correlation/coactivity was not calculated. Check Analysis type (analysis_type).')
 
     if not os.path.exists(f'results/{EXPERIMENT_NAME}/{analysis_type}_analysis/{network_method}'):
         os.makedirs(f'results/{EXPERIMENT_NAME}/{analysis_type}_analysis/{network_method}')
@@ -93,7 +93,8 @@ def corr_ca_analysis_data(CONFIG_DATA: dict, time_series: np.array, pos: np.arra
         raise BaseException('Please select a valid network construction method (network_method).')
 
     G = construct_graph_from_conn_mat(conn_mat)
-
+    avg_corr_label = 'avgCorr' if analysis_type == 'correlation' else 'avgCA'
+    avg_corr = np.average(corr_matrix)
     avg_eff = efficiency(G)
     avg_k = avg_deg(G)
     avg_c = avg_cluss(G)
@@ -126,9 +127,9 @@ def corr_ca_analysis_data(CONFIG_DATA: dict, time_series: np.array, pos: np.arra
     # pylint: disable-next=C0301
     with open(f'results/{EXPERIMENT_NAME}/{analysis_type}_analysis/{network_method}/average_{analysis_type}_network_parameters.txt',
             'w', encoding='utf-8') as file:
-        print('AvgEff AvgK AvgC Smax SwCoef Assort CommNum Q', file=file)
+        print(f'{avg_corr_label} AvgEff AvgK AvgC Smax SwCoef Assort CommNum Q', file=file)
         # pylint: disable-next=C0301
-        print(f'{avg_eff:.2f} {avg_k:.2f} {avg_c:.2f} {s_max:.2f} {sw_coef:.2f} {assortativity:.2f} {num_comm/cell_num:.2f} {Q:.2f}',
+        print(f'{avg_corr:.2f} {avg_eff:.2f} {avg_k:.2f} {avg_c:.2f} {s_max:.2f} {sw_coef:.2f} {assortativity:.2f} {num_comm/cell_num:.2f} {Q:.2f}',
             file=file)
 
     clustering_i = clustering(G)
@@ -154,6 +155,22 @@ def corr_ca_analysis_data(CONFIG_DATA: dict, time_series: np.array, pos: np.arra
             print(f'{k_i} {rel_k_i:.2f} {clust_i:.2f} {hindex_i} {cls_cent_i:.2f} {k_cent_i:.2f} {btw_cent_i:.2f} {nn_deg_i:.2f} {comm_i}',
                 file=file)
 
+    fig = plt.figure(figsize=(PANEL_WIDTH, PANEL_WIDTH))
+    ax = fig.add_subplot(1,1,1)
+    ax.imshow(corr_matrix, cmap=plt.get_cmap('jet'),
+              vmin=np.amin(corr_matrix), vmax=np.amax(corr_matrix),
+              origin='lower')
+    ax.set_xlabel('Cell $i$')
+    ax.set_ylabel('Cell $j$')
+    ax.set_title(f'{analysis_type} matrix')
+    # pylint: disable-next=C0301
+    fig.savefig(f'results/{EXPERIMENT_NAME}/{analysis_type}_analysis/{network_method}/{analysis_type}_mat.png',
+                dpi=600, bbox_inches='tight', pad_inches=0.01)
+    plt.close(fig)
+
+    # pylint: disable-next=C0301
+    np.savetxt(f'results/{EXPERIMENT_NAME}/{analysis_type}_analysis/{network_method}/{analysis_type}_mat.txt',
+               corr_matrix, fmt='%.3lf')
     # pylint: disable-next=C0301
     np.savetxt(f'results/{EXPERIMENT_NAME}/{analysis_type}_analysis/{network_method}/{analysis_type}_conn_mat.txt',
                conn_mat, fmt='%d')
