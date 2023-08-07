@@ -8,7 +8,7 @@ Analysis of all cellular parameters
 # pylint: disable=W0611
 # pylint: disable=C0103
 # pylint: disable=R0914
-
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 from helper_functions.cell_parameters import find_clusters
@@ -23,9 +23,10 @@ def cell_activity_data(CONFIG_DATA: dict, binarized_time_series: np.array):
     INTERVAL_END_TIME_SECONDS = CONFIG_DATA["INTERVAL_END_TIME_SECONDS"]
     SAMPLING = CONFIG_DATA["SAMPLING"]
     EXPERIMENT_NAME = CONFIG_DATA["EXPERIMENT_NAME"]
-    # Loads all data
-    # binarized_time_series = np.loadtxt(
-    #     f'preprocessing/{EXPERIMENT_NAME}/results/final_binarized_data.txt')
+
+    if not os.path.exists(f'results/{EXPERIMENT_NAME}'):
+        os.makedirs(f'results/{EXPERIMENT_NAME}')
+
     sampling = SAMPLING
 
     interval_start_time_frames = int(INTERVAL_START_TIME_SECONDS*sampling)
