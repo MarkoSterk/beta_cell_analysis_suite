@@ -184,6 +184,10 @@ def catch_error():
             except Exception as err:
                 print(f"Unexpected error encountered in step {func.__name__.upper()}")
                 print(f"ERROR MESSAGE: {err}")
+                print("""If you wish you can report the issue on:
+                      https://github.com/MarkoSterk/beta_cell_analysis_suite/issues/new
+                      If you do so, please include the stack trace.
+                      """)
                 cmd = input("Print entire stack trace (y/n)?: ")
                 if cmd in ["y", "yes"]:
                     traceback.print_exc()
