@@ -169,3 +169,21 @@ def print_progress_bar(iteration: int, total: int, prefix: str = '', suffix: str
     # Print New Line on Complete
     if iteration == total:
         print('\n')
+
+
+##try-except "watcher" function
+def catch_error():
+    """
+    Catches all expected and unexpected errors in the app.
+    """
+    def decorate(func):
+        def applicator(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)
+            except Exception as err:
+                print(f"Unexpected error encountered in step {func.__name__.upper()}")
+                print(f"ERROR MESSAGE: {err}")
+                print("\n")
+                return None
+        return applicator
+    return decorate

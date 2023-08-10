@@ -16,7 +16,7 @@ from methods.cell_parameter_analysis import cell_activity_data
 from methods.first_responders import first_responder_data
 from methods.wave_detection import wave_detection, wave_characterization, wave_raster_plot
 from helper_functions.utility_functions import (save_config_data, create_sample_config,
-                                                load_existing_data, validate_config_data)
+                                                load_existing_data, validate_config_data, catch_error)
 
 # pylint: disable-next=R0902
 class Islet:
@@ -58,6 +58,7 @@ class Islet:
         self.wave_characteristics: np.array = None
         self.wave_raster_plot: np.array = None
 
+    @catch_error()
     def load_configs(self):
         """
         Loads/reloads config data
@@ -74,18 +75,21 @@ class Islet:
         except FileNotFoundError:
             self.create_and_load_sample_config_data()
 
+    @catch_error()
     def create_and_load_sample_config_data(self):
         """
         Calls create sample config function
         """
         self.configs = create_sample_config()
 
+    @catch_error()
     def save_configs_to_data(self):
         """
         Calls save config function
         """
         save_config_data(self.configs)
 
+    @catch_error()
     def filter_traces(self):
         """
         Calls filter function with current configs
@@ -97,6 +101,7 @@ class Islet:
         else:
             print(self.raw_data_missing_error)
 
+    @catch_error()
     def smooth_traces(self):
         """
         Calls smoothing function with current configs
@@ -107,6 +112,7 @@ class Islet:
         else:
             print('Please perform the filtration step first!')
 
+    @catch_error()
     def binarize_traces(self):
         """
         Calls binarization function
@@ -127,6 +133,7 @@ class Islet:
         else:
             print('Please perform the smoothing step first!')
 
+    @catch_error()
     def exclude_traces(self):
         """
         Calls exclude function
@@ -147,6 +154,7 @@ class Islet:
         else:
             print(self.perform_preprocess_steps_first_error)
 
+    @catch_error()
     def corr_coact_analysis(self):
         """
         Calls corr/coact network analysis
@@ -158,6 +166,7 @@ class Islet:
         else:
             print(self.perform_preprocess_steps_first_error)
 
+    @catch_error()
     def cell_activity_analysis(self):
         """
         Calls call activity parameter data analysis
@@ -167,6 +176,7 @@ class Islet:
         else:
             print(self.perform_preprocess_steps_first_error)
 
+    @catch_error()
     def first_responder_analysis(self):
         """
         Calls first responder analysis
@@ -176,6 +186,7 @@ class Islet:
         else:
             print(self.raw_data_missing_error)
 
+    @catch_error()
     def wave_anaylsis(self):
         """
         Performs wave detection analysis
@@ -195,6 +206,7 @@ class Islet:
         else:
             print('Please perform wave detection step first.')
 
+    @catch_error()
     def reset_app(self):
         """
         Resets the app for new analysis
@@ -214,6 +226,7 @@ class Islet:
         self.wave_characteristics = None
         self.wave_raster_plot = None
 
+    @catch_error()
     def load_data(self):
         """
         Loads raw data from existing raw data folder
@@ -252,6 +265,7 @@ class Islet:
         print(preprocess_data_msg)
         print('\n')
 
+    @catch_error()
     def bundle_data(self):
         """
         Creates a .zip bundle with all preprocessing results and final results available
