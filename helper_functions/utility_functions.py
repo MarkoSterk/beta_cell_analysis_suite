@@ -6,6 +6,7 @@ import os
 import json
 import numpy as np
 from copy import deepcopy
+import traceback
 
 SAMPLE_CONFIG_DATA = {
     "EXPERIMENT_NAME": "2023_01_03_GLC9_MS_SER1",
@@ -183,6 +184,9 @@ def catch_error():
             except Exception as err:
                 print(f"Unexpected error encountered in step {func.__name__.upper()}")
                 print(f"ERROR MESSAGE: {err}")
+                cmd = input("Print entire stack trace (y/n)?: ")
+                if cmd in ["y", "yes"]:
+                    traceback.print_exc()
                 print("\n")
                 return None
         return applicator
