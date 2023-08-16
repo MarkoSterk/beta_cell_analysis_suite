@@ -139,12 +139,12 @@ def signal_binarization(CONFIG_DATA: dict, data: np.ndarray) -> np.ndarray:
         nobin = 0
         for i in range(ts_length-PB-2):
             # print rep,i,ii,tact[rep][ii],len(tact[rep])
-            if ((tact[rep][ii] <= i <= tfin[rep][ii]) and nobin==0):
-                binsig[i,rep] = 1
-            if ((i > tmin[rep][ii]) and (ii < len(tact[rep])-1)):
-                ii += 1
-            if ((i > tact[rep][ii]) and (ii == (len(tact[rep])))):
-                nobin = 1
+            if ( (tact[rep][ii]<=i<=tfin[rep][ii]) and (nobin==0) ):
+                binsig[i][rep]=1
+            if ((i>tmin[rep][ii]) and (ii<len(tact[rep])-1) ):
+                ii+=1
+            if ( (i>tact[rep][ii]) and (ii==(len(tact[rep]))) ):
+                nobin=1
 
     for rep in range(cell_num):
         data[:, rep] = (data[:, rep]-min(data[:, rep])) / \
