@@ -118,15 +118,6 @@ def corr_ca_analysis_data(CONFIG_DATA: dict, time_series: np.array, pos: np.arra
             color = matplotlib.colors.rgb2hex(rgb)
             node_colors.append(color)
 
-    fig = plt.figure(figsize=(PANEL_WIDTH, PANEL_WIDTH))
-    ax = fig.add_subplot(1,1,1)
-    nx.draw(G, pos=pos, node_size=node_sizes, node_color=node_colors,
-            edge_color='dimgray', width=0.75, ax=ax)
-    # pylint: disable-next=C0301
-    fig.savefig(f'results/{EXPERIMENT_NAME}/{analysis_type}_analysis/{network_method}/{analysis_type}_graph.png', 
-                dpi=600, bbox_inches='tight', pad_inches=0.01)
-    plt.close(fig)
-
     ###Saves average correlation network data
     # pylint: disable-next=C0301
     with open(f'results/{EXPERIMENT_NAME}/{analysis_type}_analysis/{network_method}/average_{analysis_type}_network_parameters.txt',
@@ -135,6 +126,35 @@ def corr_ca_analysis_data(CONFIG_DATA: dict, time_series: np.array, pos: np.arra
         # pylint: disable-next=C0301
         print(f'{conn_th:.3f} {avg_corr:.3f} {avg_eff:.3f} {avg_k:.3f} {avg_c:.3f} {s_max:.3f} {sw_coef:.3f} {assortativity:.3f} {num_comm/cell_num:.3f} {Q:.3f}',
             file=file)
+    
+    norm_pos = np.zeros(pos.shape, float)
+    xmin, xmax = np.amin(pos[:,0]), np.amax(pos[:,0])
+    ymin, ymax = np.amin(pos[:,1]), np.amax(pos[:,1])
+    norm_pos[:,0] = (pos[:,0]-xmin)/(xmax-xmin)
+    norm_pos[:,1] = (pos[:,1]-ymin)/(ymax-ymin)
+    fig = plt.figure(figsize=(PANEL_WIDTH, PANEL_WIDTH))
+    ax = fig.add_subplot(1,1,1)
+    nx.draw(G, pos=norm_pos, node_size=node_sizes, node_color=node_colors,
+            edge_color='dimgray', width=0.75, ax=ax)
+    ax.text(-0.1, 1.3, f'ConnTh = {conn_th:.3f}')
+    ax.text(-0.1, 1.2, f'{avg_corr_label} = {avg_corr:.3f}')
+    ax.text(-0.1, 1.1, f'avgEff = {avg_eff:.3f}')
+    
+    ax.text(0.35, 1.3, f'avgK = {avg_k:.3f}')
+    ax.text(0.35, 1.2, f'Cavg = {avg_c:.3f}')
+    ax.text(0.35, 1.1, f'Smax = {s_max:.3f}')
+    
+    ax.text(0.8, 1.3, f'SW = {sw_coef:.3f}')
+    ax.text(0.8, 1.2, f'Assort. = {assortativity:.3f}')
+    ax.text(0.8, 1.1, f'Comm = {num_comm/cell_num:.3f}')
+    ax.text(0.8, 1.0, f'Q = {Q:.3f}')
+    
+    ax.set_xlim(-0.1, 1.1)
+    ax.set_ylim(-0.1, 1.1)
+    # pylint: disable-next=C0301
+    fig.savefig(f'results/{EXPERIMENT_NAME}/{analysis_type}_analysis/{network_method}/{analysis_type}_graph.png',
+                dpi=600, bbox_inches='tight', pad_inches=0.01)
+    plt.close(fig)
 
     clustering_i = clustering(G)
     closeness_centrality_i = nx.closeness_centrality(G)
