@@ -14,7 +14,7 @@ from methods.plot_configurations import PANEL_HEIGHT, MEDIAN_PROPS, BOX_PROPS
 from methods import plot_configurations
 
 
-def first_responder_data(CONFIG_DATA: dict, data: np.array):
+def first_responder_data(CONFIG_DATA: dict, data: np.ndarray):
     """
     For determining first responder cells
     """
@@ -22,7 +22,11 @@ def first_responder_data(CONFIG_DATA: dict, data: np.array):
     EXPERIMENT_NAME = CONFIG_DATA['EXPERIMENT_NAME']
     SAMPLING = CONFIG_DATA['SAMPLING']
 
+    norm_data = np.zeros(data.shape, float)
     cell_num = len(data[0])
+    for i in range(cell_num):
+        vmin, vmax = np.amin(data[:,i]), np.amax(data[:,i])
+        norm_data[:,i] = (data[:,i]-vmin)/(vmax-vmin)
     time = [i/SAMPLING for i in range(len(data))]
     show_time = time[int(0.5*len(time))]
 
@@ -88,10 +92,11 @@ def first_responder_data(CONFIG_DATA: dict, data: np.array):
         # pylint: disable-next=W0612
         cursor = Cursor(ax, horizOn=True, vertOn=True, color='green', linewidth=1.0, useblit=True)
         fig.suptitle(f'Cell {current_cell}')
-        ax.plot(time, data[:,current_cell], linewidth=0.4, c='gray')
+        ax.plot(time, norm_data[:,current_cell], linewidth=0.4, c='gray')
         ax.set_xlim(0,show_time)
         ax.set_xlabel('time (s)')
         ax.set_ylabel('Cell signal (a.u.)')
+        ax.set_ylim(-0.1, 1.1)
         plt.get_current_fig_manager().window.wm_geometry("+10+10") # move the window
         plt.show()
         current_cell = click_params['next_cell'] + 1
