@@ -11,6 +11,7 @@ import matplotlib
 import numpy as np
 import matplotlib.cm as cm
 import matplotlib.pyplot as plt
+import seaborn as sns
 import networkx as nx
 from networkx.algorithms import clustering
 from helper_functions.network_funcs import (fixed_kavg_conn_mat,
@@ -23,7 +24,7 @@ from helper_functions.network_funcs import (fixed_kavg_conn_mat,
                                             small_world_coefficient,
                                             commstructure, calculate_hindex)
 from helper_functions.coactivity import coactivity
-from methods.plot_configurations import PANEL_WIDTH
+from methods.plot_configurations import PANEL_WIDTH, PANEL_HEIGHT
 from methods import plot_configurations
 
 def corr_ca_analysis_data(CONFIG_DATA: dict, time_series: np.array, pos: np.array):
@@ -168,6 +169,15 @@ def corr_ca_analysis_data(CONFIG_DATA: dict, time_series: np.array, pos: np.arra
     ax.set_title(f'{analysis_type} matrix')
     # pylint: disable-next=C0301
     fig.savefig(f'results/{EXPERIMENT_NAME}/{analysis_type}_analysis/{network_method}/{analysis_type}_mat.png',
+                dpi=600, bbox_inches='tight', pad_inches=0.01)
+    plt.close(fig)
+
+    fig = plt.figure(figsize=(PANEL_HEIGHT, PANEL_HEIGHT))
+    ax = fig.add_subplot(1,1,1)
+    sns.swarmplot(data=np.array([G.degree(kkk) for kkk in range(cell_num)]), orient = 'v', size=2, ax=ax)
+    ax.set_xticks([])
+    ax.set_title('Node degree distribution')
+    fig.savefig(f'results/{EXPERIMENT_NAME}/{analysis_type}_analysis/{network_method}/swarmplot_degree_dist.png',
                 dpi=600, bbox_inches='tight', pad_inches=0.01)
     plt.close(fig)
 
