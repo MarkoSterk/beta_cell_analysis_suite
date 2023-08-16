@@ -6,10 +6,10 @@ Excludes all selected traces from the data set
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import colors, gridspec
+from matplotlib import gridspec
 from helper_functions.ploting_funcs import binarized_plot
 from helper_functions.exclude_cells import pick_exclude_cells
-from methods.plot_configurations import PANEL_WIDTH, PANEL_HEIGHT
+from methods.plot_configurations import PANEL_WIDTH
 
 
 def exclude_data(CONFIG_DATA: dict, smoothed_data: np.ndarray,
