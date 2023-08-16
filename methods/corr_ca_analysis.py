@@ -129,7 +129,7 @@ def corr_ca_analysis_data(CONFIG_DATA: dict, time_series: np.array, pos: np.arra
             'w', encoding='utf-8') as file:
         print(f'{avg_corr_label} AvgEff AvgK AvgC Smax SwCoef Assort CommNum Q', file=file)
         # pylint: disable-next=C0301
-        print(f'{avg_corr:.2f} {avg_eff:.2f} {avg_k:.2f} {avg_c:.2f} {s_max:.2f} {sw_coef:.2f} {assortativity:.2f} {num_comm/cell_num:.2f} {Q:.2f}',
+        print(f'{avg_corr:.3f} {avg_eff:.3f} {avg_k:.3f} {avg_c:.3f} {s_max:.3f} {sw_coef:.3f} {assortativity:.3f} {num_comm/cell_num:.3f} {Q:.3f}',
             file=file)
 
     clustering_i = clustering(G)
@@ -152,7 +152,7 @@ def corr_ca_analysis_data(CONFIG_DATA: dict, time_series: np.array, pos: np.arra
             nn_deg_i = avg_nn_degree_i[i]
             comm_i = communities[i]
             # pylint: disable-next=C0301
-            print(f'{k_i} {rel_k_i:.2f} {clust_i:.2f} {hindex_i} {cls_cent_i:.2f} {k_cent_i:.2f} {btw_cent_i:.2f} {nn_deg_i:.2f} {comm_i}',
+            print(f'{k_i} {rel_k_i:.3f} {clust_i:.3f} {hindex_i} {cls_cent_i:.3f} {k_cent_i:.3f} {btw_cent_i:.3f} {nn_deg_i:.3f} {comm_i}',
                 file=file)
 
     fig = plt.figure(figsize=(PANEL_WIDTH, PANEL_WIDTH))
