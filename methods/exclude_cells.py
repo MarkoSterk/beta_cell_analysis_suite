@@ -6,8 +6,10 @@ Excludes all selected traces from the data set
 import os
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib import colors, gridspec
 from helper_functions.ploting_funcs import binarized_plot
 from helper_functions.exclude_cells import pick_exclude_cells
+from methods.plot_configurations import PANEL_WIDTH, PANEL_HEIGHT
 
 
 def exclude_data(CONFIG_DATA: dict, smoothed_data: np.ndarray,
@@ -48,6 +50,26 @@ def exclude_data(CONFIG_DATA: dict, smoothed_data: np.ndarray,
         final_response_times[:] = response_times[remaining_cell_indexes]
 
     time = [i/SAMPLING for i in range(len(final_binarized_data))]
+    
+    fig = plt.figure(figsize=(PANEL_WIDTH, 1.5*PANEL_WIDTH))
+    gs = gridspec.GridSpec(2, 1, height_ratios=[1, 4])
+    ax1 = fig.add_subplot(gs[0])
+    ax1.set_title('Mean-field Ca$^{2+}$ signal')
+    ax1.plot(time, np.average(final_smoothed_data, axis=1), c='gray', linewidth=0.5)
+    ax1.set_xticks([])
+    
+    ax2 = fig.add_subplot(gs[1])
+    norm_traces = np.zeros(final_smoothed_data.shape, float)
+    for i in range(len(final_pos)):
+        vmin, vmax = np.amin(final_smoothed_data[:,i]), np.amax(final_smoothed_data[:,i])
+        norm_traces[:,i] = (final_smoothed_data[:,i]-vmin)/(vmax-vmin)
+        ax2.plot(time, norm_traces[:,i]+i*0.5, linewidth=0.3)
+    ax2.set_xlabel('time (s)')
+    ax2.set_ylabel('Cell signal $i$')
+    plt.subplots_adjust(wspace=0.05, hspace=0.05)
+    fig.savefig(f'preprocessing/{EXPERIMENT_NAME}/results/final_all_traces.png',
+                dpi=600, bbox_inches='tight', pad_inches=0.01)
+    plt.close(fig)
 
     ##Checks (and creates) folder structure
     if not os.path.exists(f'preprocessing/{EXPERIMENT_NAME}/results'):
