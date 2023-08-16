@@ -85,10 +85,13 @@ def corr_ca_analysis_data(CONFIG_DATA: dict, time_series: np.array, pos: np.arra
         os.makedirs(f'results/{EXPERIMENT_NAME}/{analysis_type}_analysis/{network_method}')
 
     conn_mat = None
+    conn_th = 0
     if network_method == 'fixed_rth':
         conn_mat = fixed_rth_conn_mat(corr_matrix, threshold_level)
+        conn_th = threshold_level
     elif network_method == 'fixed_kavg':
-        conn_mat = fixed_kavg_conn_mat(corr_matrix, threshold_level, tolerance=FIXED_KAVG_TOLERANCE)
+        conn_mat, Rth = fixed_kavg_conn_mat(corr_matrix, threshold_level, tolerance=FIXED_KAVG_TOLERANCE)
+        conn_th = Rth
     else:
         raise BaseException('Please select a valid network construction method (network_method).')
 
@@ -127,9 +130,9 @@ def corr_ca_analysis_data(CONFIG_DATA: dict, time_series: np.array, pos: np.arra
     # pylint: disable-next=C0301
     with open(f'results/{EXPERIMENT_NAME}/{analysis_type}_analysis/{network_method}/average_{analysis_type}_network_parameters.txt',
             'w', encoding='utf-8') as file:
-        print(f'{avg_corr_label} AvgEff AvgK AvgC Smax SwCoef Assort CommNum Q', file=file)
+        print(f'ConnTh {avg_corr_label} AvgEff AvgK AvgC Smax SwCoef Assort CommNum Q', file=file)
         # pylint: disable-next=C0301
-        print(f'{avg_corr:.3f} {avg_eff:.3f} {avg_k:.3f} {avg_c:.3f} {s_max:.3f} {sw_coef:.3f} {assortativity:.3f} {num_comm/cell_num:.3f} {Q:.3f}',
+        print(f'{conn_th:.3f} {avg_corr:.3f} {avg_eff:.3f} {avg_k:.3f} {avg_c:.3f} {s_max:.3f} {sw_coef:.3f} {assortativity:.3f} {num_comm/cell_num:.3f} {Q:.3f}',
             file=file)
 
     clustering_i = clustering(G)

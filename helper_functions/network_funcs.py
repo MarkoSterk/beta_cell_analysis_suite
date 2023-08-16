@@ -6,7 +6,7 @@ Network helper functions
 # pylint: disable=C0103
 # pylint: disable=C0325
 # pylint: disable=C0200
-
+from typing import Tuple
 import random
 import numpy as np
 import networkx as nx
@@ -94,7 +94,7 @@ def commstructure(G):
 
 
 def fixed_kavg_conn_mat(R: np.ndarray, k_avg: float, step_th: float = 0.0001,
-                tries_th: int = 10000, tolerance: float = 0.20) -> np.ndarray:
+                tries_th: int = 10000, tolerance: float = 0.20) -> Tuple[np.ndarray, float]:
     """
     Calculates network with fixed average node degree
     """
@@ -115,7 +115,7 @@ def fixed_kavg_conn_mat(R: np.ndarray, k_avg: float, step_th: float = 0.0001,
         elif (avg > (1.0+tolerance)*k_avg):
             conn_th = conn_th+step_th
         else:
-            return conn_mat
+            return conn_mat, conn_th
 
         tries += 1
 
