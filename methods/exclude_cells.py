@@ -18,6 +18,7 @@ def exclude_data(CONFIG_DATA: dict, smoothed_data: np.ndarray,
     """
     Excludes bad data
     """
+
     SAMPLING = CONFIG_DATA["SAMPLING"]
     EXPERIMENT_NAME = CONFIG_DATA["EXPERIMENT_NAME"]
     use_file = input('Use existing excluded cells file? (yes/no): ')
@@ -29,6 +30,9 @@ def exclude_data(CONFIG_DATA: dict, smoothed_data: np.ndarray,
         excluded_cells.sort() ##orders list of unique elements in ascending order
     else:
         excluded_cells = pick_exclude_cells(CONFIG_DATA, smoothed_data, binarized_data)
+    ##Checks (and creates) folder structure
+    if not os.path.exists(f'preprocessing/{EXPERIMENT_NAME}/results'):
+        os.makedirs(f'preprocessing/{EXPERIMENT_NAME}/results')
 
     ###Calculates and sets necessary data and performs cell exclusions
     number_of_all_cells = len(smoothed_data[0])
@@ -70,10 +74,6 @@ def exclude_data(CONFIG_DATA: dict, smoothed_data: np.ndarray,
     fig.savefig(f'preprocessing/{EXPERIMENT_NAME}/results/final_all_traces.png',
                 dpi=600, bbox_inches='tight', pad_inches=0.01)
     plt.close(fig)
-
-    ##Checks (and creates) folder structure
-    if not os.path.exists(f'preprocessing/{EXPERIMENT_NAME}/results'):
-        os.makedirs(f'preprocessing/{EXPERIMENT_NAME}/results')
 
     ##Saves final data
     np.savetxt(f'preprocessing/{EXPERIMENT_NAME}/results/final_smoothed_traces.txt',
