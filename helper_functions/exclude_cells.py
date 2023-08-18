@@ -50,8 +50,9 @@ def pick_exclude_cells(CONFIG_DATA: dict,
             ###because it gets increased again by one in the main while
             ### loop after the figure closes
             if cell > 0:
-                if cell-1==excluded_cells[-1]:
-                    excluded_cells.pop()
+                if len(excluded_cells)>0:
+                    if cell-1==excluded_cells[-1]:
+                        excluded_cells.pop()
                 click_params['next_cell'] = cell-2
                 plt.close()
         if str(event.key) == 'right':
