@@ -14,7 +14,7 @@ from helper_functions.ploting_funcs import binarized_plot
 from helper_functions.utility_functions import print_progress_bar
 
 
-def signal_binarization(CONFIG_DATA: dict, data: np.ndarray) -> np.ndarray:
+def signal_binarization(CONFIG_DATA: dict, data: np.ndarray, pos: np.ndarray) -> np.ndarray:
     """
     Performs time series binarization based
     on amplitude increase and slope of oscillations
@@ -171,7 +171,7 @@ def signal_binarization(CONFIG_DATA: dict, data: np.ndarray) -> np.ndarray:
         plt.close(fig)
 
     np.savetxt(f'preprocessing/{EXPERIMENT_NAME}/binarized_traces.txt', binsig, fmt='%d')
-    fig = binarized_plot(time, binsig)
+    fig = binarized_plot(time, binsig, pos)
     fig.savefig(f'preprocessing/{EXPERIMENT_NAME}/raster_plot.png', dpi=200, bbox_inches='tight')
     plt.close(fig)
     return binsig

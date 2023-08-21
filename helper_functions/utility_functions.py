@@ -145,8 +145,6 @@ def load_existing_data(config_data: dict):
     return data_collection, loaded_data
 
 # Print iterations progress
-
-
 def print_progress_bar(iteration: int, total: int, prefix: str = '', suffix: str = '',
                        decimals: int = 1, length: int = 100, fill: str = '█',
                        print_end: str = "\r"):

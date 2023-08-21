@@ -205,7 +205,9 @@ The above configurations make use of the "SLOPE_METHOD" method. If you want to u
 
 **If you re-run this procedure and change the method the output will override the previous output.**
 
-Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "binarized_traces"
+Output of this analysis is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "binarized_traces".
+The "raster_plot.png" figure has the cells on the y axis ordered according to their distance from the
+origin (0,0).
 
 ## Exclude cells step configurations
 In this step you can either exclude time series/cells visually or from an existing .txt file with cell indecies.
@@ -221,7 +223,9 @@ The excluded cells are added to the excluded_cells.txt file in the preprocessing
 
 If you choose to exclude cells from an existing file you have to put the file in the same folder as it would otherwise be created in ("preprocessing/{EXPERIMENT_NAME}") with the name "excluded_cells.txt". The file is loaded and only the sorted list of unique elements is used in the exclusion process. Therefore, if you are analyzing the same recording in different intervals, you can simply copy the excluded cells list of each interval into a single file and the program will create the final list of unique cell indecies that were excluded.
 
-Output files of this step is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "results"
+Output files of this step is saved in the folder "preprocessing/{EXPERIMENT_NAME}/" and subfolder "results".
+The "final_raster_plot.png" figure has the cells on the y axis ordered according to their distance from the
+origin (0,0).
 
 **ATTENTION**
 **This step is required (EVEN IF NO CELLS ARE EXCLUDED) and requires that all previous steps are completed.**

@@ -127,7 +127,7 @@ class Islet:
         if self.smoothed_traces is not None:
             if selected_method in methods:
                 self.binarized_traces = methods[selected_method](self.configs,
-                                                            self.smoothed_traces)
+                                                            self.smoothed_traces, self.positions)
             else:
                 print('Please select a valid binarization method')
         else:
@@ -247,12 +247,12 @@ class Islet:
             raw_positions_path = os.path.join(self.configs["RAW_DATA_FOLDER"],
                                               self.configs["RAW_POSITIONS_NAME"])
 
-            self.positions = np.loadtxt(raw_positions_path)
-            if len(self.positions) != len(raw_data[0]):
+            raw_positions = np.loadtxt(raw_positions_path)
+            if len(raw_positions) != len(raw_data[0]):
                 #pylint: disable=C0301
                 print(self.raw_data_columns_clash_error)
             else:
-                self.positions = self.positions * self.configs["COORDINATE_TRANSFORM"]
+                self.positions = raw_positions * self.configs["COORDINATE_TRANSFORM"]
                 self.raw_data = raw_data
                 print(self.raw_data_loaded_successfully)
         except FileNotFoundError:

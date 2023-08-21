@@ -86,7 +86,7 @@ def exclude_data(CONFIG_DATA: dict, smoothed_data: np.ndarray,
         np.savetxt(f'preprocessing/{EXPERIMENT_NAME}/results/final_first_responder_times.txt',
                 final_response_times, fmt='%.1lf')
 
-    fig = binarized_plot(time, final_binarized_data)
+    fig = binarized_plot(time, final_binarized_data, final_pos)
     fig.savefig(f'preprocessing/{EXPERIMENT_NAME}/results/final_raster_plot.png',
                 dpi=200,bbox_inches = 'tight')
     plt.close(fig)
