@@ -229,6 +229,7 @@ origin (0,0).
 
 **ATTENTION**
 **This step is required (EVEN IF NO CELLS ARE EXCLUDED) and requires that all previous steps are completed.**
+**If no cells are excluded you can create an empty exclude.txt file in the /preprocessing/{EXPERIMENT_NAME} folder**
 **Exception to this requirement is the first responder analysis which is not required.**
 
 The output if this script is used for further cell/network analysis.
