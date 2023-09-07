@@ -190,6 +190,7 @@ class Islet:
     def wave_anaylsis(self):
         """
         Performs wave detection analysis
+        Test change
         """
         if self.final_binarized_traces is not None:
             self.wave_act_sig = wave_detection(self.configs, self.final_binarized_traces, self.final_coordinates)
