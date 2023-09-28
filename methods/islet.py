@@ -14,7 +14,7 @@ from methods.exclude_cells import exclude_data
 from methods.corr_ca_analysis import corr_ca_analysis_data
 from methods.cell_parameter_analysis import cell_activity_data
 from methods.first_responders import first_responder_data
-from methods.wave_detection import wave_detection, wave_characterization, wave_raster_plot
+from methods.wave_detection import wave_detection, wave_characterization, wave_raster_plot, cells_in_waves_analysis
 from helper_functions.utility_functions import (save_config_data, create_sample_config,
                                                 load_existing_data, validate_config_data, catch_error)
 
@@ -206,6 +206,8 @@ class Islet:
             self.wave_raster_plot = wave_raster_plot(self.configs, self.wave_act_sig, self.wave_characteristics)
         else:
             print('Please perform wave detection step first.')
+        if self.wave_raster_plot is not None:
+            cells_in_waves_analysis(self.configs, self.wave_raster_plot, self.final_coordinates)
 
     @catch_error()
     def reset_app(self):

@@ -6,6 +6,7 @@ Wave detection
 # pylint: disable=R0914
 import os
 import numpy as np
+import pandas as pd
 from scipy.spatial import distance
 from scipy.stats import rankdata
 import matplotlib.pyplot as plt
@@ -115,7 +116,7 @@ def wave_characterization(CONFIG_DATA: dict, act_sig: np.array):
     file.close()
     return characteristics
 
-def wave_raster_plot(CONFIG_DATA: dict, act_sig: np.array, characteristics: np.array) -> np.array:
+def wave_raster_plot(CONFIG_DATA: dict, act_sig: np.array, characteristics: np.array) -> np.ndarray:
     """
     Computes and plots waves rasterplot
     """
@@ -166,4 +167,47 @@ def wave_raster_plot(CONFIG_DATA: dict, act_sig: np.array, characteristics: np.a
     plt.close(fig)
 
     return rast_plot
-        
+
+def cells_in_waves_analysis(CONFIG_DATA: dict, rast_plot: np.ndarray, pos: np.ndarray):
+    """
+    Analysis of cell roles in waves.
+    """
+    print("Calculating cell parameters in waves")
+    EXPERIMENT_NAME = CONFIG_DATA["EXPERIMENT_NAME"]
+    folder_path = f'results/{EXPERIMENT_NAME}/waves'
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+    #start_time act_delay act_rank cell event_num rnd_event_num rel_event_size
+    cell_num = len(pos)
+    num_of_events = np.unique(rast_plot[:,4])
+
+    #creates array (N,3) array for results:
+    # avg. act. rank, init. parameter, rel. participation number of cells
+    results = np.zeros((cell_num, 3), float)
+
+    #calculates results
+    for i in range(cell_num):
+        ##relative number of participations of cell
+        results[i,2] = len(rast_plot[np.where(rast_plot[:,3]==i)][:,3])/len(num_of_events)
+
+        ##average activation rank of cell
+        results[i,0] = np.nanmean(rast_plot[np.where(rast_plot[:,3]==i)][:,2])
+
+    initiator_perc_cutoff = [10] ##percentile cut-off for determination of initiator cells
+
+    for event in num_of_events:
+        event_data = rast_plot[np.where(rast_plot[:,4]==event)]
+        perc = np.percentile(event_data[:,2], initiator_perc_cutoff)
+        initiator_cells = np.array(event_data[np.where(event_data[:,2]<=perc[0])][:,3], int)
+        results[initiator_cells,1]+=1.0
+    #Precisions of output file (results array)
+    precision = {
+        'AvgRank': 2,
+        'InitParameter': 0,
+        'RelParticipation': 2
+    }
+    results = pd.DataFrame(results, columns=list(precision.keys()))
+    for col, value in precision.items():
+        results[col] = results[col].round(value)
+    results.to_csv(f'{folder_path}/cell_wave_parameters.txt',
+                   sep=' ', index=False)
