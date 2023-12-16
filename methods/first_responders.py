@@ -28,7 +28,8 @@ def first_responder_data(CONFIG_DATA: dict, data: np.ndarray):
         vmin, vmax = np.amin(data[:,i]), np.amax(data[:,i])
         norm_data[:,i] = (data[:,i]-vmin)/(vmax-vmin)
     time = [i/SAMPLING for i in range(len(data))]
-    show_time = time[int(0.5*len(time))]
+    show_time_start = CONFIG_DATA['INTERVAL_START_TIME_SECONDS']
+    show_time_end = CONFIG_DATA['INTERVAL_END_TIME_SECONDS']
 
     response_times = np.zeros(cell_num, float)
     
@@ -93,7 +94,7 @@ def first_responder_data(CONFIG_DATA: dict, data: np.ndarray):
         cursor = Cursor(ax, horizOn=True, vertOn=True, color='green', linewidth=1.0, useblit=True)
         fig.suptitle(f'Cell {current_cell}')
         ax.plot(time, norm_data[:,current_cell], linewidth=0.4, c='gray')
-        ax.set_xlim(0,show_time)
+        ax.set_xlim(show_time_start, show_time_end)
         ax.set_xlabel('time (s)')
         ax.set_ylabel('Cell signal (a.u.)')
         ax.set_ylim(-0.1, 1.1)
