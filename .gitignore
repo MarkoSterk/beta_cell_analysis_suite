@@ -76,4 +76,8 @@ results/
 test_zip.py
 test_zip.gz
 test_zip.zip
+.test_folder
+test_folder/
+test_folder
+pyinstaller_cmd.txt
 12glc/
