@@ -6,9 +6,12 @@ Time series binarization
 # pylint: disable=R1702
 import os
 import numpy as np
+import matplotlib.pyplot as plt
+from helper_functions.ploting_funcs import binarized_plot
+from helper_functions.utility_functions import print_progress_bar
 from scipy.signal import find_peaks, peak_widths
 
-def binarize_data(CONFIG_DATA: dict, data: np.ndarray, pos: np.ndarray) -> np.array:
+def binarize_data(CONFIG_DATA: dict, data: np.ndarray, pos: np.ndarray) -> np.ndarray:
     """
     Binarizes time series data
     """
